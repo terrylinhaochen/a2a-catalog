@@ -1,88 +1,68 @@
+
 import React, { useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useAgents } from '@/hooks/useAgents';
-import { useSEO } from '@/hooks/useSEO';
+import { Search, Filter, SortAsc, Grid, List, ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AgentCard from '@/components/AgentCard';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Search, Filter } from 'lucide-react';
+import { useAgents } from '@/hooks/useAgents';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Agents = () => {
-  const { agents, categories, loading } = useAgents();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
-  const [sortBy, setSortBy] = useState('votes');
-
-  // Implement SEO for agents page
-  useSEO({
-    title: 'Browse AI Agents - A2A Catalog | Discover A2A Compatible Agents',
-    description: 'Browse our comprehensive collection of A2A compatible AI agents. Filter by category, search by capabilities, and find the perfect agent for your needs.',
-    keywords: ['browse AI agents', 'A2A agents', 'AI marketplace', 'agent directory', 'artificial intelligence tools'],
-    type: 'website'
-  });
+  const { agents, categories, loading, voteForAgent } = useAgents();
+  const { user } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState('popular');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showFilters, setShowFilters] = useState(false);
 
   const filteredAndSortedAgents = useMemo(() => {
     let filtered = agents.filter(agent => {
-      const matchesSearch = agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          agent.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          agent.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch = agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           agent.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           agent.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const matchesCategory = selectedCategory === 'all' || 
-                            agent.categories.some(cat => cat.toLowerCase() === selectedCategory.toLowerCase());
+      const matchesCategory = selectedCategories.length === 0 ||
+                             selectedCategories.some(cat => agent.categories.includes(cat));
       
       return matchesSearch && matchesCategory;
     });
 
-    return filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'votes':
-          return b.votes - a.votes;
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'newest':
-          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
-        default:
-          return 0;
-      }
-    });
-  }, [agents, searchTerm, selectedCategory, sortBy]);
-
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-    const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set('search', value);
-    } else {
-      newParams.delete('search');
+    // Sort agents
+    switch (sortBy) {
+      case 'popular':
+        filtered.sort((a, b) => b.votes - a.votes);
+        break;
+      case 'newest':
+        filtered.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+        break;
+      case 'alphabetical':
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
     }
-    setSearchParams(newParams);
+
+    return filtered;
+  }, [agents, searchQuery, selectedCategories, sortBy]);
+
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
   };
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-    const newParams = new URLSearchParams(searchParams);
-    if (category !== 'all') {
-      newParams.set('category', category);
-    } else {
-      newParams.delete('category');
-    }
-    setSearchParams(newParams);
+  const handleVote = async (agentId: string, voteType: 'up' | 'down') => {
+    if (!user) return;
+    await voteForAgent(agentId, user.id);
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-          </div>
-        </div>
-        <Footer />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
     );
   }
@@ -91,92 +71,164 @@ const Agents = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Browse AI Agents</h1>
-          <p className="text-xl text-gray-600">
-            Discover and integrate A2A compatible agents for your projects
+      {/* Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">AI Agent Catalog</h1>
+          <p className="text-gray-600 mb-6">
+            Discover and integrate A2A-compliant AI agents for your applications
           </p>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Search agents..."
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10"
+          
+          {/* Search and Controls */}
+          <div className="flex flex-col lg:flex-row gap-4 items-center">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search agents, skills, or descriptions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             
-            <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-              <SelectTrigger>
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="All Categories" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.name}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="votes">Most Popular</SelectItem>
-                <SelectItem value="name">Name (A-Z)</SelectItem>
-                <SelectItem value="newest">Newest First</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center space-x-3">
+              <Button
+                variant={showFilters ? "default" : "outline"}
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center space-x-2"
+              >
+                <Filter className="w-4 h-4" />
+                <span>Filters</span>
+                {selectedCategories.length > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {selectedCategories.length}
+                  </Badge>
+                )}
+              </Button>
+              
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="popular">Most Popular</option>
+                <option value="newest">Newest</option>
+                <option value="alphabetical">A-Z</option>
+              </select>
+              
+              <div className="flex border border-gray-300 rounded-lg">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="rounded-r-none"
+                >
+                  <Grid className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="rounded-l-none"
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Results */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <p className="text-gray-600">
-              Showing {filteredAndSortedAgents.length} of {agents.length} agents
-            </p>
-            {(searchTerm || selectedCategory !== 'all') && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">Active filters:</span>
-                {searchTerm && (
-                  <Badge variant="secondary" className="cursor-pointer" onClick={() => handleSearch('')}>
-                    Search: {searchTerm} ×
-                  </Badge>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Filters */}
+          <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <div className="bg-white rounded-lg border p-6 sticky top-24">
+              <h3 className="font-semibold text-gray-900 mb-4">Categories</h3>
+              <div className="space-y-2">
+                {categories.map((category) => (
+                  <label key={category.id} className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(category.name)}
+                      onChange={() => handleCategoryToggle(category.name)}
+                      className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    />
+                    <div className="flex-1 flex items-center justify-between">
+                      <span className="text-sm text-gray-700">{category.name}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {category.count || 0}
+                      </Badge>
+                    </div>
+                  </label>
+                ))}
+              </div>
+              
+              {selectedCategories.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedCategories([])}
+                  className="mt-4 w-full text-gray-500"
+                >
+                  Clear Filters
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Results Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {filteredAndSortedAgents.length} agents found
+                </h2>
+                {searchQuery && (
+                  <p className="text-gray-600">
+                    Results for "{searchQuery}"
+                  </p>
                 )}
-                {selectedCategory !== 'all' && (
-                  <Badge variant="secondary" className="cursor-pointer" onClick={() => handleCategoryChange('all')}>
-                    Category: {selectedCategory} ×
-                  </Badge>
-                )}
+              </div>
+            </div>
+
+            {/* Agents Grid/List */}
+            {filteredAndSortedAgents.length > 0 ? (
+              <div className={viewMode === 'grid' 
+                ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' 
+                : 'space-y-4'
+              }>
+                {filteredAndSortedAgents.map((agent) => (
+                  <AgentCard 
+                    key={agent.id} 
+                    agent={agent} 
+                    onVote={handleVote}
+                    compact={viewMode === 'list'}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No agents found</h3>
+                <p className="text-gray-600 mb-4">
+                  Try adjusting your search criteria or removing some filters
+                </p>
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategories([]);
+                  }}
+                >
+                  Clear all filters
+                </Button>
               </div>
             )}
           </div>
         </div>
-
-        {/* Agent Grid */}
-        {filteredAndSortedAgents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAndSortedAgents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg mb-4">No agents found matching your criteria</p>
-            <p className="text-gray-400">Try adjusting your search terms or filters</p>
-          </div>
-        )}
       </div>
 
       <Footer />

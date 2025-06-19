@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -208,7 +207,7 @@ const Documentation = () => {
                     </p>
                   </CardContent>
                 </Card>
-                ))}
+              ))}
             </div>
           </section>
         </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -17,44 +16,46 @@ const Index = () => {
   const popularAgents = agents.sort((a, b) => b.votes - a.votes).slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Hero Section with Glassmorphism */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mb-20">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative p-12 md:p-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-64 md:py-80 flex flex-col items-center justify-center min-h-screen">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               A New Era of AI Agent Collaboration
-              <span className="block text-3xl md:text-4xl bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mt-2">
+              <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 Seamless Interoperability
               </span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
+            <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
               Discover a dynamic ecosystem where AI agents from any platform connect, communicate, and automate—together. Unlock seamless interoperability and drive innovation with the A2A Catalog.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100" asChild>
-                <a href="/agents">
+              <a href="/agents">
+                <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
                   <Globe className="w-5 h-5 mr-2" />
                   Browse All Agents
-                </a>
-              </Button>
-              <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600" asChild>
-                <a href="/submit">
+                </Button>
+              </a>
+              <a href="/submit">
+                <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
                   <Zap className="w-5 h-5 mr-2" />
                   Submit Your Agent
-                </a>
-              </Button>
+                </Button>
+              </a>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Featured Agents Section */}
-        <section className="mb-16">
+      {/* Featured Agents Section */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
               <Sparkles className="w-6 h-6 text-purple-600 mr-2" />
@@ -72,7 +73,7 @@ const Index = () => {
               ))}
             </div>
           ) : featuredAgents.length > 0 ? (
-            <div className="grid grid-cols-1 m+:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredAgents.map((agent) => (
                 <AgentCard key={agent.id} agent={agent} />
               ))}
@@ -93,10 +94,12 @@ const Index = () => {
               <Link to="/agents">View All Agents</Link>
             </Button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Explore by Category Section */}
-        <section className="mb-16">
+      {/* Explore by Category Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Explore by Category</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -139,10 +142,12 @@ const Index = () => {
               <Link to="/categories">View All Categories</Link>
             </Button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Most Popular Section */}
-        <section className="mb-16">
+      {/* Most Popular Section */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
               <TrendingUp className="w-6 h-6 text-purple-600 mr-2" />
@@ -191,10 +196,12 @@ const Index = () => {
               <Link to="/agents">View All Agents</Link>
             </Button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Getting Started with A2A Section */}
-        <section className="mb-16">
+      {/* Getting Started with A2A Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Getting Started with A2A</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -203,7 +210,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="hover:shadow-lg transition-all duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
               <CardHeader className="text-center pb-4">
                 <BookOpen className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Documentation</CardTitle>
@@ -220,7 +227,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
               <CardHeader className="text-center pb-4">
                 <Code className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Examples</CardTitle>
@@ -237,7 +244,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300">
+            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
               <CardHeader className="text-center pb-4">
                 <Zap className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Tutorials</CardTitle>
@@ -254,30 +261,28 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      {/* CTA Section - Glassmorphism Card */}
-      <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mx-4 sm:mx-6 lg:mx-8 mb-16">
-        <CardHeader className="text-center pb-6">
-          <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-to-r from-purple-600 to-blue-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Get Started?
-          </CardTitle>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          </h2>
+          <p className="text-xl text-purple-100 mb-8">
             Join the A2A ecosystem and contribute to the next generation of collaborative AI agents.
           </p>
-        </CardHeader>
-        <CardContent className="text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="bg-white text-purple-600 hover:bg-gray-100">
               <Link to="/submit">Submit Your Agent</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
+            <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white hover:text-purple-600 bg-white/10 backdrop-blur-sm">
               <Link to="/docs">Read Documentation</Link>
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
       <Footer />
     </div>

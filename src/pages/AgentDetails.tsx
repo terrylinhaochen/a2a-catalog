@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Star, GitFork, Clock, Github, Shield, Key, Globe, FileText, Users, Heart, ChevronUp } from 'lucide-react';
@@ -9,7 +10,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAgents } from '@/hooks/useAgents';
 import { useAuth } from '@/contexts/AuthContext';
-import { useSEO } from '@/hooks/useSEO';
 
 const AgentDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,15 +22,6 @@ const AgentDetails = () => {
     if (!user || !agent) return;
     await voteForAgent(agent.id, user.id);
   };
-
-  useSEO({
-    title: agent ? `${agent.name} - A2A Agent Details | A2A Catalog` : 'Agent Details - A2A Catalog',
-    description: agent ? `${agent.description} Deploy this A2A compatible agent with ${agent.skills?.join(', ')} capabilities.` : 'Detailed information about A2A compatible AI agents.',
-    keywords: agent ? ['AI agent', agent.name, ...agent.skills, 'A2A protocol', agent.provider] : ['AI agent', 'A2A protocol'],
-    type: 'article',
-    publishedTime: agent?.created_at,
-    modifiedTime: agent?.updated_at
-  });
 
   if (!agent) {
     return (
