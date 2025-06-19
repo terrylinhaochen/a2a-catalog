@@ -30,14 +30,14 @@ const Index = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Discover the Future of
+              Seamless GitHub Integration
               <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                AI Agent Integration
+                Two-Way Code Synchronization
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-              The comprehensive marketplace for A2A-compliant AI agents. Find, evaluate, and integrate 
-              the perfect AI agents for your applications with our community-driven platform.
+              Transfer your project's code to GitHub for automatic two-way sync of edits. 
+              Develop locally or in the cloud while maintaining perfect synchronization across all platforms.
             </p>
 
             {/* CTA Buttons */}
