@@ -7,13 +7,17 @@ const Sitemap = () => {
   const { agents } = useAgents();
 
   useEffect(() => {
-    // Generate and serve the sitemap XML
+    // Generate the sitemap XML
     const sitemapXML = generateSitemap(agents);
     
-    // Set the content type to XML
-    document.contentType = 'application/xml';
-    
-    // Replace the entire document with the sitemap XML
+    // Create a new Response with XML content type
+    const response = new Response(sitemapXML, {
+      headers: {
+        'Content-Type': 'application/xml; charset=utf-8',
+      },
+    });
+
+    // Replace the current page content with the XML
     document.open();
     document.write(sitemapXML);
     document.close();

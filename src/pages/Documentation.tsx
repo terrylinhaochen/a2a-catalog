@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Globe, Shield, Zap, Users, MessageSquare, Workflow, Eye, Clock, ExternalLink, Play, BookOpen, Code, Download } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
-import SEOAdmin from '@/components/SEOAdmin';
 
 const Documentation = () => {
   useSEO({
@@ -88,13 +88,12 @@ const Documentation = () => {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="api">API Reference</TabsTrigger>
               <TabsTrigger value="integration">Integration</TabsTrigger>
               <TabsTrigger value="examples">Examples</TabsTrigger>
               <TabsTrigger value="troubleshooting">Troubleshooting</TabsTrigger>
-              <TabsTrigger value="seo">SEO Tools</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
@@ -254,10 +253,6 @@ const Documentation = () => {
                   </p>
                 </div>
               </section>
-            </TabsContent>
-
-            <TabsContent value="seo" className="space-y-6">
-              <SEOAdmin />
             </TabsContent>
           </Tabs>
         </div>
