@@ -242,7 +242,7 @@ const Documentation = () => {
                   <CardTitle>Real-World Example: Candidate Sourcing</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg">
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-8 rounded-lg">
                     <p className="text-gray-700 mb-4">
                       Hiring a software engineer can be significantly simplified with A2A collaboration. Within a unified interface, 
                       a hiring manager can task their agent to find candidates matching a job listing, location, and skill set.
@@ -304,7 +304,7 @@ const Documentation = () => {
 
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Example A2A Integration</h3>
-                  <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                  <div className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto">
                     <pre className="text-sm">
 {`// Example A2A agent discovery and task creation
 const discoverAgent = async (capability) => {
@@ -348,7 +348,7 @@ const createTask = async (agentEndpoint, taskData) => {
 
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Agent Card Structure</h3>
-                  <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                  <div className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto">
                     <pre className="text-sm">
 {`{
   "agent_id": "example-agent-v1",
@@ -421,12 +421,12 @@ const createTask = async (agentEndpoint, taskData) => {
                         </div>
                         <div className="flex items-center space-x-2">
                           <Badge variant="outline">GET</Badge>
-                          <code className="text-sm">/tasks/{task_id}</code>
+                          <code className="text-sm">/tasks/{taskId}</code>
                           <span className="text-sm text-gray-600">Get task status</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Badge variant="outline">SSE</Badge>
-                          <code className="text-sm">/tasks/{task_id}/stream</code>
+                          <code className="text-sm">/tasks/{taskId}/stream</code>
                           <span className="text-sm text-gray-600">Stream task updates</span>
                         </div>
                       </div>
@@ -481,7 +481,7 @@ const createTask = async (agentEndpoint, taskData) => {
                   <CardTitle>Response Format</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+                  <div className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto">
                     <pre className="text-sm">
 {`// Successful Response
 {
@@ -519,7 +519,7 @@ const createTask = async (agentEndpoint, taskData) => {
 
         <div className="mt-12 text-center">
           <Card className="max-w-2xl mx-auto bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-            <CardContent className="p-8">
+            <CardContent className="p-12">
               <h3 className="text-2xl font-bold mb-4">Ready to Build with A2A?</h3>
               <p className="text-lg mb-6 opacity-90">
                 Join the growing ecosystem of developers building interoperable AI agents.
