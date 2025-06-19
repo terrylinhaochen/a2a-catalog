@@ -127,20 +127,22 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         </div>
 
-        {/* Skills - improved layout with proper spacing */}
+        {/* Skills - fixed layout with proper overflow handling */}
         {!compact && (
-          <div className="mb-4 flex-shrink-0 min-h-[2rem]">
-            <div className="flex flex-wrap gap-1">
+          <div className="mb-4 flex-shrink-0 h-8">
+            <div className="flex flex-wrap gap-1 overflow-hidden">
               {agent.skills.slice(0, 3).map((skill) => (
                 <span
                   key={skill}
-                  className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded whitespace-nowrap"
+                  className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded flex-shrink-0"
+                  style={{ maxWidth: '100px' }}
+                  title={skill}
                 >
-                  {skill}
+                  {skill.length > 12 ? `${skill.substring(0, 12)}...` : skill}
                 </span>
               ))}
               {agent.skills.length > 3 && (
-                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded whitespace-nowrap">
+                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded flex-shrink-0">
                   +{agent.skills.length - 3}
                 </span>
               )}
@@ -154,7 +156,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
         {/* Footer - always at bottom */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            {/* Removed auth_type display */}
+            {/* Empty space for balance */}
           </div>
           
           <div className="flex items-center space-x-2">

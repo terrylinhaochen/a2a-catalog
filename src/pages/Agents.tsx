@@ -91,7 +91,7 @@ const Agents = () => {
       
       {/* Header */}
       <div className="bg-white border-b">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">AI Agent Catalog</h1>
           <p className="text-gray-600 mb-6">
             Discover and integrate A2A-compliant AI agents for your applications
@@ -158,7 +158,7 @@ const Agents = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
