@@ -12,7 +12,7 @@ export interface Agent {
   skills: string[];
   votes: number;
   is_verified?: boolean;
-  auth_type?: string;
+  auth_type?: 'API Key' | 'OAuth' | 'Bearer Token' | 'Basic Auth';
   endpoint?: string;
   documentation?: string;
   examples?: string[];
@@ -81,7 +81,7 @@ export const useAgents = () => {
     try {
       const { data, error } = await supabase
         .from('agents')
-        .insert([agentData])
+        .insert(agentData)
         .select()
         .single();
 
