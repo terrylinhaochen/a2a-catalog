@@ -26,16 +26,16 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36 md:py-48 flex flex-col items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Discover, integrate, and deploy
+              A New Era of AI Agent Collaboration
               <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                AI agents that work together
+                Seamless Interoperability
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
-              The definitive marketplace for Agent-to-Agent (A2A) compatible AI agents. Find specialized AI capabilities, from data analysis to content generation, and integrate them into your applications with standardized protocols.
+              Discover a dynamic ecosystem where AI agents from any platform connect, communicate, and automate—together. Unlock seamless interoperability and drive innovation with the A2A Catalog.
             </p>
 
             {/* CTA Buttons */}
@@ -47,7 +47,7 @@ const Index = () => {
                 </Button>
               </a>
               <a href="/submit">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 transition-colors">
+                <Button size="lg" variant="secondary">
                   <Zap className="w-5 h-5 mr-2" />
                   Submit Your Agent
                 </Button>
@@ -172,13 +172,13 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/submit">
-              <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
+              <Button size="lg" variant="secondary">
                 <Zap className="w-5 h-5 mr-2" />
                 Submit Your Agent
               </Button>
             </a>
             <a href="/docs">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 transition-colors">
+              <Button size="lg" variant="secondary">
                 <Shield className="w-5 h-5 mr-2" />
                 Read Documentation
               </Button>
