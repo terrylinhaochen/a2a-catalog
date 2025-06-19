@@ -127,21 +127,21 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         </div>
 
-        {/* Skills - fixed height section for non-compact cards */}
+        {/* Skills - improved layout with proper spacing */}
         {!compact && (
-          <div className="mb-4 flex-shrink-0 h-8">
+          <div className="mb-4 flex-shrink-0 min-h-[2rem]">
             <div className="flex flex-wrap gap-1">
-              {agent.skills.slice(0, 4).map((skill) => (
+              {agent.skills.slice(0, 3).map((skill) => (
                 <span
                   key={skill}
-                  className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
+                  className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded whitespace-nowrap"
                 >
                   {skill}
                 </span>
               ))}
-              {agent.skills.length > 4 && (
-                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-                  +{agent.skills.length - 4}
+              {agent.skills.length > 3 && (
+                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded whitespace-nowrap">
+                  +{agent.skills.length - 3}
                 </span>
               )}
             </div>

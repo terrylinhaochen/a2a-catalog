@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, SortAsc, Grid, List, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,15 +8,25 @@ import Footer from '@/components/Footer';
 import AgentCard from '@/components/AgentCard';
 import { useAgents } from '@/hooks/useAgents';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSearchParams } from 'react-router-dom';
 
 const Agents = () => {
   const { agents, categories, loading, voteForAgent } = useAgents();
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Handle category filter from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setSelectedCategories([categoryParam]);
+    }
+  }, [searchParams]);
 
   const filteredAndSortedAgents = useMemo(() => {
     let filtered = agents.filter(agent => {
@@ -47,11 +57,19 @@ const Agents = () => {
   }, [agents, searchQuery, selectedCategories, sortBy]);
 
   const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
+    const newSelectedCategories = selectedCategories.includes(category) 
+      ? selectedCategories.filter(c => c !== category)
+      : [...selectedCategories, category];
+    
+    setSelectedCategories(newSelectedCategories);
+    
+    // Update URL params
+    if (newSelectedCategories.length === 0) {
+      searchParams.delete('category');
+    } else if (newSelectedCategories.length === 1) {
+      searchParams.set('category', newSelectedCategories[0]);
+    }
+    setSearchParams(searchParams);
   };
 
   const handleVote = async (agentId: string, voteType: 'up' | 'down') => {
@@ -73,7 +91,7 @@ const Agents = () => {
       
       {/* Header */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">AI Agent Catalog</h1>
           <p className="text-gray-600 mb-6">
             Discover and integrate A2A-compliant AI agents for your applications
@@ -140,7 +158,7 @@ const Agents = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
@@ -169,7 +187,11 @@ const Agents = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setSelectedCategories([])}
+                  onClick={() => {
+                    setSelectedCategories([]);
+                    searchParams.delete('category');
+                    setSearchParams(searchParams);
+                  }}
                   className="mt-4 w-full text-gray-500"
                 >
                   Clear Filters
@@ -189,6 +211,11 @@ const Agents = () => {
                 {searchQuery && (
                   <p className="text-gray-600">
                     Results for "{searchQuery}"
+                  </p>
+                )}
+                {selectedCategories.length > 0 && (
+                  <p className="text-gray-600">
+                    Filtered by: {selectedCategories.join(', ')}
                   </p>
                 )}
               </div>
@@ -221,6 +248,8 @@ const Agents = () => {
                   onClick={() => {
                     setSearchQuery('');
                     setSelectedCategories([]);
+                    searchParams.delete('category');
+                    setSearchParams(searchParams);
                   }}
                 >
                   Clear all filters
