@@ -6,9 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AgentCard from '@/components/AgentCard';
-import { mockAgents, categories } from '@/data/mockAgents';
+import { useAgents } from '@/hooks/useAgents';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Agents = () => {
+  const { agents, categories, loading, voteForAgent } = useAgents();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('popular');
@@ -16,7 +19,7 @@ const Agents = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredAndSortedAgents = useMemo(() => {
-    let filtered = mockAgents.filter(agent => {
+    let filtered = agents.filter(agent => {
       const matchesSearch = agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            agent.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            agent.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -33,8 +36,7 @@ const Agents = () => {
         filtered.sort((a, b) => b.votes - a.votes);
         break;
       case 'newest':
-        // For demo, we'll just reverse the order
-        filtered.reverse();
+        filtered.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
         break;
       case 'alphabetical':
         filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -42,7 +44,7 @@ const Agents = () => {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategories, sortBy]);
+  }, [agents, searchQuery, selectedCategories, sortBy]);
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev => 
@@ -52,10 +54,18 @@ const Agents = () => {
     );
   };
 
-  const handleVote = (agentId: string, voteType: 'up' | 'down') => {
-    console.log(`Voted ${voteType} for agent ${agentId}`);
-    // In a real app, this would update the backend
+  const handleVote = async (agentId: string, voteType: 'up' | 'down') => {
+    if (!user) return;
+    await voteForAgent(agentId, user.id);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -148,7 +158,7 @@ const Agents = () => {
                     <div className="flex-1 flex items-center justify-between">
                       <span className="text-sm text-gray-700">{category.name}</span>
                       <Badge variant="outline" className="text-xs">
-                        {category.count}
+                        {category.count || 0}
                       </Badge>
                     </div>
                   </label>

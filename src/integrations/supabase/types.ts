@@ -9,7 +9,146 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      agent_votes: {
+        Row: {
+          agent_id: string | null
+          created_at: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_votes_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agents: {
+        Row: {
+          auth_type: Database["public"]["Enums"]["auth_type"] | null
+          categories: string[] | null
+          created_at: string | null
+          description: string
+          documentation: string | null
+          endpoint: string | null
+          examples: string[] | null
+          featured: boolean | null
+          id: string
+          is_verified: boolean | null
+          logo: string | null
+          name: string
+          provider: string
+          skills: string[] | null
+          updated_at: string | null
+          user_id: string | null
+          votes: number | null
+        }
+        Insert: {
+          auth_type?: Database["public"]["Enums"]["auth_type"] | null
+          categories?: string[] | null
+          created_at?: string | null
+          description: string
+          documentation?: string | null
+          endpoint?: string | null
+          examples?: string[] | null
+          featured?: boolean | null
+          id?: string
+          is_verified?: boolean | null
+          logo?: string | null
+          name: string
+          provider: string
+          skills?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          votes?: number | null
+        }
+        Update: {
+          auth_type?: Database["public"]["Enums"]["auth_type"] | null
+          categories?: string[] | null
+          created_at?: string | null
+          description?: string
+          documentation?: string | null
+          endpoint?: string | null
+          examples?: string[] | null
+          featured?: boolean | null
+          id?: string
+          is_verified?: boolean | null
+          logo?: string | null
+          name?: string
+          provider?: string
+          skills?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          votes?: number | null
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string
+          icon: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          icon: string
+          id: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +157,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      auth_type: "API Key" | "OAuth" | "Bearer Token" | "Basic Auth"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +272,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      auth_type: ["API Key", "OAuth", "Bearer Token", "Basic Auth"],
+    },
   },
 } as const

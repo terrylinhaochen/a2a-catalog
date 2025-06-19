@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Search, Zap, Shield, Globe, TrendingUp, Users, Star, ArrowRight, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,19 +6,29 @@ import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AgentCard from '@/components/AgentCard';
-import { mockAgents, categories } from '@/data/mockAgents';
+import { useAgents } from '@/hooks/useAgents';
 
 const Index = () => {
+  const { agents, categories, loading } = useAgents();
   const [searchQuery, setSearchQuery] = useState('');
-  const featuredAgents = mockAgents.filter(agent => agent.featured).slice(0, 3);
-  const popularAgents = mockAgents.sort((a, b) => b.votes - a.votes).slice(0, 6);
+  
+  const featuredAgents = agents.filter(agent => agent.featured).slice(0, 3);
+  const popularAgents = agents.sort((a, b) => b.votes - a.votes).slice(0, 6);
 
   const stats = [
-    { label: 'Total Agents', value: '1,247', icon: '🤖' },
-    { label: 'Categories', value: '24', icon: '📂' },
+    { label: 'Total Agents', value: agents.length.toString(), icon: '🤖' },
+    { label: 'Categories', value: categories.length.toString(), icon: '📂' },
     { label: 'Monthly Users', value: '52K', icon: '👥' },
     { label: 'API Calls', value: '2.1M', icon: '⚡' }
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -73,31 +84,33 @@ const Index = () => {
       </div>
 
       {/* Featured Agents */}
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Agents</h2>
-            <p className="text-xl text-gray-600">
-              Hand-picked agents that showcase the best of A2A capabilities
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            {featuredAgents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
-          </div>
+      {featuredAgents.length > 0 && (
+        <div className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Agents</h2>
+              <p className="text-xl text-gray-600">
+                Hand-picked agents that showcase the best of A2A capabilities
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              {featuredAgents.map((agent) => (
+                <AgentCard key={agent.id} agent={agent} />
+              ))}
+            </div>
 
-          <div className="text-center">
-            <a href="/agents">
-              <Button size="lg" variant="outline">
-                View All Agents
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+            <div className="text-center">
+              <a href="/agents">
+                <Button size="lg" variant="outline">
+                  View All Agents
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Categories Grid */}
       <div className="py-16 bg-gray-50">
@@ -113,12 +126,12 @@ const Index = () => {
             {categories.map((category) => (
               <a
                 key={category.id}
-                href={`/categories/${category.id}`}
+                href={`/agents?category=${category.id}`}
                 className="bg-white rounded-xl p-6 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all duration-200 group"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-3xl">{category.icon}</div>
-                  <Badge variant="secondary">{category.count} agents</Badge>
+                  <Badge variant="secondary">{category.count || 0} agents</Badge>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
                   {category.name}
@@ -135,30 +148,32 @@ const Index = () => {
       </div>
 
       {/* Popular Agents */}
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Most Popular</h2>
-              <p className="text-xl text-gray-600">
-                Community favorites with the highest ratings
-              </p>
+      {popularAgents.length > 0 && (
+        <div className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Most Popular</h2>
+                <p className="text-xl text-gray-600">
+                  Community favorites with the highest ratings
+                </p>
+              </div>
+              <a href="/agents?sort=popular">
+                <Button variant="outline">
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  View All Popular
+                </Button>
+              </a>
             </div>
-            <a href="/agents?sort=popular">
-              <Button variant="outline">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                View All Popular
-              </Button>
-            </a>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popularAgents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {popularAgents.map((agent) => (
+                <AgentCard key={agent.id} agent={agent} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* CTA Section */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-600 py-16">
