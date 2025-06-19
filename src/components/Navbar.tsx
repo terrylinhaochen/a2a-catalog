@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Actions */}
           <div className="flex items-center space-x-4">
             <a href="/submit">
-              <Button className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 hover:text-white">
+              <Button className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
                 <Plus className="w-4 h-4" />
                 <span>Submit Agent</span>
               </Button>
@@ -81,7 +81,7 @@ const Navbar = () => {
               </a>
               <div className="px-3 py-2 space-y-2">
                 <a href="/submit">
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 hover:text-white">
+                  <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
                     <Plus className="w-4 h-4 mr-2" />
                     Submit Agent
                   </Button>
