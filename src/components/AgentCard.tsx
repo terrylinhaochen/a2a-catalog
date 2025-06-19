@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Heart, ChevronUp, ExternalLink, Star, Users, GitFork, Clock, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,12 +35,12 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-lg group">
-      <div className="p-6">
+    <div className={`bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-lg group flex flex-col ${compact ? 'h-64' : 'h-96'}`}>
+      <div className="p-6 flex flex-col h-full">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
               {agent.logo ? (
                 <img src={agent.logo} alt={agent.name} className="w-8 h-8 rounded" />
               ) : (
@@ -48,23 +49,23 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
                 </span>
               )}
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
-                <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors truncate">
                   {agent.name}
                 </h3>
                 {agent.is_verified && (
-                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-xs">✓</span>
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-500">{agent.provider}</p>
+              <p className="text-sm text-gray-500 truncate">{agent.provider}</p>
             </div>
           </div>
 
           {/* Voting */}
-          <div className="flex flex-col items-center space-y-1">
+          <div className="flex flex-col items-center space-y-1 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"
@@ -103,28 +104,32 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         )}
 
-        {/* Description */}
-        <p className={`text-gray-600 mb-4 ${compact ? 'line-clamp-2' : 'line-clamp-3'}`}>
-          {agent.description}
-        </p>
-
-        {/* Categories */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {agent.categories.slice(0, compact ? 2 : 3).map((category) => (
-            <Badge key={category} variant="secondary" className="text-xs">
-              {category}
-            </Badge>
-          ))}
-          {agent.categories.length > (compact ? 2 : 3) && (
-            <Badge variant="outline" className="text-xs">
-              +{agent.categories.length - (compact ? 2 : 3)}
-            </Badge>
-          )}
+        {/* Description - with fixed height and overflow handling */}
+        <div className={`mb-4 flex-shrink-0 ${compact ? 'h-10' : 'h-16'}`}>
+          <p className={`text-gray-600 ${compact ? 'line-clamp-2' : 'line-clamp-3'} text-sm leading-relaxed`}>
+            {agent.description}
+          </p>
         </div>
 
-        {/* Skills */}
+        {/* Categories - fixed height section */}
+        <div className="mb-4 flex-shrink-0 h-6">
+          <div className="flex flex-wrap gap-2">
+            {agent.categories.slice(0, compact ? 2 : 3).map((category) => (
+              <Badge key={category} variant="secondary" className="text-xs">
+                {category}
+              </Badge>
+            ))}
+            {agent.categories.length > (compact ? 2 : 3) && (
+              <Badge variant="outline" className="text-xs">
+                +{agent.categories.length - (compact ? 2 : 3)}
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Skills - fixed height section for non-compact cards */}
         {!compact && (
-          <div className="mb-4">
+          <div className="mb-4 flex-shrink-0 h-8">
             <div className="flex flex-wrap gap-1">
               {agent.skills.slice(0, 4).map((skill) => (
                 <span
@@ -143,8 +148,11 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         )}
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+        {/* Spacer to push footer to bottom */}
+        <div className="flex-grow"></div>
+
+        {/* Footer - always at bottom */}
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
             {agent.auth_type && (
               <span className="flex items-center space-x-1">
