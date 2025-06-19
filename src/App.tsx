@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Agents from "./pages/Agents";
+import Categories from "./pages/Categories";
+import About from "./pages/About";
+import Documentation from "./pages/Documentation";
 import Submit from "./pages/Submit";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
@@ -24,6 +27,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/agents" element={<Agents />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/docs" element={<Documentation />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/submit" element={
               <ProtectedRoute>
