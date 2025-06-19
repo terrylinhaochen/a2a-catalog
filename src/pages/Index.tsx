@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Zap, Shield, Globe, TrendingUp, Users, Star, ArrowRight, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,14 +29,13 @@ const Index = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Seamless GitHub Integration
+              The App Store Moment
               <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Two-Way Code Synchronization
+                for AI Agents
               </span>
             </h1>
-            <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-              Transfer your project's code to GitHub for automatic two-way sync of edits. 
-              Develop locally or in the cloud while maintaining perfect synchronization across all platforms.
+            <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
+              These protocols are "critical enablers for the evolution of artificial intelligence from collections of standalone models into sophisticated, integrated, and collaborative ecosystems" and are "paving the way for the development of true multi-agent systems, where the capabilities of individual agents can be dynamically discovered, composed, and extended to tackle problems of increasing complexity".
             </p>
 
             {/* CTA Buttons */}
