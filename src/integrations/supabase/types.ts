@@ -43,17 +43,22 @@ export type Database = {
           auth_type: Database["public"]["Enums"]["auth_type"] | null
           categories: string[] | null
           created_at: string | null
+          deployment_instructions: string | null
           description: string
           documentation: string | null
           endpoint: string | null
           examples: string[] | null
           featured: boolean | null
+          forks: number | null
+          github_url: string | null
           id: string
           is_verified: boolean | null
+          last_updated: string | null
           logo: string | null
           name: string
           provider: string
           skills: string[] | null
+          stars: number | null
           updated_at: string | null
           user_id: string | null
           votes: number | null
@@ -62,17 +67,22 @@ export type Database = {
           auth_type?: Database["public"]["Enums"]["auth_type"] | null
           categories?: string[] | null
           created_at?: string | null
+          deployment_instructions?: string | null
           description: string
           documentation?: string | null
           endpoint?: string | null
           examples?: string[] | null
           featured?: boolean | null
+          forks?: number | null
+          github_url?: string | null
           id?: string
           is_verified?: boolean | null
+          last_updated?: string | null
           logo?: string | null
           name: string
           provider: string
           skills?: string[] | null
+          stars?: number | null
           updated_at?: string | null
           user_id?: string | null
           votes?: number | null
@@ -81,17 +91,22 @@ export type Database = {
           auth_type?: Database["public"]["Enums"]["auth_type"] | null
           categories?: string[] | null
           created_at?: string | null
+          deployment_instructions?: string | null
           description?: string
           documentation?: string | null
           endpoint?: string | null
           examples?: string[] | null
           featured?: boolean | null
+          forks?: number | null
+          github_url?: string | null
           id?: string
           is_verified?: boolean | null
+          last_updated?: string | null
           logo?: string | null
           name?: string
           provider?: string
           skills?: string[] | null
+          stars?: number | null
           updated_at?: string | null
           user_id?: string | null
           votes?: number | null

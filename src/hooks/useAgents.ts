@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -19,7 +20,7 @@ export interface Agent {
   user_id?: string;
   created_at?: string;
   updated_at?: string;
-  // New GitHub-style fields
+  // GitHub-style fields
   stars?: number;
   forks?: number;
   last_updated?: string;

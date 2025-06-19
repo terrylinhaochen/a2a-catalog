@@ -14,13 +14,13 @@ interface AgentCardProps {
     categories: string[];
     skills: string[];
     votes: number;
-    isVerified?: boolean;
-    authType?: string;
+    is_verified?: boolean;
+    auth_type?: string;
     stars?: number;
     forks?: number;
-    lastUpdated?: string;
-    githubUrl?: string;
-    deploymentInstructions?: string;
+    last_updated?: string;
+    github_url?: string;
+    deployment_instructions?: string;
   };
   onVote?: (agentId: string, voteType: 'up' | 'down') => void;
   compact?: boolean;
@@ -53,7 +53,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
                 <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
                   {agent.name}
                 </h3>
-                {agent.isVerified && (
+                {agent.is_verified && (
                   <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs">✓</span>
                   </div>
@@ -78,7 +78,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
         </div>
 
         {/* GitHub Stats */}
-        {!compact && (agent.stars !== undefined || agent.forks !== undefined || agent.lastUpdated) && (
+        {!compact && (agent.stars !== undefined || agent.forks !== undefined || agent.last_updated) && (
           <div className="flex items-center space-x-4 mb-4 text-sm text-gray-600">
             {agent.stars !== undefined && (
               <div className="flex items-center space-x-1">
@@ -94,10 +94,10 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
                 <span>Forks</span>
               </div>
             )}
-            {agent.lastUpdated && (
+            {agent.last_updated && (
               <div className="flex items-center space-x-1">
                 <Clock className="w-4 h-4" />
-                <span>{agent.lastUpdated}</span>
+                <span>{agent.last_updated}</span>
               </div>
             )}
           </div>
@@ -146,23 +146,23 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            {agent.authType && (
+            {agent.auth_type && (
               <span className="flex items-center space-x-1">
                 <span>🔐</span>
-                <span>{agent.authType}</span>
+                <span>{agent.auth_type}</span>
               </span>
             )}
           </div>
           
           <div className="flex items-center space-x-2">
-            {agent.githubUrl && (
+            {agent.github_url && (
               <Button
                 variant="ghost"
                 size="sm"
                 className="opacity-0 group-hover:opacity-100 transition-opacity"
                 asChild
               >
-                <a href={agent.githubUrl} target="_blank" rel="noopener noreferrer">
+                <a href={agent.github_url} target="_blank" rel="noopener noreferrer">
                   <Github className="w-4 h-4 mr-1" />
                   View on GitHub
                 </a>
