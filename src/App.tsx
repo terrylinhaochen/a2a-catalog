@@ -15,6 +15,7 @@ import Documentation from "./pages/Documentation";
 import Submit from "./pages/Submit";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Sitemap from "./pages/Sitemap";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/sitemap.xml" element={<Sitemap />} />
               <Route path="/submit" element={
                 <ProtectedRoute>
                   <Submit />

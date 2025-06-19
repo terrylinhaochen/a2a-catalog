@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAgents } from '@/hooks/useAgents';
+import { useSEO } from '@/hooks/useSEO';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +10,14 @@ import { Link } from 'react-router-dom';
 
 const Categories = () => {
   const { categories, loading } = useAgents();
+
+  // Implement SEO for categories page
+  useSEO({
+    title: 'AI Agent Categories - A2A Catalog | Browse Agents by Type & Capability',
+    description: 'Explore AI agents organized by categories and capabilities. Find agents for automation, analysis, communication, development, and more specialized use cases.',
+    keywords: ['AI agent categories', 'agent types', 'AI capabilities', 'automation agents', 'business intelligence', 'communication agents'],
+    type: 'website'
+  });
 
   if (loading) {
     return (
