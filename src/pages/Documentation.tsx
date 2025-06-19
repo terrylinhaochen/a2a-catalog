@@ -5,17 +5,23 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Globe, Shield, Zap, Users, MessageSquare, Workflow, Eye, Clock, ExternalLink, Play } from 'lucide-react';
-import { useSEO } from '@/hooks/useSEO';
+import { 
+  Globe, 
+  Shield, 
+  Zap, 
+  Users, 
+  MessageSquare, 
+  Workflow, 
+  Eye, 
+  Clock,
+  ExternalLink,
+  Play,
+  BookOpen,
+  Code,
+  Download
+} from 'lucide-react';
 
 const Documentation = () => {
-  useSEO({
-    title: 'A2A Protocol Documentation - Agent Interoperability',
-    description: 'Official documentation for the Agent2Agent (A2A) protocol - an open standard for AI agent communication and interoperability.',
-    keywords: ['A2A protocol', 'agent interoperability', 'AI agents', 'documentation', 'Agent2Agent'],
-    type: 'website'
-  });
-
   const designPrinciples = [
     {
       icon: <Zap className="w-5 h-5 text-purple-600" />,
@@ -75,32 +81,40 @@ const Documentation = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Hero Section with Glassmorphism */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mb-20">
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="relative p-12 md:p-16 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               A2A Protocol Documentation
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
               An open protocol enabling communication and interoperability between opaque agentic applications. 
               Built with support from 50+ technology partners to create a new era of Agent Interoperability.
             </p>
-            
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-                <ExternalLink className="w-5 h-5 mr-2" />
-                Official Documentation
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100" asChild>
+                <a href="https://google-a2a.github.io/A2A/latest/" target="_blank" rel="noopener noreferrer">
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Official Documentation
+                </a>
               </Button>
-              <Button size="lg" variant="outline">
-                <ExternalLink className="w-5 h-5 mr-2" />
-                GitHub Repository
+              <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600" asChild>
+                <a href="https://github.com/google-a2a/A2A" target="_blank" rel="noopener noreferrer">
+                  <Code className="w-5 h-5 mr-2" />
+                  GitHub Repository
+                </a>
               </Button>
             </div>
           </div>
+        </div>
 
+        {/* Document Content */}
+        <div className="prose prose-lg max-w-none">
           {/* A New Era of Agent Interoperability */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
@@ -194,34 +208,40 @@ const Documentation = () => {
                     </p>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* Ready to Build */}
-          <section className="mb-16">
-            <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white text-center">
-              <h2 className="text-3xl font-bold mb-4">
-                Ready to Build with A2A
-              </h2>
-              <p className="text-xl mb-8 opacity-90">
-                Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
-              </p>
-              
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" variant="secondary">
-                  <Play className="w-5 h-5 mr-2" />
-                  Get Started
-                </Button>
-                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-purple-600">
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  View Examples
-                </Button>
-              </div>
+                ))}
             </div>
           </section>
         </div>
+
+        {/* Ready to Build with A2A - Glassmorphism Card */}
+        <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mt-20">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
+              Ready to Build with A2A
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild>
+                <a href="https://google-a2a.github.io/A2A/latest/" target="_blank" rel="noopener noreferrer">
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Get Started
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a href="https://github.com/google-a2a/A2A" target="_blank" rel="noopener noreferrer">
+                  <Code className="w-5 h-5 mr-2" />
+                  View Examples
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
       <Footer />
     </div>
   );

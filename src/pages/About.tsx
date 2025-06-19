@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -21,16 +22,8 @@ import {
   Workflow,
   TrendingUp
 } from 'lucide-react';
-import { useSEO } from '@/hooks/useSEO';
 
 const About = () => {
-  useSEO({
-    title: 'About A2A Catalog - AI Agent Marketplace Mission & Vision',
-    description: 'Learn about A2A Catalog mission to democratize AI agent integration through standardized Agent-to-Agent protocols. Discover our vision for the future of AI.',
-    keywords: ['about A2A catalog', 'AI agent marketplace', 'mission', 'vision', 'agent-to-agent protocol'],
-    type: 'website'
-  });
-
   const features = [
     {
       icon: <Users className="w-6 h-6 text-purple-600" />,
