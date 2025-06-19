@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, ChevronUp, ExternalLink, Star, Users } from 'lucide-react';
+import { Heart, ChevronUp, ExternalLink, Star, Users, GitFork, Clock, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -16,6 +16,11 @@ interface AgentCardProps {
     votes: number;
     isVerified?: boolean;
     authType?: string;
+    stars?: number;
+    forks?: number;
+    lastUpdated?: string;
+    githubUrl?: string;
+    deploymentInstructions?: string;
   };
   onVote?: (agentId: string, voteType: 'up' | 'down') => void;
   compact?: boolean;
@@ -72,6 +77,32 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         </div>
 
+        {/* GitHub Stats */}
+        {!compact && (agent.stars !== undefined || agent.forks !== undefined || agent.lastUpdated) && (
+          <div className="flex items-center space-x-4 mb-4 text-sm text-gray-600">
+            {agent.stars !== undefined && (
+              <div className="flex items-center space-x-1">
+                <Star className="w-4 h-4" />
+                <span>{agent.stars}</span>
+                <span>Stars</span>
+              </div>
+            )}
+            {agent.forks !== undefined && (
+              <div className="flex items-center space-x-1">
+                <GitFork className="w-4 h-4" />
+                <span>{agent.forks}</span>
+                <span>Forks</span>
+              </div>
+            )}
+            {agent.lastUpdated && (
+              <div className="flex items-center space-x-1">
+                <Clock className="w-4 h-4" />
+                <span>{agent.lastUpdated}</span>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Description */}
         <p className={`text-gray-600 mb-4 ${compact ? 'line-clamp-2' : 'line-clamp-3'}`}>
           {agent.description}
@@ -123,14 +154,29 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
             )}
           </div>
           
-          <Button
-            variant="ghost"
-            size="sm"
-            className="opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            <ExternalLink className="w-4 h-4 mr-1" />
-            View Details
-          </Button>
+          <div className="flex items-center space-x-2">
+            {agent.githubUrl && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                asChild
+              >
+                <a href={agent.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="w-4 h-4 mr-1" />
+                  View on GitHub
+                </a>
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <ExternalLink className="w-4 h-4 mr-1" />
+              View Details
+            </Button>
+          </div>
         </div>
       </div>
     </div>

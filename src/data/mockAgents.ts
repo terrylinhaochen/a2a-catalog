@@ -1,4 +1,3 @@
-
 export interface Agent {
   id: string;
   name: string;
@@ -14,9 +13,32 @@ export interface Agent {
   documentation?: string;
   examples?: string[];
   featured?: boolean;
+  // New GitHub-style fields
+  stars?: number;
+  forks?: number;
+  lastUpdated?: string;
+  githubUrl?: string;
+  deploymentInstructions?: string;
 }
 
 export const mockAgents: Agent[] = [
+  {
+    id: "google-maps-agent",
+    name: "Google Maps Agent",
+    description: "An open-source Agent2Agent (A2A) compliant server that provides Google Maps capabilities to other agents via a standardized protocol. Enables location search, routing, place details, and geocoding services.",
+    provider: "Google Developer Community",
+    categories: ["Location Services", "Maps & Navigation"],
+    skills: ["geocoding", "routing", "place_search", "location_services"],
+    votes: 89,
+    isVerified: true,
+    authType: "API Key",
+    featured: true,
+    stars: 14,
+    forks: 1,
+    lastUpdated: "May 22, 2025",
+    githubUrl: "https://github.com/google-a2a/maps-agent",
+    deploymentInstructions: "1. Clone the repository\n2. Install dependencies with npm install\n3. Set your Google Maps API key in .env\n4. Run npm start to launch the A2A server\n5. Agent will be available at http://localhost:3000"
+  },
   {
     id: "weather-pro",
     name: "Weather Pro",
@@ -27,7 +49,12 @@ export const mockAgents: Agent[] = [
     votes: 156,
     isVerified: true,
     authType: "API Key",
-    featured: true
+    featured: true,
+    stars: 42,
+    forks: 8,
+    lastUpdated: "June 15, 2025",
+    githubUrl: "https://github.com/weathertech/weather-pro-agent",
+    deploymentInstructions: "Deploy using Docker or npm. Requires weather API credentials."
   },
   {
     id: "content-genie",
@@ -39,19 +66,12 @@ export const mockAgents: Agent[] = [
     votes: 203,
     isVerified: true,
     authType: "OAuth",
-    featured: true
-  },
-  {
-    id: "data-wizard",
-    name: "Data Wizard",
-    description: "Comprehensive data analysis agent capable of processing CSV files, generating insights, creating visualizations, and statistical analysis.",
-    provider: "AnalyticsPro",
-    categories: ["Data & Analytics", "Business Intelligence"],
-    skills: ["data_analysis", "visualization", "statistics", "csv_processing"],
-    votes: 189,
-    isVerified: true,
-    authType: "API Key",
-    featured: true
+    featured: true,
+    stars: 67,
+    forks: 12,
+    lastUpdated: "June 18, 2025",
+    githubUrl: "https://github.com/contentcorp/content-genie",
+    deploymentInstructions: "Requires OpenAI API key and brand configuration files."
   },
   {
     id: "image-artist",
