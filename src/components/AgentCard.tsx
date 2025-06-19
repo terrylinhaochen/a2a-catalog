@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Heart, ChevronUp, ExternalLink, Star, Users, GitFork, Clock, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 interface AgentCardProps {
   agent: {
@@ -172,9 +172,12 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
               variant="ghost"
               size="sm"
               className="opacity-0 group-hover:opacity-100 transition-opacity"
+              asChild
             >
-              <ExternalLink className="w-4 h-4 mr-1" />
-              View Details
+              <Link to={`/agents/${agent.id}`}>
+                <ExternalLink className="w-4 h-4 mr-1" />
+                View Details
+              </Link>
             </Button>
           </div>
         </div>
