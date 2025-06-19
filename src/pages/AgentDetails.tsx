@@ -27,7 +27,7 @@ const AgentDetails = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
             <div className="text-6xl mb-4">🤖</div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Agent Not Found</h1>
@@ -49,7 +49,7 @@ const AgentDetails = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <div className="mb-6">
           <Link to="/agents">
@@ -238,16 +238,6 @@ const AgentDetails = () => {
                 <div className="space-y-3">
                   <h4 className="font-medium text-gray-900">Technical Details</h4>
                   
-                  {agent.auth_type && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Authentication</span>
-                      <div className="flex items-center space-x-1">
-                        <Key className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium">{agent.auth_type}</span>
-                      </div>
-                    </div>
-                  )}
-
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Provider</span>
                     <span className="text-sm font-medium">{agent.provider}</span>

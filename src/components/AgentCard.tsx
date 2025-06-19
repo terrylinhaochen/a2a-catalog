@@ -154,12 +154,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
         {/* Footer - always at bottom */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            {agent.auth_type && (
-              <span className="flex items-center space-x-1">
-                <span>🔐</span>
-                <span>{agent.auth_type}</span>
-              </span>
-            )}
+            {/* Removed auth_type display */}
           </div>
           
           <div className="flex items-center space-x-2">
