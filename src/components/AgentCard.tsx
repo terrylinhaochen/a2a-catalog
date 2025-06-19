@@ -39,7 +39,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
       <div className="p-6 flex flex-col h-full">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 min-w-0 flex-1 pr-4">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
               {agent.logo ? (
                 <img src={agent.logo} alt={agent.name} className="w-8 h-8 rounded" />
@@ -51,7 +51,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center space-x-2">
-                <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors truncate">
+                <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors truncate" title={agent.name}>
                   {agent.name}
                 </h3>
                 {agent.is_verified && (
@@ -60,7 +60,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-500 truncate">{agent.provider}</p>
+              <p className="text-sm text-gray-500 truncate" title={agent.provider}>{agent.provider}</p>
             </div>
           </div>
 
