@@ -5,15 +5,14 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Globe, Shield, Zap, Users, MessageSquare, Workflow, Eye, Clock, ExternalLink, Play, BookOpen, Code, Download } from 'lucide-react';
+import { Globe, Shield, Zap, Users, MessageSquare, Workflow, Eye, Clock, ExternalLink, Play } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 
 const Documentation = () => {
   useSEO({
-    title: 'Documentation - A2A Catalog | API Docs & Integration Guide',
-    description: 'Complete documentation for A2A Catalog including API reference, integration guides, and developer resources for building A2A compatible agents.',
-    keywords: ['A2A documentation', 'API docs', 'integration guide', 'developer resources', 'agent development'],
+    title: 'A2A Protocol Documentation - Agent Interoperability',
+    description: 'Official documentation for the Agent2Agent (A2A) protocol - an open standard for AI agent communication and interoperability.',
+    keywords: ['A2A protocol', 'agent interoperability', 'AI agents', 'documentation', 'Agent2Agent'],
     type: 'website'
   });
 
@@ -80,181 +79,147 @@ const Documentation = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Documentation</h1>
-            <p className="text-xl text-gray-600">
-              Everything you need to know about A2A Catalog and agent integration.
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              A2A Protocol Documentation
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              An open protocol enabling communication and interoperability between opaque agentic applications. 
+              Built with support from 50+ technology partners to create a new era of Agent Interoperability.
             </p>
+            
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                <ExternalLink className="w-5 h-5 mr-2" />
+                Official Documentation
+              </Button>
+              <Button size="lg" variant="outline">
+                <ExternalLink className="w-5 h-5 mr-2" />
+                GitHub Repository
+              </Button>
+            </div>
           </div>
 
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="api">API Reference</TabsTrigger>
-              <TabsTrigger value="integration">Integration</TabsTrigger>
-              <TabsTrigger value="examples">Examples</TabsTrigger>
-              <TabsTrigger value="troubleshooting">Troubleshooting</TabsTrigger>
-            </TabsList>
+          {/* A New Era of Agent Interoperability */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              A New Era of Agent Interoperability
+            </h2>
+            
+            <div className="space-y-6 text-gray-700">
+              <p>
+                AI agents offer a unique opportunity to help people be more productive by autonomously handling many daily recurring or complex tasks. Today, enterprises are increasingly building and deploying autonomous agents to help scale, automate and enhance processes throughout the workplace–from ordering new laptops, to aiding customer service representatives, to assisting in supply chain planning.
+              </p>
+              
+              <p>
+                To maximize the benefits from agentic AI, it is critical for these agents to be able to collaborate in a dynamic, multi-agent ecosystem across siloed data systems and applications. Enabling agents to interoperate with each other, even if they were built by different vendors or in a different framework, will increase autonomy and multiply productivity gains, while lowering long-term costs.
+              </p>
 
-            <TabsContent value="overview" className="space-y-6">
-              {/* A New Era of Agent Interoperability */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  A New Era of Agent Interoperability
-                </h2>
-                
-                <div className="space-y-6 text-gray-700">
-                  <p>
-                    AI agents offer a unique opportunity to help people be more productive by autonomously handling many daily recurring or complex tasks. Today, enterprises are increasingly building and deploying autonomous agents to help scale, automate and enhance processes throughout the workplace–from ordering new laptops, to aiding customer service representatives, to assisting in supply chain planning.
-                  </p>
-                  
-                  <p>
-                    To maximize the benefits from agentic AI, it is critical for these agents to be able to collaborate in a dynamic, multi-agent ecosystem across siloed data systems and applications. Enabling agents to interoperate with each other, even if they were built by different vendors or in a different framework, will increase autonomy and multiply productivity gains, while lowering long-term costs.
-                  </p>
-
-                  <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
-                    <p className="text-blue-800 font-medium">
-                      <strong>Google has launched a new, open protocol called Agent2Agent (A2A)</strong>, with support and contributions from more than 50 technology partners and leading service providers. The A2A protocol allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              {/* Technology Partners */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  Technology Partners & Service Providers
-                </h2>
-                <p className="text-lg text-gray-600 mb-8">
-                  A2A is supported by industry leaders across technology and consulting
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
+                <p className="text-blue-800 font-medium">
+                  <strong>Google has launched a new, open protocol called Agent2Agent (A2A)</strong>, with support and contributions from more than 50 technology partners and leading service providers. The A2A protocol allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
                 </p>
-                
-                <div className="flex flex-wrap gap-3">
-                  {partners.map((partner, index) => (
-                    <Badge key={index} variant="secondary" className="text-sm">
-                      {partner}
-                    </Badge>
-                  ))}
-                </div>
-              </section>
+              </div>
+            </div>
+          </section>
 
-              {/* Design Principles */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  A2A Design Principles
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {designPrinciples.map((principle, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-shadow">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-center space-x-3">
-                          {principle.icon}
-                          <CardTitle className="text-lg">{principle.title}</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 leading-relaxed">
-                          {principle.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </section>
+          {/* Technology Partners */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+              Technology Partners & Service Providers
+            </h2>
+            <p className="text-lg text-gray-600 mb-8">
+              A2A is supported by industry leaders across technology and consulting
+            </p>
+            
+            <div className="flex flex-wrap gap-3">
+              {partners.map((partner, index) => (
+                <Badge key={index} variant="secondary" className="text-sm">
+                  {partner}
+                </Badge>
+              ))}
+            </div>
+          </section>
 
-              {/* How A2A Works */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  How A2A Works
-                </h2>
-                
-                <div className="space-y-6 mb-8">
-                  <p className="text-gray-700">
-                    A2A facilitates communication between a "client" agent and a "remote" agent. A client agent is responsible for formulating and communicating tasks, while the remote agent is responsible for acting on those tasks in an attempt to provide the correct information or take the correct action.
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {keyCapabilities.map((capability, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-shadow">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-center space-x-3">
-                          {capability.icon}
-                          <CardTitle className="text-lg">{capability.title}</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 leading-relaxed">
-                          {capability.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </section>
-            </TabsContent>
+          {/* Design Principles */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              A2A Design Principles
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {designPrinciples.map((principle, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center space-x-3">
+                      {principle.icon}
+                      <CardTitle className="text-lg">{principle.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 leading-relaxed">
+                      {principle.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
 
-            <TabsContent value="api" className="space-y-6">
-              {/* API Reference */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  API Reference
-                </h2>
-                
-                <div className="space-y-6 text-gray-700">
-                  <p>
-                    A2A provides a comprehensive API for agent communication and collaboration. The API is designed to be flexible and extensible, allowing developers to build custom solutions and integrate A2A into their existing systems.
-                  </p>
-                </div>
-              </section>
-            </TabsContent>
+          {/* How A2A Works */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              How A2A Works
+            </h2>
+            
+            <div className="space-y-6 mb-8">
+              <p className="text-gray-700">
+                A2A facilitates communication between a "client" agent and a "remote" agent. A client agent is responsible for formulating and communicating tasks, while the remote agent is responsible for acting on those tasks in an attempt to provide the correct information or take the correct action.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {keyCapabilities.map((capability, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center space-x-3">
+                      {capability.icon}
+                      <CardTitle className="text-lg">{capability.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 leading-relaxed">
+                      {capability.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
 
-            <TabsContent value="integration" className="space-y-6">
-              {/* Integration Guide */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  Integration Guide
-                </h2>
-                
-                <div className="space-y-6 text-gray-700">
-                  <p>
-                    A2A provides a step-by-step guide for integrating A2A into your existing systems. The guide covers everything from setting up the A2A protocol to configuring your agents and applications.
-                  </p>
-                </div>
-              </section>
-            </TabsContent>
-
-            <TabsContent value="examples" className="space-y-6">
-              {/* Examples */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  Examples
-                </h2>
-                
-                <div className="space-y-6 text-gray-700">
-                  <p>
-                    A2A provides a variety of examples to help developers get started with A2A. The examples cover everything from simple agent communication to complex agent collaboration.
-                  </p>
-                </div>
-              </section>
-            </TabsContent>
-
-            <TabsContent value="troubleshooting" className="space-y-6">
-              {/* Troubleshooting */}
-              <section className="mb-16">
-                <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                  Troubleshooting
-                </h2>
-                
-                <div className="space-y-6 text-gray-700">
-                  <p>
-                    A2A provides a variety of troubleshooting resources to help developers resolve issues with A2A. The resources cover everything from common errors to advanced troubleshooting techniques.
-                  </p>
-                </div>
-              </section>
-            </TabsContent>
-          </Tabs>
+          {/* Ready to Build */}
+          <section className="mb-16">
+            <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 text-white text-center">
+              <h2 className="text-3xl font-bold mb-4">
+                Ready to Build with A2A
+              </h2>
+              <p className="text-xl mb-8 opacity-90">
+                Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button size="lg" variant="secondary">
+                  <Play className="w-5 h-5 mr-2" />
+                  Get Started
+                </Button>
+                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-purple-600">
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  View Examples
+                </Button>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
       <Footer />
