@@ -1,3 +1,14 @@
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://a2acatalog.com/sitemap.xml
+
+# Crawl-delay (optional - helps prevent server overload)
+Crawl-delay: 1
+
+# Specific bot instructions
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +21,14 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Block access to admin/auth areas (if needed)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all other content
+Allow: /agents
+Allow: /categories
+Allow: /about
+Allow: /docs
+Allow: /submit
+Allow: /auth
