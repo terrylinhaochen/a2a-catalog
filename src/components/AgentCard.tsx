@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, ChevronUp, ExternalLink, Star, Users, GitFork, Clock, Github } from 'lucide-react';
+import { Heart, ChevronUp, ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -83,29 +83,11 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         </div>
 
-        {/* GitHub Stats */}
-        {!compact && (agent.stars !== undefined || agent.forks !== undefined || agent.last_updated) && (
-          <div className="flex items-center space-x-4 mb-3 text-sm text-gray-600">
-            {agent.stars !== undefined && (
-              <div className="flex items-center space-x-1">
-                <Star className="w-4 h-4" />
-                <span>{agent.stars}</span>
-                <span>Stars</span>
-              </div>
-            )}
-            {agent.forks !== undefined && (
-              <div className="flex items-center space-x-1">
-                <GitFork className="w-4 h-4" />
-                <span>{agent.forks}</span>
-                <span>Forks</span>
-              </div>
-            )}
-            {agent.last_updated && (
-              <div className="flex items-center space-x-1">
-                <Clock className="w-4 h-4" />
-                <span>{agent.last_updated}</span>
-              </div>
-            )}
+        {/* Date only */}
+        {!compact && agent.last_updated && (
+          <div className="flex items-center space-x-1 mb-3 text-sm text-gray-600">
+            <Clock className="w-4 h-4" />
+            <span>{agent.last_updated}</span>
           </div>
         )}
 
@@ -144,19 +126,6 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
           
           <div className="flex items-center space-x-2">
-            {agent.github_url && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                asChild
-              >
-                <a href={agent.github_url} target="_blank" rel="noopener noreferrer">
-                  <Github className="w-4 h-4 mr-1" />
-                  View on GitHub
-                </a>
-              </Button>
-            )}
             <Button
               variant="ghost"
               size="sm"
