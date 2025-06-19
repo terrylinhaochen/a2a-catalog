@@ -127,21 +127,21 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </div>
         </div>
 
-        {/* Skills - show only top 2 tags */}
+        {/* Skills - fixed height and proper spacing */}
         {!compact && agent.skills.length > 0 && (
-          <div className="mb-4 flex-shrink-0">
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-4 flex-shrink-0 h-8">
+            <div className="flex flex-wrap gap-1.5">
               {agent.skills.slice(0, 2).map((skill) => (
                 <span
                   key={skill}
-                  className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                  className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full whitespace-nowrap"
                   title={skill}
                 >
                   {skill}
                 </span>
               ))}
               {agent.skills.length > 2 && (
-                <span className="inline-block px-3 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
+                <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-500 text-xs rounded-full whitespace-nowrap">
                   +{agent.skills.length - 2} more
                 </span>
               )}
