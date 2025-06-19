@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Search, Filter, SortAsc, Grid, List, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import Footer from '@/components/Footer';
 import AgentCard from '@/components/AgentCard';
 import { useAgents } from '@/hooks/useAgents';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSEO } from '@/hooks/useSEO';
 
 const Agents = () => {
   const { agents, categories, loading, voteForAgent } = useAgents();
@@ -17,6 +17,13 @@ const Agents = () => {
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
+
+  useSEO({
+    title: 'Browse AI Agents - A2A Catalog | Agent-to-Agent Compatible Solutions',
+    description: 'Browse our comprehensive collection of A2A compatible AI agents. Find specialized agents for development, communication, data analysis, and more.',
+    keywords: ['AI agents', 'browse agents', 'A2A compatible', 'agent directory', 'AI solutions'],
+    type: 'website'
+  });
 
   const filteredAndSortedAgents = useMemo(() => {
     let filtered = agents.filter(agent => {

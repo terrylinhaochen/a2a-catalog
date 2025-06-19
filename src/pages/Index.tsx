@@ -8,12 +8,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Star, TrendingUp, Sparkles, Globe, Zap, BookOpen, Code } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 
 const Index = () => {
   const { agents, categories, loading } = useAgents();
 
   const featuredAgents = agents.filter(agent => agent.featured).slice(0, 6);
   const popularAgents = agents.sort((a, b) => b.votes - a.votes).slice(0, 6);
+
+  useSEO({
+    title: 'A2A Catalog - AI Agent Marketplace | Discover & Deploy A2A Compatible Agents',
+    description: 'Comprehensive marketplace for Agent-to-Agent (A2A) compatible AI agents. Discover, integrate, and deploy specialized AI capabilities with standardized protocols.',
+    keywords: ['AI agents', 'A2A protocol', 'agent marketplace', 'artificial intelligence', 'agent-to-agent', 'AI integration'],
+    type: 'website'
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
