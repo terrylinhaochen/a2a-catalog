@@ -60,55 +60,55 @@ const Auth = () => {
     setLoading(false);
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`
-        }
-      });
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const { error } = await supabase.auth.signInWithOAuth({
+  //       provider: 'google',
+  //       options: {
+  //         redirectTo: `${window.location.origin}/`
+  //       }
+  //     });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sign in with Google. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
+  //     if (error) {
+  //       toast({
+  //         title: "Error",
+  //         description: error.message,
+  //         variant: "destructive"
+  //       });
+  //     }
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to sign in with Google. Please try again.",
+  //       variant: "destructive"
+  //     });
+  //   }
+  // };
 
-  const handleGitHubSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: `${window.location.origin}/`
-        }
-      });
+  // const handleGitHubSignIn = async () => {
+  //   try {
+  //     const { error } = await supabase.auth.signInWithOAuth({
+  //       provider: 'github',
+  //       options: {
+  //         redirectTo: `${window.location.origin}/`
+  //       }
+  //     });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sign in with GitHub. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
+  //     if (error) {
+  //       toast({
+  //         title: "Error",
+  //         description: error.message,
+  //         variant: "destructive"
+  //       });
+  //     }
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to sign in with GitHub. Please try again.",
+  //       variant: "destructive"
+  //     });
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
@@ -125,8 +125,8 @@ const Auth = () => {
             </p>
           </div>
 
-          {/* Social Login Buttons */}
-          <div className="space-y-3 mb-6">
+          {/* Social Login Buttons - Commented out until OAuth is configured */}
+          {/* <div className="space-y-3 mb-6">
             <Button
               onClick={handleGoogleSignIn}
               variant="outline"
@@ -162,7 +162,7 @@ const Auth = () => {
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-white text-gray-500">Or continue with email</span>
             </div>
-          </div>
+          </div> */}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
