@@ -35,30 +35,10 @@ const Index = () => {
                 AI Agent Integration
               </span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
               The comprehensive marketplace for A2A-compliant AI agents. Find, evaluate, and integrate 
               the perfect AI agents for your applications with our community-driven platform.
             </p>
-            
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto mb-8">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search for AI agents..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 text-lg border-0 rounded-2xl shadow-xl focus:ring-4 focus:ring-purple-500/50 focus:outline-none"
-                />
-                <Button 
-                  size="lg"
-                  className="absolute right-2 top-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                >
-                  Search
-                </Button>
-              </div>
-            </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -69,7 +49,7 @@ const Index = () => {
                 </Button>
               </a>
               <a href="/submit">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 transition-colors">
                   <Zap className="w-5 h-5 mr-2" />
                   Submit Your Agent
                 </Button>
@@ -176,7 +156,7 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {popularAgents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} compact />
+              <AgentCard key={agent.id} agent={agent} />
             ))}
           </div>
         </div>
@@ -200,7 +180,7 @@ const Index = () => {
               </Button>
             </a>
             <a href="/docs">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-purple-600 transition-colors">
                 <Shield className="w-5 h-5 mr-2" />
                 Read Documentation
               </Button>
