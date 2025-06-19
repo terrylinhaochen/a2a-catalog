@@ -15,6 +15,7 @@ import Documentation from "./pages/Documentation";
 import Submit from "./pages/Submit";
 import Auth from "./pages/Auth";
 import MyAgents from "./pages/MyAgents";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -44,6 +45,11 @@ const App = () => (
               <Route path="/my-agents" element={
                 <ProtectedRoute>
                   <MyAgents />
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               } />
               <Route path="*" element={<NotFound />} />
