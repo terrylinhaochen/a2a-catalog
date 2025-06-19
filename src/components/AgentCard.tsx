@@ -111,7 +111,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
           </p>
         </div>
 
-        {/* Categories - fixed height section */}
+        {/* Categories only - fixed height section */}
         <div className="mb-4 flex-shrink-0 h-6">
           <div className="flex flex-wrap gap-2">
             {agent.categories.slice(0, compact ? 2 : 3).map((category) => (
@@ -126,28 +126,6 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
             )}
           </div>
         </div>
-
-        {/* Skills - fixed height and proper spacing */}
-        {!compact && agent.skills.length > 0 && (
-          <div className="mb-4 flex-shrink-0 h-8">
-            <div className="flex flex-wrap gap-1.5">
-              {agent.skills.slice(0, 2).map((skill) => (
-                <span
-                  key={skill}
-                  className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-700 text-xs rounded-full whitespace-nowrap"
-                  title={skill}
-                >
-                  {skill}
-                </span>
-              ))}
-              {agent.skills.length > 2 && (
-                <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-500 text-xs rounded-full whitespace-nowrap">
-                  +{agent.skills.length - 2} more
-                </span>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Spacer to push footer to bottom */}
         <div className="flex-grow"></div>
