@@ -93,7 +93,7 @@ const LangGraph = () => {
             </Card>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Popular Use Cases */}
       <section className="py-16 bg-white">
