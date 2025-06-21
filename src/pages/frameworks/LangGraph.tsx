@@ -7,7 +7,7 @@ import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, GitBranch, Workflow, Bot } from 'lucide-react';
+import { GitBranch, Workflow, Bot } from 'lucide-react';
 
 const LangGraph = () => {
   return (
@@ -108,11 +108,11 @@ const LangGraph = () => {
               "Process orchestration systems",
               "Advanced reasoning pipelines"
             ].map((useCase, index) => (
-              <Card key={index}>
+              <Card key={index} className="border-l-4 border-l-green-500">
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <ArrowRight className="w-5 h-5 text-green-600 mr-3" />
-                    <span className="font-medium">{useCase}</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-4 flex-shrink-0"></div>
+                    <span className="font-medium text-gray-800">{useCase}</span>
                   </div>
                 </CardContent>
               </Card>

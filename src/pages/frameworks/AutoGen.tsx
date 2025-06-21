@@ -7,7 +7,7 @@ import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Code, Zap, Users } from 'lucide-react';
+import { Bot, Code, Zap, Users } from 'lucide-react';
 
 const AutoGen = () => {
   return (
@@ -108,11 +108,11 @@ const AutoGen = () => {
               "Data processing and validation",
               "Educational tutoring systems"
             ].map((useCase, index) => (
-              <Card key={index}>
+              <Card key={index} className="border-l-4 border-l-blue-500">
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <ArrowRight className="w-5 h-5 text-blue-600 mr-3" />
-                    <span className="font-medium">{useCase}</span>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-4 flex-shrink-0"></div>
+                    <span className="font-medium text-gray-800">{useCase}</span>
                   </div>
                 </CardContent>
               </Card>

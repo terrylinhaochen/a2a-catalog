@@ -7,7 +7,7 @@ import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Users, Target, Briefcase } from 'lucide-react';
+import { Users, Bot, Briefcase } from 'lucide-react';
 
 const CrewAI = () => {
   return (
@@ -74,7 +74,7 @@ const CrewAI = () => {
             
             <Card>
               <CardHeader>
-                <Target className="w-12 h-12 text-orange-600 mb-4" />
+                <Bot className="w-12 h-12 text-orange-600 mb-4" />
                 <CardTitle>Task Delegation</CardTitle>
               </CardHeader>
               <CardContent>
@@ -108,11 +108,11 @@ const CrewAI = () => {
               "Sales pipeline automation",
               "Customer support crews"
             ].map((useCase, index) => (
-              <Card key={index}>
+              <Card key={index} className="border-l-4 border-l-orange-500">
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <ArrowRight className="w-5 h-5 text-orange-600 mr-3" />
-                    <span className="font-medium">{useCase}</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-4 flex-shrink-0"></div>
+                    <span className="font-medium text-gray-800">{useCase}</span>
                   </div>
                 </CardContent>
               </Card>
