@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { Bot, Server } from 'lucide-react';
 
 const Categories = () => {
-  const { categories, loading: agentsLoading } = useAgents();
+  const { categories, loading: agentsLoading, agents } = useAgents();
   const { mcpServers, loading: mcpLoading } = useMcpServers();
 
   const loading = agentsLoading || mcpLoading;
@@ -42,8 +42,9 @@ const Categories = () => {
     };
   });
 
-  const totalAgents = categoriesWithCounts.reduce((sum, cat) => sum + (cat.count || 0), 0);
-  const totalMcps = categoriesWithCounts.reduce((sum, cat) => sum + (cat.mcpCount || 0), 0);
+  // Use the actual total counts from the data
+  const totalAgents = agents.length;
+  const totalMcps = mcpServers.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -89,7 +90,7 @@ const Categories = () => {
                 <CardDescription className="text-sm">{category.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-start">
                   <div className="flex items-center space-x-2">
                     <Badge variant="secondary" className="text-xs">
                       {category.count || 0} agents
