@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAgents } from '@/hooks/useAgents';
+import { useMcpServers } from '@/hooks/useMcpServers';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +9,10 @@ import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 
 const Categories = () => {
-  const { categories, loading } = useAgents();
+  const { categories, loading: agentsLoading } = useAgents();
+  const { mcpServers, loading: mcpLoading } = useMcpServers();
+
+  const loading = agentsLoading || mcpLoading;
 
   if (loading) {
     return (
@@ -24,6 +28,18 @@ const Categories = () => {
     );
   }
 
+  // Calculate MCP counts for each category
+  const categoriesWithCounts = categories.map(category => {
+    const mcpCount = mcpServers.filter(mcp => 
+      mcp.categories?.includes(category.name)
+    ).length;
+    
+    return {
+      ...category,
+      mcpCount
+    };
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -34,34 +50,56 @@ const Categories = () => {
             Agent Categories
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover AI agents organized by their primary capabilities and use cases. 
-            Find the perfect agent for your specific needs.
+            Discover AI agents and MCP servers organized by their primary capabilities and use cases. 
+            Find the perfect solution for your specific needs.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <Link key={category.id} to={`/agents?category=${encodeURIComponent(category.name)}`}>
-              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
+          {categoriesWithCounts.map((category) => (
+            <Card key={category.id} className="h-full hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">{category.name}</CardTitle>
+                  <div className="text-2xl">{category.icon}</div>
+                </div>
+                <CardDescription>{category.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{category.name}</CardTitle>
-                    <div className="text-2xl">{category.icon}</div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="secondary">
+                        {category.count || 0} agents
+                      </Badge>
+                      <Badge variant="outline">
+                        {category.mcpCount || 0} MCPs
+                      </Badge>
+                    </div>
                   </div>
-                  <CardDescription>{category.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary">
-                      {category.count || 0} agents
-                    </Badge>
-                    <span className="text-sm text-purple-600 font-medium">
-                      Explore →
-                    </span>
+                  
+                  <div className="flex space-x-2">
+                    <Link 
+                      to={`/agents?category=${encodeURIComponent(category.name)}`}
+                      className="flex-1"
+                    >
+                      <button className="w-full text-sm text-purple-600 hover:text-purple-700 font-medium py-2 px-3 border border-purple-200 rounded-md hover:bg-purple-50 transition-colors">
+                        Explore Agents →
+                      </button>
+                    </Link>
+                    
+                    <Link 
+                      to={`/mcps?category=${encodeURIComponent(category.name)}`}
+                      className="flex-1"
+                    >
+                      <button className="w-full text-sm text-blue-600 hover:text-blue-700 font-medium py-2 px-3 border border-blue-200 rounded-md hover:bg-blue-50 transition-colors">
+                        Explore MCPs →
+                      </button>
+                    </Link>
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
