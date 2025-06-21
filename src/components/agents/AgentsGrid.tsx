@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import AgentCard from '@/components/AgentCard';
+import GenericCard from '@/components/GenericCard';
 import { Agent } from '@/hooks/useAgents';
 
 interface AgentsGridProps {
@@ -28,11 +28,12 @@ const AgentsGrid = ({
         : 'space-y-4'
       }>
         {agents.map((agent) => (
-          <AgentCard 
+          <GenericCard 
             key={agent.id} 
-            agent={agent} 
+            item={agent} 
             onVote={onVote}
             compact={viewMode === 'list'}
+            type="agent"
           />
         ))}
       </div>
