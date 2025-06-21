@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, X, User, LogOut, Plus } from 'lucide-react';
@@ -33,13 +32,13 @@ const Navbar = () => {
                 to="/agents"
                 className="text-gray-900 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Browse Agents
+                Agents
               </Link>
               <Link
                 to="/mcps"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Browse MCPs
+                MCPs
               </Link>
               <Link
                 to="/categories"
@@ -148,14 +147,14 @@ const Navbar = () => {
               className="text-gray-900 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Browse Agents
+              Agents
             </Link>
             <Link
               to="/mcps"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Browse MCPs
+              MCPs
             </Link>
             <Link
               to="/categories"

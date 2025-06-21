@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, ExternalLink, CheckCircle, Star, GitFork } from 'lucide-react';
+import { Heart, Expand, CheckCircle, Star, GitFork } from 'lucide-react';
 import { Agent } from '@/hooks/useAgents';
 import { McpServer } from '@/hooks/useMcpServers';
 
@@ -95,18 +95,14 @@ const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) 
           </div>
 
           <div className="flex items-center space-x-2">
-            {item.github_url && (
-              <Button variant="ghost" size="sm" asChild>
-                <a
-                  href={item.github_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </Button>
-            )}
+            <Button variant="ghost" size="sm" asChild>
+              <Link
+                to={detailsPath}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <Expand className="w-4 h-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </CardContent>
