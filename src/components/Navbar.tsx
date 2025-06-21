@@ -36,6 +36,12 @@ const Navbar = () => {
                 Browse Agents
               </Link>
               <Link
+                to="/mcps"
+                className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Browse MCPs
+              </Link>
+              <Link
                 to="/categories"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
@@ -143,6 +149,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Browse Agents
+            </Link>
+            <Link
+              to="/mcps"
+              className="text-gray-500 block px-3 py-2 text-base font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Browse MCPs
             </Link>
             <Link
               to="/categories"

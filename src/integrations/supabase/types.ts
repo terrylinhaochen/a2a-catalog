@@ -137,6 +137,98 @@ export type Database = {
         }
         Relationships: []
       }
+      mcp_server_votes: {
+        Row: {
+          created_at: string | null
+          id: string
+          mcp_server_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          mcp_server_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          mcp_server_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_server_votes_mcp_server_id_fkey"
+            columns: ["mcp_server_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_servers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mcp_servers: {
+        Row: {
+          categories: string[] | null
+          created_at: string | null
+          description: string
+          forks: number | null
+          github_url: string | null
+          id: string
+          is_verified: boolean | null
+          last_updated: string | null
+          logo: string | null
+          name: string
+          package_name: string | null
+          provider: string
+          repository_url: string | null
+          skills: string[] | null
+          stars: number | null
+          updated_at: string | null
+          user_id: string | null
+          votes: number | null
+        }
+        Insert: {
+          categories?: string[] | null
+          created_at?: string | null
+          description: string
+          forks?: number | null
+          github_url?: string | null
+          id?: string
+          is_verified?: boolean | null
+          last_updated?: string | null
+          logo?: string | null
+          name: string
+          package_name?: string | null
+          provider: string
+          repository_url?: string | null
+          skills?: string[] | null
+          stars?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          votes?: number | null
+        }
+        Update: {
+          categories?: string[] | null
+          created_at?: string | null
+          description?: string
+          forks?: number | null
+          github_url?: string | null
+          id?: string
+          is_verified?: boolean | null
+          last_updated?: string | null
+          logo?: string | null
+          name?: string
+          package_name?: string | null
+          provider?: string
+          repository_url?: string | null
+          skills?: string[] | null
+          stars?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          votes?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
