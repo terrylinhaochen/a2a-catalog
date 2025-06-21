@@ -47,7 +47,7 @@ const LangGraph = () => {
               <Button asChild size="lg" className="bg-white text-green-900 hover:bg-gray-100">
                 <Link to="/agents?search=LangGraph">Browse LangGraph Agents</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-900">
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-900 bg-transparent">
                 <a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener noreferrer">
                   Official Documentation
                 </a>
@@ -132,7 +132,7 @@ const LangGraph = () => {
             <Button asChild size="lg" className="bg-white text-green-600 hover:bg-gray-100">
               <Link to="/agents?search=LangGraph">View LangGraph Agents</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600 bg-transparent">
               <Link to="/submit">Submit Your Agent</Link>
             </Button>
           </div>

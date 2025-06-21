@@ -47,7 +47,7 @@ const AutoGen = () => {
               <Button asChild size="lg" className="bg-white text-blue-900 hover:bg-gray-100">
                 <Link to="/agents?search=AutoGen">Browse AutoGen Agents</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-900">
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-900 bg-transparent">
                 <a href="https://microsoft.github.io/autogen/" target="_blank" rel="noopener noreferrer">
                   Official Documentation
                 </a>
@@ -132,7 +132,7 @@ const AutoGen = () => {
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
               <Link to="/agents?search=AutoGen">View AutoGen Agents</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent">
               <Link to="/submit">Submit Your Agent</Link>
             </Button>
           </div>

@@ -47,7 +47,7 @@ const CrewAI = () => {
               <Button asChild size="lg" className="bg-white text-orange-900 hover:bg-gray-100">
                 <Link to="/agents?search=CrewAI">Browse CrewAI Agents</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-900">
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-900 bg-transparent">
                 <a href="https://crewai.com/" target="_blank" rel="noopener noreferrer">
                   Official Documentation
                 </a>
@@ -132,7 +132,7 @@ const CrewAI = () => {
             <Button asChild size="lg" className="bg-white text-orange-600 hover:bg-gray-100">
               <Link to="/agents?search=CrewAI">View CrewAI Agents</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600">
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600 bg-transparent">
               <Link to="/submit">Submit Your Agent</Link>
             </Button>
           </div>
