@@ -5,15 +5,17 @@ Allow: /
 # Sitemap
 Sitemap: https://a2acatalog.com/sitemap.xml
 
-# Crawl-delay (optional - helps prevent server overload)
+# Crawl-delay (helps prevent server overload)
 Crawl-delay: 1
 
 # Specific bot instructions
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -21,14 +23,32 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-# Block access to admin/auth areas (if needed)
-# Disallow: /admin/
-# Disallow: /private/
+User-agent: LinkedInBot
+Allow: /
 
-# Allow all other content
+User-agent: Slurp
+Allow: /
+
+# SEO-friendly agent pages
 Allow: /agents
+Allow: /agents?category=*
+Allow: /agents?search=*
 Allow: /categories
 Allow: /about
 Allow: /docs
 Allow: /submit
+
+# High-priority agent-related content
+Allow: /agents?search=AutoGen
+Allow: /agents?search=LangGraph
+Allow: /agents?search=CrewAI
+Allow: /agents?search=LlamaIndex
+Allow: /agents?search=Semantic%20Kernel
+Allow: /agents?search=expense%20report
+Allow: /agents?search=image%20generation
+Allow: /agents?search=video%20generation
+Allow: /agents?search=currency%20conversion
+Allow: /agents?search=file%20parsing
+
+# Allow authentication but don't prioritize
 Allow: /auth

@@ -2,6 +2,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 import SearchAndFilters from '@/components/agents/SearchAndFilters';
 import FiltersPanel from '@/components/agents/FiltersPanel';
 import AgentsGrid from '@/components/agents/AgentsGrid';
@@ -84,6 +86,27 @@ const Agents = () => {
     await voteForAgent(agentId, user.id);
   };
 
+  // Generate dynamic SEO data based on current search/filters
+  const generateSEOData = () => {
+    let title = 'AI Agent Catalog - Discover A2A Compatible Agents';
+    let description = 'Discover and integrate A2A-compliant AI agents including AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more. Find agents for expense reports, image generation, data analysis, and automation.';
+    
+    if (searchQuery) {
+      title = `${searchQuery} Agents - A2A Agent Catalog`;
+      description = `Find A2A-compatible agents for ${searchQuery}. Browse our catalog of AI agents including specialized solutions for your needs.`;
+    }
+    
+    if (selectedCategories.length > 0) {
+      const categoryStr = selectedCategories.join(', ');
+      title = `${categoryStr} AI Agents - A2A Catalog`;
+      description = `Discover A2A-compatible ${categoryStr.toLowerCase()} agents. Find verified AI agents for ${categoryStr.toLowerCase()} tasks and automation.`;
+    }
+    
+    return { title, description };
+  };
+
+  const { title, description } = generateSEOData();
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -94,6 +117,38 @@ const Agents = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title={title}
+        description={description}
+        url="https://a2acatalog.com/agents"
+        agents={filteredAndSortedAgents.map(agent => ({
+          name: agent.name,
+          description: agent.description
+        }))}
+      />
+      
+      <StructuredData 
+        type="website" 
+        data={{
+          '@type': 'ItemList',
+          name: 'A2A Compatible AI Agents',
+          description: 'Comprehensive catalog of Agent-to-Agent protocol compatible AI agents',
+          numberOfItems: filteredAndSortedAgents.length,
+          itemListElement: filteredAndSortedAgents.slice(0, 10).map((agent, index) => ({
+            '@type': 'SoftwareApplication',
+            position: index + 1,
+            name: agent.name,
+            description: agent.description,
+            applicationCategory: 'AI Agent',
+            operatingSystem: 'Web',
+            author: {
+              '@type': 'Organization',
+              name: agent.provider
+            }
+          }))
+        }}
+      />
+      
       <Navbar />
       
       {/* Header */}
