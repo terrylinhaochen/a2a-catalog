@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, ExternalLink, Clock } from 'lucide-react';
+import { Heart, ExternalLink, Clock, Star, GitFork } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -44,7 +44,7 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
       <div className="p-6 flex flex-col h-full">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center space-x-3 min-w-0 flex-1 pr-4">
+          <div className="flex items-center space-x-3 min-w-0 flex-1">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
               {agent.logo ? (
                 <img src={agent.logo} alt={agent.name} className="w-8 h-8 rounded" />
@@ -67,19 +67,6 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
               </div>
               <p className="text-sm text-gray-500 truncate" title={agent.provider}>{agent.provider}</p>
             </div>
-          </div>
-
-          {/* Voting */}
-          <div className="flex flex-col items-center space-y-1 flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => handleVote('up')}
-              className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-500"
-            >
-              <Heart className="w-4 h-4" />
-            </Button>
-            <span className="text-sm font-medium text-gray-600">{agent.votes}</span>
           </div>
         </div>
 
@@ -119,22 +106,37 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
         {/* Spacer to push footer to bottom */}
         <div className="flex-grow"></div>
 
-        {/* Footer - always at bottom */}
+        {/* Footer - same layout as GenericCard */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            {/* Empty space for balance */}
-          </div>
-          
-          <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
               size="sm"
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-              asChild
+              onClick={() => handleVote('up')}
+              className="flex items-center space-x-1 text-gray-500 hover:text-red-500"
             >
-              <Link to={`/agents/${agent.id}`}>
-                <ExternalLink className="w-4 h-4 mr-1" />
-                View Details
+              <Heart className="w-4 h-4" />
+              <span>{agent.votes}</span>
+            </Button>
+            
+            <div className="flex items-center space-x-1">
+              <Star className="w-4 h-4" />
+              <span>{agent.stars || 0}</span>
+            </div>
+            
+            <div className="flex items-center space-x-1">
+              <GitFork className="w-4 h-4" />
+              <span>{agent.forks || 0}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="sm" asChild>
+              <Link
+                to={`/agents/${agent.id}`}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <ExternalLink className="w-4 h-4" />
               </Link>
             </Button>
           </div>
