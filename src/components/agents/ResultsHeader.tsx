@@ -5,14 +5,34 @@ interface ResultsHeaderProps {
   resultsCount: number;
   searchQuery: string;
   selectedCategories: string[];
+  showAgents?: boolean;
+  showMcps?: boolean;
 }
 
-const ResultsHeader = ({ resultsCount, searchQuery, selectedCategories }: ResultsHeaderProps) => {
+const ResultsHeader = ({ 
+  resultsCount, 
+  searchQuery, 
+  selectedCategories, 
+  showAgents = true, 
+  showMcps = false 
+}: ResultsHeaderProps) => {
+  const getResultsText = () => {
+    if (showAgents && showMcps) {
+      return `${resultsCount} protocols found`;
+    } else if (showAgents) {
+      return `${resultsCount} agents found`;
+    } else if (showMcps) {
+      return `${resultsCount} MCPs found`;
+    } else {
+      return `${resultsCount} items found`;
+    }
+  };
+
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
         <h2 className="text-xl font-semibold text-gray-900">
-          {resultsCount} agents found
+          {getResultsText()}
         </h2>
         {searchQuery && (
           <p className="text-gray-600">

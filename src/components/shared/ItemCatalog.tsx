@@ -280,6 +280,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
               resultsCount={filteredAndSortedItems.length}
               searchQuery={searchQuery}
               selectedCategories={selectedCategories}
+              showAgents={showAgents}
+              showMcps={showMcps}
             />
 
             {/* Items Grid */}
