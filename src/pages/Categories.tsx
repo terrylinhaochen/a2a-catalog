@@ -6,7 +6,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Bot, Server } from 'lucide-react';
 
 const Categories = () => {
   const { categories, loading: agentsLoading } = useAgents();
@@ -40,6 +42,9 @@ const Categories = () => {
     };
   });
 
+  const totalAgents = categoriesWithCounts.reduce((sum, cat) => sum + (cat.count || 0), 0);
+  const totalMcps = categoriesWithCounts.reduce((sum, cat) => sum + (cat.mcpCount || 0), 0);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -47,55 +52,71 @@ const Categories = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Agent Categories
+            Explore by Category
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Discover AI agents and MCP servers organized by their primary capabilities and use cases. 
             Find the perfect solution for your specific needs.
           </p>
+          
+          {/* Explore All Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+            <Button asChild className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700">
+              <Link to="/agents" className="flex items-center space-x-2">
+                <Bot className="w-5 h-5" />
+                <span>Explore All Agents ({totalAgents})</span>
+              </Link>
+            </Button>
+            
+            <Button asChild variant="outline" className="w-full sm:w-auto border-blue-200 text-blue-600 hover:bg-blue-50">
+              <Link to="/mcps" className="flex items-center space-x-2">
+                <Server className="w-5 h-5" />
+                <span>Explore All MCPs ({totalMcps})</span>
+              </Link>
+            </Button>
+          </div>
         </div>
 
+        {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categoriesWithCounts.map((category) => (
             <Card key={category.id} className="h-full hover:shadow-lg transition-shadow">
-              <CardHeader>
+              <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">{category.name}</CardTitle>
                   <div className="text-2xl">{category.icon}</div>
                 </div>
-                <CardDescription>{category.description}</CardDescription>
+                <CardDescription className="text-sm">{category.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="secondary">
-                        {category.count || 0} agents
-                      </Badge>
-                      <Badge variant="outline">
-                        {category.mcpCount || 0} MCPs
-                      </Badge>
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {category.count || 0} agents
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {category.mcpCount || 0} MCPs
+                    </Badge>
                   </div>
                   
-                  <div className="flex space-x-2">
-                    <Link 
-                      to={`/agents?category=${encodeURIComponent(category.name)}`}
-                      className="flex-1"
-                    >
-                      <button className="w-full text-sm text-purple-600 hover:text-purple-700 font-medium py-2 px-3 border border-purple-200 rounded-md hover:bg-purple-50 transition-colors">
-                        Explore Agents →
-                      </button>
-                    </Link>
+                  <div className="flex space-x-1">
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link 
+                        to={`/agents?category=${encodeURIComponent(category.name)}`}
+                        className="text-purple-600 hover:text-purple-700 text-xs"
+                      >
+                        Agents →
+                      </Link>
+                    </Button>
                     
-                    <Link 
-                      to={`/mcps?category=${encodeURIComponent(category.name)}`}
-                      className="flex-1"
-                    >
-                      <button className="w-full text-sm text-blue-600 hover:text-blue-700 font-medium py-2 px-3 border border-blue-200 rounded-md hover:bg-blue-50 transition-colors">
-                        Explore MCPs →
-                      </button>
-                    </Link>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link 
+                        to={`/mcps?category=${encodeURIComponent(category.name)}`}
+                        className="text-blue-600 hover:text-blue-700 text-xs"
+                      >
+                        MCPs →
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               </CardContent>
