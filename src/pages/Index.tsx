@@ -5,16 +5,34 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GenericCard from '@/components/GenericCard';
 import { useAgents } from '@/hooks/useAgents';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Star, TrendingUp, Sparkles, Globe, Zap, BookOpen, Code } from 'lucide-react';
+import { toast } from 'sonner';
 
 const Index = () => {
-  const { agents, categories, loading } = useAgents();
+  const { agents, categories, loading, voteForAgent } = useAgents();
+  const { user } = useAuth();
 
   const featuredAgents = agents.filter(agent => agent.featured).slice(0, 6);
   const popularAgents = agents.sort((a, b) => b.votes - a.votes).slice(0, 6);
+
+  const handleVote = async (itemId: string, voteType: 'up' | 'down') => {
+    if (!user) {
+      toast.error('Please sign in to vote');
+      return;
+    }
+
+    try {
+      await voteForAgent(itemId, user.id);
+      toast.success('Vote recorded successfully!');
+    } catch (error) {
+      console.error('Voting error:', error);
+      toast.error('Failed to record vote. Please try again.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -76,7 +94,7 @@ const Index = () => {
           ) : featuredAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredAgents.map((agent) => (
-                <GenericCard key={agent.id} item={agent} type="agent" />
+                <GenericCard key={agent.id} item={agent} type="agent" onVote={handleVote} />
               ))}
             </div>
           ) : (
@@ -177,7 +195,7 @@ const Index = () => {
                       #{index + 1}
                     </Badge>
                   )}
-                  <GenericCard item={agent} type="agent" />
+                  <GenericCard item={agent} type="agent" onVote={handleVote} />
                 </div>
               ))}
             </div>
