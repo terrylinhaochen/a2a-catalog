@@ -202,69 +202,57 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
         </div>
       </div>
 
-      {/* Protocol Filter Section */}
-      <div className="bg-gray-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">Protocols</h3>
-                <p className="text-sm text-gray-600">Filter items by protocol type</p>
-              </div>
-              <div className="flex space-x-2">
-                <Badge variant="secondary" className="text-blue-600 bg-blue-50">
-                  {agents.length} A2A Agents
-                </Badge>
-                <Badge variant="secondary" className="text-green-600 bg-green-50">
-                  {mcpServers.length} MCPs
-                </Badge>
-              </div>
-            </div>
-            
-            <div className="space-y-3">
-              <label className="flex items-center justify-between cursor-pointer">
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    checked={showAgents}
-                    onChange={(e) => setShowAgents(e.target.checked)}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                  />
-                  <span className="text-gray-700">A2A Agents</span>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {agents.length}
-                </Badge>
-              </label>
-              
-              <label className="flex items-center justify-between cursor-pointer">
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    checked={showMcps}
-                    onChange={(e) => setShowMcps(e.target.checked)}
-                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                  />
-                  <span className="text-gray-700">MCPs</span>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {mcpServers.length}
-                </Badge>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          <FiltersPanel
-            categories={categories}
-            selectedCategories={selectedCategories}
-            onCategoryToggle={handleCategoryToggle}
-            onClearFilters={handleClearFilters}
-            showFilters={showFilters}
-          />
+          {/* Filters Panel */}
+          <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <div className="space-y-6">
+              {/* Protocol Filter */}
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <h3 className="font-medium text-gray-900 mb-3">Protocols</h3>
+                <div className="space-y-2">
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={showAgents}
+                        onChange={(e) => setShowAgents(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <span className="text-sm text-gray-700">A2A Agents</span>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {agents.length}
+                    </Badge>
+                  </label>
+                  
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={showMcps}
+                        onChange={(e) => setShowMcps(e.target.checked)}
+                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                      />
+                      <span className="text-sm text-gray-700">MCPs</span>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {mcpServers.length}
+                    </Badge>
+                  </label>
+                </div>
+              </div>
+
+              {/* Categories Filter */}
+              <FiltersPanel
+                categories={categories}
+                selectedCategories={selectedCategories}
+                onCategoryToggle={handleCategoryToggle}
+                onClearFilters={handleClearFilters}
+                showFilters={true}
+              />
+            </div>
+          </div>
 
           {/* Main Content */}
           <div className="flex-1">
