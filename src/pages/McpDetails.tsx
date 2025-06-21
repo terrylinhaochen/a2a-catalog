@@ -162,30 +162,6 @@ const McpDetails = () => {
                     ))}
                   </div>
                 </div>
-
-                {/* Installation Instructions */}
-                {mcpServer.deployment_instructions && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-gray-900 mb-3">Installation</h3>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-gray-700">{mcpServer.deployment_instructions}</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Examples */}
-                {mcpServer.examples && mcpServer.examples.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-gray-900 mb-3">Usage Examples</h3>
-                    <div className="space-y-2">
-                      {mcpServer.examples.map((example, index) => (
-                        <div key={index} className="p-3 bg-gray-50 rounded border-l-4 border-green-500">
-                          <code className="text-sm">{example}</code>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>
@@ -203,26 +179,6 @@ const McpDetails = () => {
                     <a href={mcpServer.github_url} target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4 mr-2" />
                       View on GitHub
-                    </a>
-                  </Button>
-                )}
-
-                {/* Documentation */}
-                {mcpServer.documentation && (
-                  <Button asChild variant="outline" className="w-full">
-                    <a href={mcpServer.documentation} target="_blank" rel="noopener noreferrer">
-                      <FileText className="w-4 h-4 mr-2" />
-                      Documentation
-                    </a>
-                  </Button>
-                )}
-
-                {/* Endpoint */}
-                {mcpServer.endpoint && (
-                  <Button asChild variant="outline" className="w-full">
-                    <a href={mcpServer.endpoint} target="_blank" rel="noopener noreferrer">
-                      <Globe className="w-4 h-4 mr-2" />
-                      Server Endpoint
                     </a>
                   </Button>
                 )}

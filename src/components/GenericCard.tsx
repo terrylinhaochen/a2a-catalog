@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, Expand, CheckCircle, Star, GitFork } from 'lucide-react';
+import { Heart, ExternalLink, CheckCircle, Star, GitFork } from 'lucide-react';
 import { Agent } from '@/hooks/useAgents';
 import { McpServer } from '@/hooks/useMcpServers';
 
@@ -100,7 +100,7 @@ const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) 
                 to={detailsPath}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <Expand className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4" />
               </Link>
             </Button>
           </div>
