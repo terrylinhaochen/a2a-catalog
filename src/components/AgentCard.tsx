@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, ChevronUp, ExternalLink, Clock } from 'lucide-react';
+import { Heart, ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -75,9 +75,9 @@ const AgentCard = ({ agent, onVote, compact = false }: AgentCardProps) => {
               variant="ghost"
               size="sm"
               onClick={() => handleVote('up')}
-              className="h-8 w-8 p-0 hover:bg-green-50 hover:text-green-600"
+              className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-500"
             >
-              <ChevronUp className="w-4 h-4" />
+              <Heart className="w-4 h-4" />
             </Button>
             <span className="text-sm font-medium text-gray-600">{agent.votes}</span>
           </div>
