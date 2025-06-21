@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,7 +12,7 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- Main Pages with Enhanced Descriptions -->
+  <!-- Main Pages -->
   <url>
     <loc>https://a2acatalog.com/agents</loc>
     <lastmod>2024-12-21</lastmod>
@@ -27,6 +26,44 @@
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+  
+  <!-- New Framework Pages - HIGH PRIORITY -->
+  <url>
+    <loc>https://a2acatalog.com/frameworks/autogen</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/frameworks/langgraph</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/frameworks/crewai</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/framework-comparison</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/mcp-faq</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Main Pages with Enhanced Descriptions -->
   
   <url>
     <loc>https://a2acatalog.com/categories</loc>
@@ -149,6 +186,78 @@
     <priority>0.7</priority>
   </url>
   
+  <!-- A2A Framework Search Terms - HIGH PRIORITY -->
+  <url>
+    <loc>https://a2acatalog.com/agents?search=AutoGen</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/agents?search=LangGraph</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/agents?search=CrewAI</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/agents?search=LlamaIndex</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/agents?search=Semantic%20Kernel</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- MCP-Specific Search Terms -->
+  <url>
+    <loc>https://a2acatalog.com/mcps?search=Model%20Context%20Protocol</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/mcps?search=MCP%20server</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/mcps?search=Claude%20MCP</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/mcps?search=context%20sharing</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://a2acatalog.com/mcps?search=AI%20context</loc>
+    <lastmod>2024-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
   <!-- Additional Categories for Enhanced SEO -->
   <url>
     <loc>https://a2acatalog.com/agents?category=Automation</loc>
@@ -192,66 +301,30 @@
     <priority>0.7</priority>
   </url>
   
-  <!-- A2A Framework Search Terms -->
+  <!-- Protocol-Specific Pages -->
   <url>
-    <loc>https://a2acatalog.com/agents?search=AutoGen</loc>
+    <loc>https://a2acatalog.com/agents?search=A2A%20protocol</loc>
     <lastmod>2024-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://a2acatalog.com/agents?search=LangGraph</loc>
+    <loc>https://a2acatalog.com/agents?search=Agent-to-Agent</loc>
     <lastmod>2024-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://a2acatalog.com/agents?search=CrewAI</loc>
+    <loc>https://a2acatalog.com/agents?search=multi-agent%20system</loc>
     <lastmod>2024-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://a2acatalog.com/agents?search=LlamaIndex</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/agents?search=Semantic%20Kernel</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- MCP-Specific Search Terms -->
-  <url>
-    <loc>https://a2acatalog.com/mcps?search=Model%20Context%20Protocol</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/mcps?search=MCP%20server</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/mcps?search=context%20sharing</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/mcps?search=AI%20context</loc>
+    <loc>https://a2acatalog.com/agents?search=agent%20interoperability</loc>
     <lastmod>2024-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -288,35 +361,6 @@
   
   <url>
     <loc>https://a2acatalog.com/agents?search=file%20parsing</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Protocol-Specific Pages -->
-  <url>
-    <loc>https://a2acatalog.com/agents?search=A2A%20protocol</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/agents?search=Agent-to-Agent</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/agents?search=multi-agent%20system</loc>
-    <lastmod>2024-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://a2acatalog.com/agents?search=agent%20interoperability</loc>
     <lastmod>2024-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>

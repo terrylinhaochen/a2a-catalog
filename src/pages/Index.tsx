@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -9,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Star, TrendingUp, Sparkles, Globe, Zap, BookOpen, Code } from 'lucide-react';
+import { ArrowRight, Star, TrendingUp, Sparkles, Globe, Zap, BookOpen, Code, Users, GitBranch, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -39,6 +38,7 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
+      
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-64 md:py-80 flex flex-col items-center justify-center min-h-screen">
@@ -71,6 +71,80 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* NEW: Popular Frameworks Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Popular A2A Frameworks</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Explore agents built with leading frameworks that support the Agent-to-Agent protocol
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link to="/frameworks/autogen">
+              <Card className="hover:shadow-lg transition-all duration-300 group">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
+                    <Users className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <CardTitle className="group-hover:text-blue-600 transition-colors">AutoGen</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-gray-600 mb-4">Multi-agent conversations and collaborative AI systems</p>
+                  <div className="flex items-center justify-center text-blue-600">
+                    <span className="text-sm">Explore AutoGen Agents</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/frameworks/langgraph">
+              <Card className="hover:shadow-lg transition-all duration-300 group">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
+                    <GitBranch className="w-8 h-8 text-green-600" />
+                  </div>
+                  <CardTitle className="group-hover:text-green-600 transition-colors">LangGraph</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-gray-600 mb-4">Stateful multi-agent workflows and complex decision trees</p>
+                  <div className="flex items-center justify-center text-green-600">
+                    <span className="text-sm">Explore LangGraph Agents</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/frameworks/crewai">
+              <Card className="hover:shadow-lg transition-all duration-300 group">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 transition-colors">
+                    <Briefcase className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <CardTitle className="group-hover:text-orange-600 transition-colors">CrewAI</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-gray-600 mb-4">Role-based agent teams for business automation</p>
+                  <div className="flex items-center justify-center text-orange-600">
+                    <span className="text-sm">Explore CrewAI Agents</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Button variant="outline" asChild>
+              <Link to="/framework-comparison">Compare All Frameworks</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Agents Section */}
       <section className="py-16">
