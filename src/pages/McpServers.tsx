@@ -11,8 +11,8 @@ const McpServers = () => {
       
       <ItemCatalog
         defaultProtocol="mcp"
-        title="MCP Server Catalog"
-        description="Discover and integrate Model Context Protocol servers for enhanced AI capabilities"
+        title="MCP Server Catalog - Model Context Protocol Servers Directory"
+        description="Discover and integrate Model Context Protocol servers for enhanced AI capabilities. Browse MCP servers for context sharing, tool integration, and AI model enhancement across various platforms and frameworks."
         url="https://a2acatalog.com/mcps"
       />
 

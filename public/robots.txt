@@ -33,17 +33,32 @@ Allow: /
 Allow: /agents
 Allow: /agents?category=*
 Allow: /agents?search=*
+Allow: /mcps
+Allow: /mcps?category=*
+Allow: /mcps?search=*
 Allow: /categories
 Allow: /about
 Allow: /docs
 Allow: /submit
 
-# High-priority agent-related content
+# High-priority A2A agent-related content
 Allow: /agents?search=AutoGen
 Allow: /agents?search=LangGraph
 Allow: /agents?search=CrewAI
 Allow: /agents?search=LlamaIndex
 Allow: /agents?search=Semantic%20Kernel
+Allow: /agents?search=A2A%20protocol
+Allow: /agents?search=Agent-to-Agent
+Allow: /agents?search=multi-agent%20system
+Allow: /agents?search=agent%20interoperability
+
+# High-priority MCP server-related content
+Allow: /mcps?search=Model%20Context%20Protocol
+Allow: /mcps?search=MCP%20server
+Allow: /mcps?search=context%20sharing
+Allow: /mcps?search=AI%20context
+
+# Popular use cases
 Allow: /agents?search=expense%20report
 Allow: /agents?search=image%20generation
 Allow: /agents?search=video%20generation

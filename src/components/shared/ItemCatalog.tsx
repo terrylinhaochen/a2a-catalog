@@ -153,7 +153,11 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
         title={title}
         description={description}
         url={url}
-        agents={filteredAndSortedItems.slice(0, 10).map(item => ({
+        agents={filteredAndSortedItems.filter(item => getItemType(item) === 'agent').slice(0, 10).map(item => ({
+          name: item.name,
+          description: item.description
+        }))}
+        mcpServers={filteredAndSortedItems.filter(item => getItemType(item) === 'mcp').slice(0, 10).map(item => ({
           name: item.name,
           description: item.description
         }))}
@@ -176,7 +180,11 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
             author: {
               '@type': 'Organization',
               name: item.provider
-            }
+            },
+            type: getItemType(item),
+            programmingLanguage: getItemType(item) === 'agent' ? ['Python', 'JavaScript', 'TypeScript'] : ['Python', 'JavaScript'],
+            runtimePlatform: ['Web Browser', 'Node.js', 'Cloud'],
+            featureList: item.skills || item.categories || []
           }))
         }}
       />

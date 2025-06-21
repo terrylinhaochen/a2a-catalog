@@ -11,8 +11,8 @@ const Agents = () => {
       
       <ItemCatalog
         defaultProtocol="agent"
-        title="AI Agent Catalog"
-        description="Discover and integrate A2A-compliant AI agents for your applications"
+        title="A2A Agent Catalog - Discover AI Agents with Agent-to-Agent Protocol"
+        description="Discover and integrate A2A-compliant AI agents for seamless interoperability. Browse AI agents supporting the Agent-to-Agent protocol from AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more frameworks."
         url="https://a2acatalog.com/agents"
       />
 
