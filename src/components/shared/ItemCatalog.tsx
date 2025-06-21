@@ -5,7 +5,6 @@ import StructuredData from '@/components/StructuredData';
 import SearchAndFilters from '@/components/agents/SearchAndFilters';
 import FiltersPanel from '@/components/agents/FiltersPanel';
 import ResultsHeader from '@/components/agents/ResultsHeader';
-import AgentCard from '@/components/AgentCard';
 import GenericCard from '@/components/GenericCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -292,26 +291,15 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                 {filteredAndSortedItems.map((item) => {
                   const itemType = getItemType(item);
                   
-                  if (itemType === 'agent') {
-                    return (
-                      <AgentCard 
-                        key={item.id} 
-                        agent={item as Agent} 
-                        onVote={handleVote}
-                        compact={viewMode === 'list'}
-                      />
-                    );
-                  } else {
-                    return (
-                      <GenericCard 
-                        key={item.id} 
-                        item={item as McpServer} 
-                        onVote={handleVote}
-                        compact={viewMode === 'list'}
-                        type="mcp"
-                      />
-                    );
-                  }
+                  return (
+                    <GenericCard 
+                      key={item.id} 
+                      item={item} 
+                      onVote={handleVote}
+                      compact={viewMode === 'list'}
+                      type={itemType}
+                    />
+                  );
                 })}
               </div>
             ) : (

@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AgentCard from '@/components/AgentCard';
+import GenericCard from '@/components/GenericCard';
 import { useAgents } from '@/hooks/useAgents';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -75,7 +76,7 @@ const Index = () => {
           ) : featuredAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredAgents.map((agent) => (
-                <AgentCard key={agent.id} agent={agent} />
+                <GenericCard key={agent.id} item={agent} type="agent" />
               ))}
             </div>
           ) : (
@@ -176,7 +177,7 @@ const Index = () => {
                       #{index + 1}
                     </Badge>
                   )}
-                  <AgentCard agent={agent} />
+                  <GenericCard item={agent} type="agent" />
                 </div>
               ))}
             </div>
