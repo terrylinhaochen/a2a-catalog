@@ -6,9 +6,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Bot, Server } from 'lucide-react';
 
 const Categories = () => {
   const { categories, loading: agentsLoading, agents } = useAgents();
@@ -42,10 +40,6 @@ const Categories = () => {
     };
   });
 
-  // Use the actual total counts from the data
-  const totalAgents = agents.length;
-  const totalMcps = mcpServers.length;
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -57,51 +51,40 @@ const Categories = () => {
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Discover AI agents and MCP servers organized by their primary capabilities and use cases. 
-            Find the perfect solution for your specific needs.
+            Click on any category to explore the available solutions.
           </p>
-          
-          {/* Explore All Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-            <Button asChild className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700">
-              <Link to="/agents" className="flex items-center space-x-2">
-                <Bot className="w-5 h-5" />
-                <span>Explore All Agents ({totalAgents})</span>
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" className="w-full sm:w-auto border-blue-200 text-blue-600 hover:bg-blue-50">
-              <Link to="/mcps" className="flex items-center space-x-2">
-                <Server className="w-5 h-5" />
-                <span>Explore All MCPs ({totalMcps})</span>
-              </Link>
-            </Button>
-          </div>
         </div>
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categoriesWithCounts.map((category) => (
-            <Card key={category.id} className="h-full hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">{category.name}</CardTitle>
-                  <div className="text-2xl">{category.icon}</div>
-                </div>
-                <CardDescription className="text-sm">{category.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-start">
-                  <div className="flex items-center space-x-2">
-                    <Badge variant="secondary" className="text-xs">
-                      {category.count || 0} agents
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {category.mcpCount || 0} MCPs
-                    </Badge>
+            <Link 
+              key={category.id} 
+              to={`/?category=${encodeURIComponent(category.name)}`}
+              className="block"
+            >
+              <Card className="h-full hover:shadow-lg transition-all duration-200 hover:scale-105 cursor-pointer">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">{category.name}</CardTitle>
+                    <div className="text-2xl">{category.icon}</div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <CardDescription className="text-sm">{category.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-start">
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {category.count || 0} agents
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {category.mcpCount || 0} MCPs
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
