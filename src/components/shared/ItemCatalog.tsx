@@ -187,23 +187,6 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{title}</h1>
           <p className="text-gray-600 mb-6">{description}</p>
           
-          {/* Protocol Filter */}
-          <div className="mb-6">
-            <label htmlFor="protocol-filter" className="block text-sm font-medium text-gray-700 mb-2">
-              Protocol Filter
-            </label>
-            <Select value={protocolFilter} onValueChange={(value: ProtocolType) => setProtocolFilter(value)}>
-              <SelectTrigger className="w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Protocols</SelectItem>
-                <SelectItem value="agent">Agents Only</SelectItem>
-                <SelectItem value="mcp">MCP Servers Only</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
           <SearchAndFilters
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -215,6 +198,28 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
             viewMode={viewMode}
             setViewMode={setViewMode}
           />
+        </div>
+      </div>
+
+      {/* Protocol Filter Section */}
+      <div className="bg-gray-50 border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Protocol Filter</h3>
+              <p className="text-sm text-gray-600">Filter items by protocol type</p>
+            </div>
+            <Select value={protocolFilter} onValueChange={(value: ProtocolType) => setProtocolFilter(value)}>
+              <SelectTrigger className="w-48 bg-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Protocols</SelectItem>
+                <SelectItem value="agent">Agents Only</SelectItem>
+                <SelectItem value="mcp">MCP Servers Only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
