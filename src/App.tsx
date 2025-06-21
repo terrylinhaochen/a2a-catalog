@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Agents from "./pages/Agents";
 import McpServers from "./pages/McpServers";
 import AgentDetails from "./pages/AgentDetails";
+import McpDetails from "./pages/McpDetails";
 // import Categories from "./pages/Categories";
 import About from "./pages/About";
 import Documentation from "./pages/Documentation";
@@ -43,6 +44,7 @@ const App: React.FC = () => (
               <Route path="/agents" element={<Agents />} />
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/agents/:id" element={<AgentDetails />} />
+              <Route path="/mcps/:id" element={<McpDetails />} />
               {/* <Route path="/categories" element={<Categories />} /> */}
               <Route path="/about" element={<About />} />
               <Route path="/docs" element={<Documentation />} />
