@@ -53,6 +53,7 @@ export const useAgents = () => {
       setAgents(data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch agents');
+      console.error('Error fetching agents:', err);
     }
   };
 
@@ -80,6 +81,7 @@ export const useAgents = () => {
       setCategories(categoriesWithCount);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch categories');
+      console.error('Error fetching categories:', err);
     }
   };
 
@@ -102,48 +104,83 @@ export const useAgents = () => {
 
   const voteForAgent = async (agentId: string, userId: string) => {
     try {
+      console.log('Voting for agent:', agentId, 'by user:', userId);
+      
       // Check if user already voted
-      const { data: existingVote } = await supabase
+      const { data: existingVote, error: voteCheckError } = await supabase
         .from('agent_votes')
         .select('id')
         .eq('agent_id', agentId)
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
+
+      if (voteCheckError) {
+        console.error('Error checking existing vote:', voteCheckError);
+        throw voteCheckError;
+      }
+
+      const currentAgent = agents.find(a => a.id === agentId);
+      if (!currentAgent) {
+        throw new Error('Agent not found');
+      }
 
       if (existingVote) {
+        console.log('Removing existing vote');
         // Remove vote
-        await supabase
+        const { error: deleteError } = await supabase
           .from('agent_votes')
           .delete()
           .eq('agent_id', agentId)
           .eq('user_id', userId);
 
+        if (deleteError) throw deleteError;
+
         // Decrease vote count
+        const newVoteCount = Math.max(0, currentAgent.votes - 1);
         const { error: updateError } = await supabase
           .from('agents')
-          .update({ votes: agents.find(a => a.id === agentId)!.votes - 1 })
+          .update({ votes: newVoteCount })
           .eq('id', agentId);
 
         if (updateError) throw updateError;
+
+        // Update local state immediately
+        setAgents(prev => prev.map(agent => 
+          agent.id === agentId 
+            ? { ...agent, votes: newVoteCount }
+            : agent
+        ));
       } else {
+        console.log('Adding new vote');
         // Add vote
-        await supabase
+        const { error: insertError } = await supabase
           .from('agent_votes')
           .insert([{ agent_id: agentId, user_id: userId }]);
 
+        if (insertError) throw insertError;
+
         // Increase vote count
+        const newVoteCount = currentAgent.votes + 1;
         const { error: updateError } = await supabase
           .from('agents')
-          .update({ votes: agents.find(a => a.id === agentId)!.votes + 1 })
+          .update({ votes: newVoteCount })
           .eq('id', agentId);
 
         if (updateError) throw updateError;
+
+        // Update local state immediately
+        setAgents(prev => prev.map(agent => 
+          agent.id === agentId 
+            ? { ...agent, votes: newVoteCount }
+            : agent
+        ));
       }
 
-      // Refresh agents
-      await fetchAgents();
+      console.log('Vote operation completed successfully');
     } catch (err) {
+      console.error('Error in voteForAgent:', err);
       setError(err instanceof Error ? err.message : 'Failed to vote');
+      throw err; // Re-throw so the UI can handle the error
     }
   };
 

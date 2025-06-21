@@ -11,6 +11,7 @@ import ResultsHeader from '@/components/agents/ResultsHeader';
 import { useAgents } from '@/hooks/useAgents';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Agents = () => {
   const { agents, categories, loading, voteForAgent } = useAgents();
@@ -82,8 +83,18 @@ const Agents = () => {
   };
 
   const handleVote = async (agentId: string, voteType: 'up' | 'down') => {
-    if (!user) return;
-    await voteForAgent(agentId, user.id);
+    if (!user) {
+      toast.error('Please sign in to vote for agents');
+      return;
+    }
+
+    try {
+      await voteForAgent(agentId, user.id);
+      toast.success('Vote recorded successfully!');
+    } catch (error) {
+      console.error('Voting error:', error);
+      toast.error('Failed to record vote. Please try again.');
+    }
   };
 
   // Generate dynamic SEO data based on current search/filters
