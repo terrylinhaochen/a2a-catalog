@@ -9,7 +9,7 @@ import ResultsHeader from '@/components/agents/ResultsHeader';
 import AgentCard from '@/components/AgentCard';
 import GenericCard from '@/components/GenericCard';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useAuth } from '@/contexts/AuthContext';
@@ -35,7 +35,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [protocolFilter, setProtocolFilter] = useState<ProtocolType>(defaultProtocol);
+  const [showAgents, setShowAgents] = useState(defaultProtocol === 'all' || defaultProtocol === 'agent');
+  const [showMcps, setShowMcps] = useState(defaultProtocol === 'all' || defaultProtocol === 'mcp');
 
   const loading = agentsLoading || mcpLoading;
 
@@ -51,16 +52,16 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const combinedItems = useMemo((): (Agent | McpServer)[] => {
     let items: (Agent | McpServer)[] = [];
     
-    if (protocolFilter === 'agent' || protocolFilter === 'all') {
+    if (showAgents) {
       items = [...items, ...agents];
     }
     
-    if (protocolFilter === 'mcp' || protocolFilter === 'all') {
+    if (showMcps) {
       items = [...items, ...mcpServers];
     }
     
     return items;
-  }, [agents, mcpServers, protocolFilter]);
+  }, [agents, mcpServers, showAgents, showMcps]);
 
   const filteredAndSortedItems = useMemo(() => {
     let filtered = combinedItems.filter(item => {
@@ -203,22 +204,54 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
 
       {/* Protocol Filter Section */}
       <div className="bg-gray-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Protocol Filter</h3>
-              <p className="text-sm text-gray-600">Filter items by protocol type</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Protocols</h3>
+                <p className="text-sm text-gray-600">Filter items by protocol type</p>
+              </div>
+              <div className="flex space-x-2">
+                <Badge variant="secondary" className="text-blue-600 bg-blue-50">
+                  {agents.length} A2A Agents
+                </Badge>
+                <Badge variant="secondary" className="text-green-600 bg-green-50">
+                  {mcpServers.length} MCPs
+                </Badge>
+              </div>
             </div>
-            <Select value={protocolFilter} onValueChange={(value: ProtocolType) => setProtocolFilter(value)}>
-              <SelectTrigger className="w-48 bg-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Protocols</SelectItem>
-                <SelectItem value="agent">Agents Only</SelectItem>
-                <SelectItem value="mcp">MCP Servers Only</SelectItem>
-              </SelectContent>
-            </Select>
+            
+            <div className="space-y-3">
+              <label className="flex items-center justify-between cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={showAgents}
+                    onChange={(e) => setShowAgents(e.target.checked)}
+                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                  />
+                  <span className="text-gray-700">A2A Agents</span>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  {agents.length}
+                </Badge>
+              </label>
+              
+              <label className="flex items-center justify-between cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={showMcps}
+                    onChange={(e) => setShowMcps(e.target.checked)}
+                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                  />
+                  <span className="text-gray-700">MCPs</span>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  {mcpServers.length}
+                </Badge>
+              </label>
+            </div>
           </div>
         </div>
       </div>
