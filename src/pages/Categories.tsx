@@ -89,7 +89,7 @@ const Categories = () => {
                 <CardDescription className="text-sm">{category.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-center">
                   <div className="flex items-center space-x-2">
                     <Badge variant="secondary" className="text-xs">
                       {category.count || 0} agents
@@ -97,26 +97,6 @@ const Categories = () => {
                     <Badge variant="outline" className="text-xs">
                       {category.mcpCount || 0} MCPs
                     </Badge>
-                  </div>
-                  
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link 
-                        to={`/agents?category=${encodeURIComponent(category.name)}`}
-                        className="text-purple-600 hover:text-purple-700 text-xs"
-                      >
-                        Agents →
-                      </Link>
-                    </Button>
-                    
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link 
-                        to={`/mcps?category=${encodeURIComponent(category.name)}`}
-                        className="text-blue-600 hover:text-blue-700 text-xs"
-                      >
-                        MCPs →
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </CardContent>
