@@ -260,14 +260,14 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                 <ScrollArea className="h-64">
                   <div className="space-y-2 pr-3">
                     {categories.map(category => (
-                      <label key={category} className="flex items-center space-x-2 cursor-pointer">
+                      <label key={category.id} className="flex items-center space-x-2 cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={selectedCategories.includes(category)}
-                          onChange={() => handleCategoryToggle(category)}
+                          checked={selectedCategories.includes(category.name)}
+                          onChange={() => handleCategoryToggle(category.name)}
                           className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
                         />
-                        <span className="text-sm text-gray-700 capitalize">{category}</span>
+                        <span className="text-sm text-gray-700 capitalize">{category.name}</span>
                       </label>
                     ))}
                   </div>
