@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -19,7 +18,7 @@ const Orchestrate = () => {
       />
       
       <StructuredData 
-        type="webpage"
+        type="website"
         data={{
           title: "Orchestrate - Agent Workflow Management",
           description: "Advanced agent orchestration and workflow management platform for A2A-compatible agents.",
