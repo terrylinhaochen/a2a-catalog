@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -61,7 +60,7 @@ const Documentation = () => {
     {
       icon: <Globe className="w-5 h-5 text-purple-600" />,
       title: "Build on existing standards",
-      description: "The protocol is built on top of existing, popular standards including HTTP, SSE, JSON-RPC, which means it's easier to integrate with existing IT stacks."
+      description: "The protocol is built on top of existing, popular standards including HTTP/HTTPS, JSON, REST APIs, OAuth 2.0, and OpenAPI/Swagger, ensuring familiar patterns for developers and reducing the learning curve for implementation."
     },
     {
       icon: <Shield className="w-5 h-5 text-purple-600" />,
@@ -77,6 +76,11 @@ const Documentation = () => {
       icon: <Eye className="w-5 h-5 text-purple-600" />,
       title: "Modality agnostic",
       description: "The agentic world isn't limited to just text, which is why we've designed A2A to support various modalities, including audio and video streaming."
+    },
+    {
+      icon: <Code className="w-5 h-5 text-purple-600" />,
+      title: "Developer experience first",
+      description: "Simple APIs, comprehensive documentation, rich tooling, and community support make A2A easy to implement and debug across multiple programming languages."
     }
   ];
 
