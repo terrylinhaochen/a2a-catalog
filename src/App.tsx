@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -26,6 +25,7 @@ import LangGraph from './pages/frameworks/LangGraph';
 import CrewAI from './pages/frameworks/CrewAI';
 import McpFaq from './pages/McpFaq';
 import FrameworkComparison from './pages/FrameworkComparison';
+import Orchestrate from './pages/Orchestrate';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +48,7 @@ function App() {
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/orchestrate" element={<Orchestrate />} />
               <Route path="/about" element={<About />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
