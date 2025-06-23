@@ -47,12 +47,6 @@ const Navbar = () => {
                 Orchestrate
               </Link>
               <Link
-                to="/about"
-                className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                About
-              </Link>
-              <Link
                 to="/docs"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
@@ -162,13 +156,6 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Orchestrate
-            </Link>
-            <Link
-              to="/about"
-              className="text-gray-500 block px-3 py-2 text-base font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              About
             </Link>
             <Link
               to="/docs"

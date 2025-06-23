@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -8,7 +9,6 @@ import AgentDetails from './pages/AgentDetails';
 import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import Categories from './pages/Categories';
-import About from './pages/About';
 import Documentation from './pages/Documentation';
 import Submit from './pages/Submit';
 import Auth from './pages/Auth';
@@ -49,7 +49,6 @@ function App() {
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/orchestrate" element={<Orchestrate />} />
-              <Route path="/about" element={<About />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
