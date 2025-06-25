@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -88,16 +89,22 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
   
   const [isRunning, setIsRunning] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatScrollAreaRef = useRef<HTMLDivElement>(null);
   const previousMessageCountRef = useRef(messages.length);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatScrollAreaRef.current) {
+      const scrollContainer = chatScrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
   };
 
   useEffect(() => {
     // Only scroll to bottom if a new message was actually added
     if (messages.length > previousMessageCountRef.current) {
-      scrollToBottom();
+      setTimeout(scrollToBottom, 100); // Small delay to ensure DOM is updated
     }
     previousMessageCountRef.current = messages.length;
   }, [messages]);
@@ -223,6 +230,13 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-200px)]">
       {/* Servers Panel */}
@@ -317,7 +331,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col p-4 min-h-0">
-          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 h-[500px]">
+          <ScrollArea ref={chatScrollAreaRef} className="flex-1 mb-4 border rounded-lg p-4 h-[400px]">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -328,7 +342,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                       ? 'bg-gray-100 text-gray-700'
                       : 'bg-gray-200 text-gray-800'
                   }`}>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
                     <p className="text-xs opacity-70 mt-1">
                       {message.timestamp.toLocaleTimeString()}
                     </p>
@@ -349,15 +363,21 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
             </div>
           </ScrollArea>
           
-          <div className="flex gap-2">
-            <Input
+          <div className="flex gap-2 items-end">
+            <Textarea
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Send a message to MCP servers..."
-              onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+              onKeyDown={handleKeyPress}
               disabled={isRunning}
+              className="flex-1 min-h-[60px] max-h-[120px] resize-none"
+              rows={2}
             />
-            <Button onClick={sendMessage} disabled={isRunning || !inputMessage.trim()}>
+            <Button 
+              onClick={sendMessage} 
+              disabled={isRunning || !inputMessage.trim()}
+              className="h-[60px] px-4"
+            >
               <Send className="w-4 h-4" />
             </Button>
           </div>
