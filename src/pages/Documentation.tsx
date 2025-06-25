@@ -54,7 +54,7 @@ const Documentation = () => {
           <div className="relative p-12 md:p-16 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               A2A Agent Catalog
-            </h1>
+          </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
               The comprehensive discovery platform for AI agents supporting the Agent-to-Agent (A2A) protocol. 
               Built with support from 50+ technology partners to create a new era of Agent Interoperability.
@@ -94,7 +94,7 @@ const Documentation = () => {
                   A2A-compatible agents, making it easier for developers and enterprises to build 
                   interoperable AI ecosystems that maximize productivity and innovation.
                 </p>
-              </div>
+                  </div>
             </div>
           </section>
 
@@ -117,8 +117,8 @@ const Documentation = () => {
                 <p className="text-blue-800 font-medium">
                   <strong>Google has launched a new, open protocol called Agent2Agent (A2A)</strong>, with support and contributions from more than 50 technology partners and leading service providers. The A2A protocol allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
                 </p>
-              </div>
-            </div>
+                      </div>
+                    </div>
           </section>
 
           {/* A2A Protocol Overview Section */}
@@ -143,7 +143,7 @@ const Documentation = () => {
                   systems, the A2A protocol addresses the challenges identified in deploying large-scale, 
                   multi-agent systems for enterprise customers.
                 </p>
-              </div>
+                  </div>
             </div>
           </section>
 
@@ -157,8 +157,8 @@ const Documentation = () => {
               <p className="text-gray-700">
                 A2A facilitates communication between a "client" agent and a "remote" agent. A client agent is responsible for formulating and communicating tasks, while the remote agent is responsible for acting on those tasks in an attempt to provide the correct information or take the correct action.
               </p>
-            </div>
-            
+                        </div>
+                        
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {keyCapabilities.map((capability, index) => (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -167,17 +167,17 @@ const Documentation = () => {
                       {capability.icon}
                       <CardTitle className="text-lg">{capability.title}</CardTitle>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                </CardHeader>
+                <CardContent>
                     <p className="text-gray-600 leading-relaxed">
                       {capability.description}
                     </p>
-                  </CardContent>
-                </Card>
+                </CardContent>
+              </Card>
               ))}
             </div>
           </section>
-        </div>
+                </div>
 
         {/* Ready to Build with A2A - Glassmorphism Card */}
         <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mt-20">
@@ -187,8 +187,8 @@ const Documentation = () => {
             </CardTitle>
             <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
               Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
-            </CardDescription>
-          </CardHeader>
+                  </CardDescription>
+                </CardHeader>
           <CardContent className="text-center">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
@@ -197,9 +197,9 @@ const Documentation = () => {
               <Button size="lg" variant="outline" asChild>
                 <a href="/submit">Submit Your Agent</a>
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
       </div>
 
       <Footer />
