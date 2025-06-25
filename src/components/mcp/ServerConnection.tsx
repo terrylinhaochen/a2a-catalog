@@ -10,7 +10,7 @@ import { Plus, Server, Zap, Lock, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ServerConnectionProps {
-  onConnect: (serverUrl: string) => void;
+  onConnect: (serverUrl: string, serverName: string) => void;
 }
 
 const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
@@ -125,15 +125,15 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
     }
   ];
 
-  const handleConnect = async (url: string) => {
+  const handleConnect = async (url: string, name: string) => {
     setIsConnecting(true);
     
     // Simulate connection process
     setTimeout(() => {
-      onConnect(url);
+      onConnect(url, name);
       setServerUrl('');
       setIsConnecting(false);
-      toast.success('Server connected successfully');
+      toast.success(`Connected to ${name} successfully`);
     }, 1000);
   };
 
@@ -142,7 +142,7 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
       toast.error('Please enter a server URL');
       return;
     }
-    handleConnect(serverUrl);
+    handleConnect(serverUrl, 'Custom Server');
   };
 
   const getAuthIcon = (authType: string) => {
@@ -215,7 +215,7 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
                   </div>
                   <Button
                     size="sm"
-                    onClick={() => handleConnect(server.url)}
+                    onClick={() => handleConnect(server.url, server.name)}
                     disabled={isConnecting}
                     className="ml-3"
                   >

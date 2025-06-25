@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,29 +43,17 @@ interface Tool {
   inputSchema: any;
 }
 
-const McpClient = () => {
-  const [servers, setServers] = useState<McpServer[]>([
-    {
-      id: '1',
-      name: 'GitHub Server',
-      url: 'mcp://github',
-      status: 'connected',
-      capabilities: ['tools', 'resources']
-    },
-    {
-      id: '2',
-      name: 'File System',
-      url: 'mcp://filesystem',
-      status: 'connected',
-      capabilities: ['tools', 'resources', 'prompts']
-    }
-  ]);
-  
+interface McpClientProps {
+  servers: McpServer[];
+  onServerDisconnect: (serverId: string) => void;
+}
+
+const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'system',
-      content: 'MCP Client initialized. Connected to 2 servers with AI integration enabled.',
+      content: 'MCP Client initialized. Connected to servers with AI integration enabled.',
       timestamp: new Date()
     }
   ]);
@@ -98,26 +87,6 @@ const McpClient = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  const connectServer = (serverUrl: string) => {
-    const newServer: McpServer = {
-      id: Date.now().toString(),
-      name: `Server ${servers.length + 1}`,
-      url: serverUrl,
-      status: 'connected',
-      capabilities: ['tools']
-    };
-    
-    setServers([...servers, newServer]);
-    addMessage('system', `Connected to server: ${serverUrl}`);
-    toast.success('Server connected successfully');
-  };
-
-  const disconnectServer = (serverId: string) => {
-    setServers(servers.filter(s => s.id !== serverId));
-    addMessage('system', `Server disconnected`);
-    toast.info('Server disconnected');
-  };
 
   const addMessage = (type: 'user' | 'assistant' | 'system', content: string) => {
     const newMessage: Message = {
@@ -214,11 +183,11 @@ const McpClient = () => {
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Server className="w-5 h-5" />
-            MCP Servers
+            MCP Servers ({servers.length})
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <ScrollArea className="h-48">
+          <ScrollArea className="h-64">
             <div className="space-y-2">
               {servers.map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
@@ -242,7 +211,7 @@ const McpClient = () => {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => disconnectServer(server.id)}
+                    onClick={() => onServerDisconnect(server.id)}
                   >
                     <Square className="w-3 h-3" />
                   </Button>
@@ -255,7 +224,7 @@ const McpClient = () => {
           
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Available Tools</h4>
-            <ScrollArea className="h-24">
+            <ScrollArea className="h-32">
               <div className="space-y-1">
                 {availableTools.map((tool) => (
                   <Button

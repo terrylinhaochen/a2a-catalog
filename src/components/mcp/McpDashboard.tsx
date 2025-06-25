@@ -16,15 +16,54 @@ import {
 import McpClient from './McpClient';
 import ServerConnection from './ServerConnection';
 
+interface McpServer {
+  id: string;
+  name: string;
+  url: string;
+  status: 'connected' | 'disconnected' | 'error';
+  capabilities?: string[];
+}
+
 const McpDashboard = () => {
   const [connectedServers, setConnectedServers] = useState(2);
   const [activeConnections, setActiveConnections] = useState(5);
   const [messagesProcessed, setMessagesProcessed] = useState(1247);
   const [toolsExecuted, setToolsExecuted] = useState(89);
+  const [mcpServers, setMcpServers] = useState<McpServer[]>([
+    {
+      id: '1',
+      name: 'GitHub Server',
+      url: 'mcp://github',
+      status: 'connected',
+      capabilities: ['tools', 'resources']
+    },
+    {
+      id: '2',
+      name: 'File System',
+      url: 'mcp://filesystem',
+      status: 'connected',
+      capabilities: ['tools', 'resources', 'prompts']
+    }
+  ]);
 
-  const handleServerConnect = (serverUrl: string) => {
+  const handleServerConnect = (serverUrl: string, serverName: string) => {
+    const newServer: McpServer = {
+      id: Date.now().toString(),
+      name: serverName,
+      url: serverUrl,
+      status: 'connected',
+      capabilities: ['tools']
+    };
+    
+    setMcpServers(prev => [...prev, newServer]);
     setConnectedServers(prev => prev + 1);
     setActiveConnections(prev => prev + 1);
+  };
+
+  const handleServerDisconnect = (serverId: string) => {
+    setMcpServers(prev => prev.filter(s => s.id !== serverId));
+    setConnectedServers(prev => Math.max(0, prev - 1));
+    setActiveConnections(prev => Math.max(0, prev - 1));
   };
 
   const stats = [
@@ -91,8 +130,11 @@ const McpDashboard = () => {
         </TabsList>
 
         <TabsContent value="client">
-          <div className="h-[calc(100vh-320px)]">
-            <McpClient />
+          <div className="h-[calc(100vh-300px)]">
+            <McpClient 
+              servers={mcpServers} 
+              onServerDisconnect={handleServerDisconnect}
+            />
           </div>
         </TabsContent>
 
