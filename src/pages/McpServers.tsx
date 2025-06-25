@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,8 +10,8 @@ const McpServers = () => {
       
       <ItemCatalog
         defaultProtocol="mcp"
-        title="MCP Server Catalog - Model Context Protocol Servers Directory"
-        description="Discover and integrate Model Context Protocol servers for enhanced AI capabilities. Browse MCP servers for context sharing, tool integration, and AI model enhancement across various platforms and frameworks."
+        title="MCP Server Catalog - 277 Model Context Protocol Servers"
+        description="Discover and integrate 277 Model Context Protocol servers for enhanced AI capabilities. Browse the most comprehensive MCP server directory with 22 remote servers (ready to connect) and 255 local servers (installable) for context sharing, tool integration, and AI model enhancement across various platforms and frameworks."
         url="https://a2acatalog.com/mcps"
       />
 

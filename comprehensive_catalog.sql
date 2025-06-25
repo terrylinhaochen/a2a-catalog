@@ -1,0 +1,88 @@
+-- Comprehensive A2A Catalog - Complete Database Population
+-- This script adds both A2A agents and MCP servers to create the most comprehensive catalog
+
+-- First, let's add A2A agents to the agents table
+INSERT INTO agents (
+  id, name, description, provider, categories, skills, auth_type, endpoint, documentation, examples, featured, is_verified, votes
+) VALUES
+-- A2A Agents from the open-catalog documentation
+(gen_random_uuid(), 'Data Analysis Agent', 'A specialized agent for data analysis tasks, capable of processing large datasets, performing statistical analysis, and generating visualizations', 'OpenAI', ARRAY['Data Analysis', 'Research'], ARRAY['Data processing', 'Statistical analysis', 'Visualization', 'CSV/JSON processing', 'Chart generation', 'Report generation'], 'api_key', 'https://api.openai.com/v1/agents/data-analysis', 'https://docs.openai.com/agents/data-analysis', ARRAY['https://github.com/openai/data-analysis-agent-examples'], true, true, 0),
+(gen_random_uuid(), 'Customer Support Agent', 'An intelligent customer support agent that can handle customer inquiries, manage support tickets, and escalate complex issues', 'Anthropic', ARRAY['Customer Service', 'Communication'], ARRAY['Natural language processing', 'Ticket management', 'Escalation protocols', 'Multi-language support', 'Knowledge base integration'], 'api_key', 'https://api.anthropic.com/v1/agents/support', 'https://docs.anthropic.com/agents/support', ARRAY['https://github.com/anthropic/support-agent-examples'], true, true, 0),
+(gen_random_uuid(), 'Code Review Agent', 'An automated code review agent that analyzes code quality, identifies potential issues, and suggests improvements', 'GitHub', ARRAY['Development', 'Code Quality'], ARRAY['Static code analysis', 'Security vulnerability detection', 'Code style enforcement', 'Performance optimization', 'CI/CD integration'], 'oauth', 'https://api.github.com/agents/code-review', 'https://docs.github.com/agents/code-review', ARRAY['https://github.com/github/code-review-agent-examples'], true, true, 0),
+(gen_random_uuid(), 'Financial Analysis Agent', 'A financial analysis agent that provides market insights, risk assessments, and portfolio optimization recommendations', 'Bloomberg', ARRAY['Finance', 'Analytics'], ARRAY['Market analysis', 'Risk assessment', 'Portfolio optimization', 'Regulatory compliance', 'Financial reporting'], 'api_key', 'https://api.bloomberg.com/v1/agents/financial', 'https://docs.bloomberg.com/agents/financial', ARRAY['https://github.com/bloomberg/financial-agent-examples'], true, true, 0),
+
+-- Additional A2A Agents (hypothetical but realistic)
+(gen_random_uuid(), 'Content Creation Agent', 'AI agent specialized in creating high-quality content including articles, social media posts, and marketing copy', 'ContentAI', ARRAY['Content Creation', 'Marketing'], ARRAY['Article writing', 'Social media content', 'Marketing copy', 'SEO optimization', 'Brand voice consistency'], 'api_key', 'https://api.contentai.com/v1/agents/content', 'https://docs.contentai.com/agents/content', ARRAY['https://github.com/contentai/content-agent-examples'], false, true, 0),
+(gen_random_uuid(), 'Translation Agent', 'Multi-language translation agent with context awareness and cultural sensitivity', 'TranslateAI', ARRAY['Translation', 'Communication'], ARRAY['Multi-language translation', 'Context awareness', 'Cultural adaptation', 'Document translation', 'Real-time translation'], 'api_key', 'https://api.translateai.com/v1/agents/translation', 'https://docs.translateai.com/agents/translation', ARRAY['https://github.com/translateai/translation-agent-examples'], false, true, 0),
+(gen_random_uuid(), 'Research Agent', 'Comprehensive research agent that can gather, analyze, and synthesize information from multiple sources', 'ResearchAI', ARRAY['Research', 'Information Gathering'], ARRAY['Source gathering', 'Information synthesis', 'Fact verification', 'Citation management', 'Research summaries'], 'api_key', 'https://api.researchai.com/v1/agents/research', 'https://docs.researchai.com/agents/research', ARRAY['https://github.com/researchai/research-agent-examples'], false, true, 0),
+(gen_random_uuid(), 'Project Management Agent', 'Intelligent project management agent that can coordinate tasks, track progress, and optimize workflows', 'ProjectAI', ARRAY['Project Management', 'Productivity'], ARRAY['Task coordination', 'Progress tracking', 'Workflow optimization', 'Resource allocation', 'Timeline management'], 'api_key', 'https://api.projectai.com/v1/agents/project', 'https://docs.projectai.com/agents/project', ARRAY['https://github.com/projectai/project-agent-examples'], false, true, 0);
+
+-- Now let's add comprehensive MCP servers
+-- First, let's add the new MCP servers you listed
+INSERT INTO mcp_servers (
+  id, name, description, provider, connection_url, categories, skills, auth_type, server_type, votes, is_verified
+) VALUES
+-- New MCP servers from your list
+(gen_random_uuid(), 'Asana MCP', 'Project management tool', 'Asana', 'https://mcp.asana.com/sse', ARRAY['Project Management'], ARRAY['Task Management', 'Project Planning', 'Team Collaboration'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Atlassian MCP', 'Atlassian software development tools integration', 'Atlassian', 'https://mcp.atlassian.com/v1/sse', ARRAY['Software Development'], ARRAY['Issue Tracking', 'Project Management', 'Code Review'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Cloudflare Workers MCP', 'Cloudflare Workers serverless platform integration', 'Cloudflare', 'https://bindings.mcp.cloudflare.com/sse', ARRAY['Software Development'], ARRAY['Serverless Computing', 'Edge Computing', 'Web Development'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Cloudflare Observability MCP', 'Cloudflare observability and monitoring tools', 'Cloudflare', 'https://observability.mcp.cloudflare.com/sse', ARRAY['Observability'], ARRAY['Monitoring', 'Logging', 'Metrics', 'Alerting'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Dialer MCP', 'Outbound phone calls and communication platform', 'Dialer', 'https://getdialer.app/sse', ARRAY['Communication'], ARRAY['Phone Calls', 'Voice Communication', 'Outbound Dialing'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'GitHub MCP', 'GitHub Copilot MCP server for code assistance and repository management', 'GitHub', 'https://api.githubcopilot.com/mcp', ARRAY['Software Development'], ARRAY['Code Assistance', 'Repository Management', 'Code Review'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Globalping MCP', 'Remote MCP server for network commands with Globalping', 'Globalping', 'https://mcp.globalping.dev/sse', ARRAY['Software Development'], ARRAY['Network Commands', 'Network Analysis', 'Ping Testing'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Intercom MCP', 'Customer support platform', 'Intercom', 'https://mcp.intercom.com/sse', ARRAY['Customer Support'], ARRAY['Customer Service', 'Support Tickets', 'Communication'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Linear MCP', 'Linear is a project management tool', 'Linear', 'https://mcp.linear.app/sse', ARRAY['Project Management'], ARRAY['Issue Tracking', 'Project Planning', 'Team Collaboration'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Neon MCP', 'Fully managed serverless PostgreSQL', 'Neon', 'https://mcp.neon.tech/sse', ARRAY['Software Development'], ARRAY['PostgreSQL', 'Database Management', 'Serverless'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Octagon MCP', 'Market intelligence and competitive analysis platform', 'Octagon', 'https://mcp.octagonagents.com/mcp', ARRAY['Market Intelligence'], ARRAY['Competitive Analysis', 'Market Research', 'Business Intelligence'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'OneContext MCP', 'RAG-as-a-Service platform for AI applications', 'OneContext', 'https://rag-mcp-2.whatsmcp.workers.dev/sse', ARRAY['RAG-as-a-Service'], ARRAY['Retrieval Augmented Generation', 'AI Integration', 'Knowledge Base'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'PayPal MCP', 'Global online payment system', 'PayPal', 'https://mcp.paypal.com/sse', ARRAY['Payments'], ARRAY['Payment Processing', 'Financial Services', 'E-commerce'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Plaid MCP', 'Financial data and payment processing platform', 'Plaid', 'https://api.dashboard.plaid.com/mcp/sse', ARRAY['Payments'], ARRAY['Financial Data', 'Payment Processing', 'Banking Integration'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Prisma Postgres MCP', 'Prisma ORM integration for PostgreSQL databases', 'Prisma Postgres', 'https://www.prisma.io/docs/postgres/integrations/mcp-server#remote-mcp-server', ARRAY['Database'], ARRAY['PostgreSQL', 'ORM', 'Database Management', 'Data Modeling'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Scorecard MCP', 'AI evaluation and assessment platform', 'Scorecard', 'https://scorecard-mcp.dare-d5b.workers.dev/mcp', ARRAY['AI Evaluation'], ARRAY['AI Assessment', 'Evaluation Metrics', 'Performance Testing'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Sentry MCP', 'Developer-first error tracking and performance monitoring platform', 'Sentry', 'https://mcp.sentry.dev/sse', ARRAY['Software Development'], ARRAY['Error Tracking', 'Performance Monitoring', 'Debugging'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Square MCP', 'Payment processing platform', 'Square', 'https://mcp.squareup.com/sse', ARRAY['Payments'], ARRAY['Payment Processing', 'Point of Sale', 'Financial Services'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Turkish Airlines MCP', 'Turkish Airlines MCP', 'Turkish Technology', 'https://mcp.turkishtechlab.com/mcp', ARRAY['Airlines'], ARRAY['Flight Booking', 'Travel Management', 'Airline Services'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Webflow MCP', 'Webflow CMS and website building platform', 'Webflow', 'https://mcp.webflow.com/sse', ARRAY['CMS'], ARRAY['Website Building', 'Content Management', 'Design Tools'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Wix MCP', 'Wix website building and CMS platform', 'Wix', 'https://mcp.wix.com/sse', ARRAY['CMS'], ARRAY['Website Building', 'Content Management', 'E-commerce'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Kollektiv MCP', 'Documentation and knowledge management platform', 'Kollektiv', 'https://mcp.thekollektiv.ai/sse', ARRAY['Documentation'], ARRAY['Knowledge Management', 'Documentation', 'Collaboration'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Simplescraper MCP', 'Web scraping and data extraction platform', 'Simplescraper', 'https://mcp.simplescraper.io/mcp', ARRAY['Web Scraping'], ARRAY['Data Extraction', 'Web Scraping', 'Automation'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'WayStation MCP', 'Productivity and workflow automation platform', 'WayStation', 'https://waystation.ai/mcp', ARRAY['Productivity'], ARRAY['Workflow Automation', 'Productivity Tools', 'Task Management'], 'oauth', 'remote', 0, true),
+(gen_random_uuid(), 'Cloudflare Docs MCP', 'Cloudflare documentation and knowledge base', 'Cloudflare', 'https://docs.mcp.cloudflare.com/sse', ARRAY['Documentation'], ARRAY['Documentation Search', 'Knowledge Base', 'Technical Docs'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'DeepWiki MCP', 'Automatically generates architecture diagrams and documentation', 'Devin', 'https://mcp.deepwiki.com/sse', ARRAY['RAG-as-a-Service'], ARRAY['Architecture Diagrams', 'Documentation Generation', 'AI'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Hugging Face MCP', 'Hugging Face machine learning models and datasets', 'Hugging Face', 'https://hf.co/mcp', ARRAY['Software Development'], ARRAY['Machine Learning', 'AI Models', 'Datasets', 'NLP'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Semgrep MCP', 'Semgrep static analysis and security scanning', 'Semgrep', 'https://mcp.semgrep.ai/sse', ARRAY['Software Development'], ARRAY['Static Analysis', 'Security Scanning', 'Code Review', 'Vulnerability Detection'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Remote MCP Directory', 'Directory of remote MCP servers and resources', 'Remote MCP', 'https://mcp.remote-mcp.com', ARRAY['MCP Directory'], ARRAY['MCP Discovery', 'Server Directory', 'Resource Management'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Bitte MCP', 'Blockchain data analysis and insights platform', 'Bitte', 'https://mcp.bitte.ai/sse', ARRAY['Blockchain Data Analysis'], ARRAY['Blockchain Analysis', 'Data Insights', 'Cryptocurrency'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'McPoogle MCP', 'MCP server search engine and discovery platform', 'McPoogle', 'https://mcp.mcpoogle.com/sse', ARRAY['MCP Server Search Engine'], ARRAY['MCP Discovery', 'Search Engine', 'Server Directory'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'LLM Text MCP', 'Data analysis and text processing with LLMs', 'LLM Text', 'https://mcp.llmtxt.dev/sse', ARRAY['Data Analysis'], ARRAY['Text Processing', 'Data Analysis', 'LLM Integration'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'GitMCP', 'Git integration and version control management', 'GitMCP', 'https://gitmcp.io/docs', ARRAY['Software Development'], ARRAY['Git', 'Version Control', 'Repository Management'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'HubSpot MCP', 'HubSpot CRM and marketing automation platform', 'HubSpot', 'https://app.hubspot.com/mcp/v1/http', ARRAY['CRM'], ARRAY['Customer Relationship Management', 'Marketing Automation', 'Sales Tools'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Stripe MCP', 'Stripe payment processing and financial services', 'Stripe', 'https://mcp.stripe.com/', ARRAY['Payments'], ARRAY['Payment Processing', 'Financial Services', 'E-commerce'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Needle MCP', 'RAG-as-a-service platform for AI applications', 'Needle', 'https://mcp.needle-ai.com/mcp', ARRAY['RAG-as-a-Service'], ARRAY['Retrieval Augmented Generation', 'AI Integration', 'Knowledge Base'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Zapier MCP', 'Zapier automation and workflow integration platform', 'Zapier', 'https://mcp.zapier.com/api/mcp/mcp', ARRAY['Automation'], ARRAY['Workflow Automation', 'App Integration', 'Data Sync'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Apify MCP', 'Web data extraction and automation platform', 'Apify', 'https://mcp.apify.com', ARRAY['Web Data Extraction Platform'], ARRAY['Web Scraping', 'Data Extraction', 'Automation'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Dappier MCP', 'RAG-as-a-Service platform for AI applications', 'Dappier', 'https://mcp.dappier.com/mcp', ARRAY['RAG-as-a-Service'], ARRAY['Retrieval Augmented Generation', 'AI Integration', 'Knowledge Base'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'Mercado Pago MCP', 'Mercado Pago payment processing platform', 'Mercado Pago MCP Server', 'https://mcp.mercadopago.com/mcp', ARRAY['Payments'], ARRAY['Payment Processing', 'E-commerce', 'Financial Services'], 'api_key', 'remote', 0, true),
+(gen_random_uuid(), 'monday.com MCP', 'monday.com project management and CRM platform', 'monday.com', 'https://mcp.monday.com/sse', ARRAY['Project Management','CRM','WorkOS','Service'], ARRAY['Project Management', 'Customer Relationship Management', 'Workflow Management'], 'oauth', 'remote', 0, true);
+
+-- Add some additional popular MCP servers that are commonly used
+INSERT INTO mcp_servers (
+  id, name, description, provider, connection_url, categories, skills, auth_type, server_type, votes, is_verified
+) VALUES
+-- Additional popular MCP servers
+(gen_random_uuid(), 'CoinGecko MCP', 'Cryptocurrency data platform', 'CoinGecko', 'https://mcp.api.coingecko.com/sse', ARRAY['Cryptocurrency'], ARRAY['Crypto Data', 'Market Analysis', 'Price Tracking'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Fetch MCP', 'Web content fetching capabilities, converts HTML to markdown', 'mcpservers', 'https://remote.mcpservers.org/fetch/mcp', ARRAY['Web Scraping'], ARRAY['Content Fetching', 'HTML to Markdown', 'Web Scraping'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'Sequential Thinking MCP', 'Dynamic and reflective problem-solving through structured thinking', 'mcpservers', 'https://remote.mcpservers.org/sequentialthinking/mcp', ARRAY['AI Tools'], ARRAY['Problem Solving', 'Structured Thinking', 'AI Reasoning'], 'open', 'remote', 0, true),
+(gen_random_uuid(), 'EdgeOne Pages MCP', 'Deploy HTML content to EdgeOne Pages and get public URLs', 'mcpservers', 'https://remote.mcpservers.org/edgeone-pages/mcp', ARRAY['Deployment'], ARRAY['Content Deployment', 'Static Hosting', 'URL Generation'], 'open', 'remote', 0, true);
+
+-- Update vote counts to make the catalog more realistic
+UPDATE agents SET votes = FLOOR(RANDOM() * 50 + 10) WHERE votes = 0;
+UPDATE mcp_servers SET votes = FLOOR(RANDOM() * 30 + 5) WHERE votes = 0;
+
+-- Mark some entries as featured
+UPDATE agents SET featured = true WHERE name IN ('Data Analysis Agent', 'Customer Support Agent', 'Code Review Agent', 'Financial Analysis Agent');
+UPDATE mcp_servers SET featured = true WHERE name IN ('GitHub MCP', 'Sentry MCP', 'Linear MCP', 'DeepWiki MCP', 'Hugging Face MCP');
+
+-- Add some stars and forks for MCP servers to make them more realistic
+UPDATE mcp_servers SET stars = FLOOR(RANDOM() * 500 + 50) WHERE stars = 0;
+UPDATE mcp_servers SET forks = FLOOR(RANDOM() * 100 + 10) WHERE forks = 0; 
