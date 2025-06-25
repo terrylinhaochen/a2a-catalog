@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { 
   Play, 
-  Square, 
+  X, 
   Send, 
   Trash2, 
   Download, 
@@ -183,11 +183,11 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Server className="w-5 h-5" />
-            MCP Servers ({servers.length})
+            Connected Servers ({servers.length})
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <ScrollArea className="h-64">
+          <ScrollArea className="h-80">
             <div className="space-y-2">
               {servers.map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
@@ -212,8 +212,9 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                     size="sm"
                     variant="outline"
                     onClick={() => onServerDisconnect(server.id)}
+                    title="Disconnect server"
                   >
-                    <Square className="w-3 h-3" />
+                    <X className="w-3 h-3" />
                   </Button>
                 </div>
               ))}
@@ -224,7 +225,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Available Tools</h4>
-            <ScrollArea className="h-32">
+            <ScrollArea className="h-24">
               <div className="space-y-1">
                 {availableTools.map((tool) => (
                   <Button

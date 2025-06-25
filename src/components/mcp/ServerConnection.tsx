@@ -159,7 +159,7 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Plus className="w-5 h-5" />
-            Connect New Server
+            Connect to Server
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
