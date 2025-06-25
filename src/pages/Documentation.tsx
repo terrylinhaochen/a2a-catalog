@@ -1,9 +1,9 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   Globe, 
   Shield, 
@@ -14,43 +14,12 @@ import {
   Eye, 
   Clock,
   ExternalLink,
-  Play,
-  BookOpen,
   Code,
-  Download,
-  Building2,
   Network,
-  Target,
-  ArrowRight,
-  CheckCircle,
-  Star,
-  TrendingUp
+  Wrench
 } from 'lucide-react';
 
 const Documentation = () => {
-  const platformFeatures = [
-    {
-      icon: <Users className="w-6 h-6 text-purple-600" />,
-      title: "Community-Driven",
-      description: "Built by and for the AI agent community. Everyone can contribute and discover new agents."
-    },
-    {
-      icon: <Shield className="w-6 h-6 text-purple-600" />,
-      title: "Verified Quality",
-      description: "Our verification system ensures that agents meet quality standards and work as advertised."
-    },
-    {
-      icon: <Zap className="w-6 h-6 text-purple-600" />,
-      title: "Easy Integration",
-      description: "Simple APIs and clear documentation make it easy to integrate agents into your applications."
-    },
-    {
-      icon: <Globe className="w-6 h-6 text-purple-600" />,
-      title: "Open Protocol",
-      description: "Built on the Agent-to-Agent protocol standard, ensuring interoperability and future compatibility."
-    }
-  ];
-
   const designPrinciples = [
     {
       icon: <Zap className="w-5 h-5 text-purple-600" />,
@@ -105,13 +74,6 @@ const Documentation = () => {
       title: "User Experience Negotiation",
       description: "Each message includes 'parts' with specified content types, allowing agents to negotiate formats and UI capabilities like iframes, video, web forms."
     }
-  ];
-
-  const partners = [
-    "Atlassian", "Box", "Cohere", "Intuit", "Langchain", "MongoDB", "PayPal", 
-    "Salesforce", "SAP", "ServiceNow", "UKG", "Workday", "Accenture", "BCG", 
-    "Capgemini", "Cognizant", "Deloitte", "HCLTech", "Infosys", "KPMG", 
-    "McKinsey", "PwC", "TCS", "Wipro"
   ];
 
   return (
@@ -169,31 +131,6 @@ const Documentation = () => {
             </div>
           </section>
 
-          {/* Platform Features */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Platform Features
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {platformFeatures.map((feature, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4 text-center">
-                    <div className="flex justify-center mb-3">
-                      {feature.icon}
-                    </div>
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 leading-relaxed text-center text-sm">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
           {/* A New Era of Agent Interoperability */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
@@ -217,10 +154,10 @@ const Documentation = () => {
             </div>
           </section>
 
-          {/* The A2A Protocol Section */}
+          {/* A2A Protocol Overview Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              The A2A Protocol
+              A2A Protocol Overview
             </h2>
             <p className="text-lg text-gray-600 mb-12">
               Understanding the foundation of agent interoperability
@@ -228,7 +165,6 @@ const Documentation = () => {
             
             {/* Protocol Overview */}
             <div className="mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Protocol Overview</h3>
               <div className="space-y-6 text-gray-700">
                 <p>
                   The <strong>Agent2Agent (A2A) Protocol</strong> is an open standard designed to enable seamless 
@@ -292,72 +228,6 @@ const Documentation = () => {
                   </CardContent>
                 </Card>
               </div>
-            </div>
-
-            {/* Key Benefits */}
-            <div className="mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Benefits</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <Users className="w-6 h-6 text-green-600" />
-                      <CardTitle className="text-lg">Ecosystem Growth</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Foster a more interconnected, powerful, and innovative AI ecosystem
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <TrendingUp className="w-6 h-6 text-green-600" />
-                      <CardTitle className="text-lg">Cost Efficiency</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Lower long-term costs while increasing autonomy and productivity gains
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <Code className="w-6 h-6 text-green-600" />
-                      <CardTitle className="text-lg">Standardization</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Standardized method for managing agents across diverse platforms and cloud environments
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-
-          {/* Technology Partners */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              Technology Partners & Service Providers
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              A2A is supported by industry leaders across technology and consulting
-            </p>
-            
-            <div className="flex flex-wrap gap-3">
-              {partners.map((partner, index) => (
-                <Badge key={index} variant="secondary" className="text-sm">
-                  {partner}
-                </Badge>
-              ))}
             </div>
           </section>
 
