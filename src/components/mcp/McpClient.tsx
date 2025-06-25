@@ -114,9 +114,9 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
   };
 
   return (
-    <div className="flex flex-col h-full space-y-4">
+    <div className="flex flex-col h-[600px] max-h-[600px] space-y-4">
       {/* Connected Servers Status */}
-      <Card>
+      <Card className="flex-shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <ExternalLink className="w-5 h-5" />
@@ -156,75 +156,77 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
       </Card>
 
       {/* Chat Interface */}
-      <Card className="flex-1 flex flex-col">
-        <CardHeader className="pb-3">
+      <Card className="flex-1 flex flex-col min-h-0">
+        <CardHeader className="pb-3 flex-shrink-0">
           <CardTitle className="flex items-center gap-2">
             <Bot className="w-5 h-5" />
             MCP Chat
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col p-0">
+        <CardContent className="flex-1 flex flex-col p-0 min-h-0">
           {/* Messages Area */}
-          <ScrollArea className="flex-1 px-4">
-            <div className="space-y-4 py-4">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex gap-3 ${
-                    message.role === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  {message.role === 'assistant' && (
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Bot className="w-4 h-4 text-blue-600" />
-                    </div>
-                  )}
-                  
+          <div className="flex-1 px-4 min-h-0">
+            <ScrollArea className="h-full">
+              <div className="space-y-4 py-4">
+                {messages.map((message, index) => (
                   <div
-                    className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                      message.role === 'user'
-                        ? 'bg-blue-500 text-white'
-                        : message.role === 'system'
-                        ? 'bg-gray-100 text-gray-700'
-                        : 'bg-gray-50 text-gray-900'
+                    key={index}
+                    className={`flex gap-3 ${
+                      message.role === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    <div className="whitespace-pre-wrap">{message.content}</div>
-                    <div className={`text-xs mt-1 ${
-                      message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
-                    }`}>
-                      {formatTimestamp(message.timestamp)}
+                    {message.role === 'assistant' && (
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-4 h-4 text-blue-600" />
+                      </div>
+                    )}
+                    
+                    <div
+                      className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                        message.role === 'user'
+                          ? 'bg-blue-500 text-white'
+                          : message.role === 'system'
+                          ? 'bg-gray-100 text-gray-700'
+                          : 'bg-gray-50 text-gray-900'
+                      }`}
+                    >
+                      <div className="whitespace-pre-wrap break-words">{message.content}</div>
+                      <div className={`text-xs mt-1 ${
+                        message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
+                      }`}>
+                        {formatTimestamp(message.timestamp)}
+                      </div>
                     </div>
-                  </div>
 
-                  {message.role === 'user' && (
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                      <User className="w-4 h-4 text-gray-600" />
-                    </div>
-                  )}
-                </div>
-              ))}
-              
-              {isLoading && (
-                <div className="flex gap-3 justify-start">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-blue-600" />
+                    {message.role === 'user' && (
+                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="w-4 h-4 text-gray-600" />
+                      </div>
+                    )}
                   </div>
-                  <div className="bg-gray-50 rounded-lg px-4 py-2">
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span className="text-gray-500">Thinking...</span>
+                ))}
+                
+                {isLoading && (
+                  <div className="flex gap-3 justify-start">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Bot className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="bg-gray-50 rounded-lg px-4 py-2">
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span className="text-gray-500">Thinking...</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-              
-              <div ref={messagesEndRef} />
-            </div>
-          </ScrollArea>
+                )}
+                
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
+          </div>
 
           {/* Input Area */}
-          <div className="border-t p-4">
+          <div className="border-t p-4 flex-shrink-0">
             <div className="flex gap-2">
               <Input
                 value={inputMessage}

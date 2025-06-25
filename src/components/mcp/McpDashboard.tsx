@@ -88,7 +88,7 @@ const McpDashboard = () => {
         </TabsList>
 
         <TabsContent value="client">
-          <div className="h-full">
+          <div className="h-[600px]">
             <McpClient 
               servers={connectedServers} 
               onServerDisconnect={handleServerDisconnect}

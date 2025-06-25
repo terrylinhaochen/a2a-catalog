@@ -21,17 +21,49 @@ export interface ChatResponse {
 }
 
 export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResponse> => {
-  const { data, error } = await supabase.functions.invoke('mcp-chat', {
-    body: request
-  });
+  try {
+    console.log('Sending MCP chat request:', {
+      messageCount: request.messages.length,
+      connectedServers: request.connectedServers.length
+    });
 
-  if (error) {
-    throw new Error(error.message);
+    const { data, error } = await supabase.functions.invoke('mcp-chat', {
+      body: request
+    });
+
+    console.log('Supabase function response:', { data, error });
+
+    if (error) {
+      console.error('Supabase function error:', error);
+      throw new Error(`Function error: ${error.message}`);
+    }
+
+    if (!data) {
+      throw new Error('No response data received from function');
+    }
+
+    if (data.error) {
+      console.error('Function returned error:', data.error);
+      throw new Error(data.error);
+    }
+
+    if (!data.message) {
+      throw new Error('No message in response data');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error in sendMcpChatMessage:', error);
+    
+    // Provide more specific error messages
+    if (error.message?.includes('Function error')) {
+      throw new Error('Server function error. Please check if the MCP chat function is deployed.');
+    }
+    
+    if (error.message?.includes('fetch')) {
+      throw new Error('Network error. Please check your connection.');
+    }
+    
+    throw error;
   }
-
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  return data;
 }; 
