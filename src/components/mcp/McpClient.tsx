@@ -74,6 +74,16 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
       name: 'create_repository',
       description: 'Create a new GitHub repository',
       inputSchema: { type: 'object', properties: { name: { type: 'string' }, description: { type: 'string' } } }
+    },
+    {
+      name: 'search_repositories',
+      description: 'Search GitHub repositories',
+      inputSchema: { type: 'object', properties: { query: { type: 'string' } } }
+    },
+    {
+      name: 'fetch_web_content',
+      description: 'Fetch and convert web content to markdown',
+      inputSchema: { type: 'object', properties: { url: { type: 'string' } } }
     }
   ]);
   
@@ -210,17 +220,17 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-200px)]">
       {/* Servers Panel */}
-      <Card className="lg:col-span-1">
+      <Card className="lg:col-span-1 flex flex-col">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Server className="w-5 h-5" />
             Connected Servers ({servers.length})
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <ScrollArea className="h-80">
+        <CardContent className="flex-1 flex flex-col space-y-4">
+          <ScrollArea className="flex-1">
             <div className="space-y-2">
               {servers.map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
@@ -258,7 +268,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Available Tools</h4>
-            <ScrollArea className="h-24">
+            <ScrollArea className="h-40">
               <div className="space-y-1">
                 {availableTools.map((tool) => (
                   <Button
@@ -302,8 +312,8 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           </div>
         </CardHeader>
         
-        <CardContent className="flex-1 flex flex-col p-4">
-          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 h-64">
+        <CardContent className="flex-1 flex flex-col p-4 min-h-0">
+          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 max-h-[500px]">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
