@@ -238,17 +238,17 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-200px)]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-200px)] max-h-[calc(100vh-200px)]">
       {/* Servers Panel */}
-      <Card className="lg:col-span-1 flex flex-col">
-        <CardHeader className="pb-3">
+      <Card className="lg:col-span-1 flex flex-col h-full">
+        <CardHeader className="pb-3 flex-shrink-0">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Server className="w-5 h-5" />
             Connected Servers ({servers.length})
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col space-y-4">
-          <ScrollArea className="flex-1">
+        <CardContent className="flex-1 flex flex-col space-y-4 min-h-0">
+          <ScrollArea className="flex-1 min-h-0">
             <div className="space-y-2">
               {servers.map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
@@ -284,7 +284,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           
           <Separator />
           
-          <div className="space-y-2">
+          <div className="space-y-2 flex-shrink-0">
             <h4 className="font-medium text-sm">Available Tools</h4>
             <ScrollArea className="h-48">
               <div className="space-y-1">
@@ -308,8 +308,8 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
       </Card>
 
       {/* Chat Interface */}
-      <Card className="lg:col-span-2 flex flex-col">
-        <CardHeader className="pb-3">
+      <Card className="lg:col-span-2 flex flex-col h-full">
+        <CardHeader className="pb-3 flex-shrink-0">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-lg">
               <MessageSquare className="w-5 h-5" />
@@ -331,7 +331,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col p-4 min-h-0">
-          <ScrollArea ref={chatScrollAreaRef} className="flex-1 mb-4 border rounded-lg p-4 h-[400px]">
+          <ScrollArea ref={chatScrollAreaRef} className="flex-1 mb-4 border rounded-lg p-4 min-h-0">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -363,7 +363,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
             </div>
           </ScrollArea>
           
-          <div className="flex gap-2 items-end">
+          <div className="flex gap-2 items-end flex-shrink-0">
             <Textarea
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}

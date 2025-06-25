@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -54,7 +53,7 @@ Available capabilities:
 - Web search and content retrieval
 - Database queries and management
 
-When users ask for actions, explain what you would do with the available MCP servers and simulate realistic responses. Be helpful and specific about which servers and tools you would use.`;
+When users ask for actions, use the available MCP servers and tools to perform real operations. Be helpful and specific about which servers and tools you would use, and execute actual commands when possible.`;
 
     // Prepare messages for OpenAI
     const messages = [
