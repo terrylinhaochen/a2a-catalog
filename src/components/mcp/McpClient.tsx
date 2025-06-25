@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,7 +15,7 @@ import {
   Settings,
   Zap,
   MessageSquare,
-  Tool,
+  Wrench,
   Server
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -218,7 +217,7 @@ const McpClient = () => {
                   className="w-full justify-start"
                   onClick={() => executeTool(tool.name)}
                 >
-                  <Tool className="w-4 h-4 mr-2" />
+                  <Wrench className="w-4 h-4 mr-2" />
                   {tool.name}
                 </Button>
               ))}

@@ -7,7 +7,7 @@ import {
   Activity, 
   Server, 
   MessageSquare, 
-  Tool, 
+  Wrench, 
   Settings,
   BarChart3,
   Clock,
@@ -49,7 +49,7 @@ const McpDashboard = () => {
     {
       title: 'Tools Executed',
       value: toolsExecuted,
-      icon: Tool,
+      icon: Wrench,
       color: 'text-orange-600'
     }
   ];
