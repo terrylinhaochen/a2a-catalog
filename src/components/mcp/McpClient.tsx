@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -208,62 +209,64 @@ const McpClient = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
       {/* Servers Panel */}
       <Card className="lg:col-span-1">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-lg">
             <Server className="w-5 h-5" />
             MCP Servers
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            {servers.map((server) => (
-              <div key={server.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${
-                      server.status === 'connected' ? 'bg-green-500' : 
-                      server.status === 'error' ? 'bg-red-500' : 'bg-gray-400'
-                    }`} />
-                    <span className="font-medium">{server.name}</span>
+          <ScrollArea className="h-32">
+            <div className="space-y-2">
+              {servers.map((server) => (
+                <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        server.status === 'connected' ? 'bg-green-500' : 
+                        server.status === 'error' ? 'bg-red-500' : 'bg-gray-400'
+                      }`} />
+                      <span className="font-medium text-sm">{server.name}</span>
+                    </div>
+                    <p className="text-xs text-gray-500">{server.url}</p>
+                    <div className="flex gap-1 mt-1">
+                      {server.capabilities?.map((cap) => (
+                        <Badge key={cap} variant="secondary" className="text-xs">
+                          {cap}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-500">{server.url}</p>
-                  <div className="flex gap-1 mt-1">
-                    {server.capabilities?.map((cap) => (
-                      <Badge key={cap} variant="secondary" className="text-xs">
-                        {cap}
-                      </Badge>
-                    ))}
-                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => disconnectServer(server.id)}
+                  >
+                    <Square className="w-3 h-3" />
+                  </Button>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => disconnectServer(server.id)}
-                >
-                  <Square className="w-3 h-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollArea>
           
           <Separator />
           
           <div className="space-y-2">
-            <h4 className="font-medium">Available Tools</h4>
+            <h4 className="font-medium text-sm">Available Tools</h4>
             <div className="space-y-1">
               {availableTools.map((tool) => (
                 <Button
                   key={tool.name}
                   variant="ghost"
                   size="sm"
-                  className="w-full justify-start"
+                  className="w-full justify-start text-xs"
                   onClick={() => executeTool(tool.name)}
                   disabled={isRunning}
                 >
-                  <Wrench className="w-4 h-4 mr-2" />
+                  <Wrench className="w-3 h-3 mr-2" />
                   {tool.name}
                 </Button>
               ))}
@@ -276,7 +279,7 @@ const McpClient = () => {
       <Card className="lg:col-span-2 flex flex-col">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-lg">
               <MessageSquare className="w-5 h-5" />
               MCP Chat Interface
               <Badge variant="outline" className="ml-2">
@@ -295,8 +298,8 @@ const McpClient = () => {
           </div>
         </CardHeader>
         
-        <CardContent className="flex-1 flex flex-col">
-          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4">
+        <CardContent className="flex-1 flex flex-col p-4">
+          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 h-64">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>

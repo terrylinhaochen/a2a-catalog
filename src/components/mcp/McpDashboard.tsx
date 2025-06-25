@@ -55,18 +55,18 @@ const McpDashboard = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <Card key={stat.title}>
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-xl font-bold">{stat.value}</p>
                 </div>
-                <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
             </CardContent>
           </Card>
@@ -91,7 +91,9 @@ const McpDashboard = () => {
         </TabsList>
 
         <TabsContent value="client">
-          <McpClient />
+          <div className="h-[calc(100vh-320px)]">
+            <McpClient />
+          </div>
         </TabsContent>
 
         <TabsContent value="servers">
