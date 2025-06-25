@@ -42,7 +42,26 @@ export const useMcpServers = () => {
         .order('votes', { ascending: false });
 
       if (error) throw error;
-      setMcpServers(data || []);
+      
+      // Filter out generic API entries (not actual MCP servers)
+      const filteredData = (data || []).filter(server => {
+        // Use any to access the connection_url field that exists in the database
+        const serverAny = server as any;
+        const url = serverAny.connection_url || '';
+        // Exclude generic API endpoints that aren't actual MCP servers
+        const isGenericApi = url.includes('api.github.com/copilot') ||
+                           url.includes('api.sentry.io') ||
+                           url.includes('api.linear.app') ||
+                           url.includes('api.deepwiki.com') ||
+                           url.includes('api.notion.com') ||
+                           url.includes('api.slack.com') ||
+                           url.includes('api.figma.com') ||
+                           url.includes('api.zapier.com');
+        
+        return !isGenericApi;
+      });
+      
+      setMcpServers(filteredData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch MCP servers');
       console.error('Error fetching MCP servers:', err);
