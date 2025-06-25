@@ -114,6 +114,12 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         content: m.content
       }));
 
+      console.log('Sending message to MCP chat function:', {
+        message: inputMessage,
+        connectedServers: connectedServers.length,
+        chatHistoryLength: chatHistory.length
+      });
+
       const { data, error } = await supabase.functions.invoke('mcp-chat', {
         body: {
           message: inputMessage,
@@ -122,13 +128,40 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (data.error) {
+        console.error('MCP chat error:', data);
+        addMessage('system', `Error: ${data.error}`);
+        
+        // Show specific error messages
+        if (data.status === 429) {
+          toast.error('Rate limit exceeded. Please wait and try again.');
+        } else if (data.details?.includes('API key')) {
+          toast.error('API key issue. Please check your OpenAI configuration.');
+        } else {
+          toast.error(data.error);
+        }
+        return;
+      }
 
       addMessage('assistant', data.response);
       toast.success('Message processed successfully');
     } catch (error) {
       console.error('Error sending message:', error);
-      addMessage('system', 'Error: Failed to process message. Please try again.');
+      
+      let errorMessage = 'Error: Failed to process message. Please try again.';
+      
+      if (error.message?.includes('FunctionsHttpError')) {
+        errorMessage = 'Error: Server is experiencing issues. Please try again in a moment.';
+      } else if (error.message?.includes('Too Many Requests')) {
+        errorMessage = 'Error: Too many requests. Please wait a moment before trying again.';
+      }
+      
+      addMessage('system', errorMessage);
       toast.error('Failed to send message');
     } finally {
       setIsRunning(false);

@@ -31,6 +31,18 @@ serve(async (req) => {
 
     console.log('Processing MCP chat request:', { message, connectedServers: connectedServers.length });
 
+    // Check if OpenAI API key is available
+    if (!openAIApiKey) {
+      console.error('OpenAI API key not found');
+      return new Response(JSON.stringify({ 
+        error: 'OpenAI API key not configured',
+        details: 'Please add your OpenAI API key to the Supabase secrets'
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     // Prepare system prompt based on connected MCP servers
     const systemPrompt = `You are an MCP (Model Context Protocol) assistant helping users interact with connected servers. 
 
@@ -51,7 +63,9 @@ When users ask for actions, explain what you would do with the available MCP ser
       { role: 'user', content: message }
     ];
 
-    // Call OpenAI API
+    console.log('Calling OpenAI API with model: gpt-4o-mini');
+
+    // Call OpenAI API with improved error handling
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -66,12 +80,45 @@ When users ask for actions, explain what you would do with the available MCP ser
       }),
     });
 
+    console.log('OpenAI API response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('OpenAI API error response:', errorText);
+      
+      let errorMessage = `OpenAI API error: ${response.statusText}`;
+      let userFriendlyMessage = 'Failed to process your message. Please try again.';
+      
+      if (response.status === 429) {
+        errorMessage = 'OpenAI API rate limit exceeded';
+        userFriendlyMessage = 'Too many requests. Please wait a moment and try again.';
+      } else if (response.status === 401) {
+        errorMessage = 'OpenAI API authentication failed';
+        userFriendlyMessage = 'Invalid API key. Please check your OpenAI API key configuration.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request to OpenAI API';
+        userFriendlyMessage = 'Invalid request format. Please try rephrasing your message.';
+      }
+
+      return new Response(JSON.stringify({ 
+        error: userFriendlyMessage,
+        details: errorMessage,
+        status: response.status
+      }), {
+        status: response.status === 429 ? 429 : 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const data = await response.json();
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Unexpected OpenAI API response format:', data);
+      throw new Error('Unexpected response format from OpenAI API');
+    }
+
     const assistantMessage = data.choices[0].message.content;
+    console.log('Successfully processed chat request');
 
     // Log to LangSmith if API key is available
     if (langsmithApiKey) {
