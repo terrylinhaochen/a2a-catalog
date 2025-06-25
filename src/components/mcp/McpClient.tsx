@@ -19,6 +19,7 @@ import {
   Server
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface McpServer {
   id: string;
@@ -63,7 +64,7 @@ const McpClient = () => {
     {
       id: '1',
       type: 'system',
-      content: 'MCP Client initialized. Connected to 2 servers.',
+      content: 'MCP Client initialized. Connected to 2 servers with AI integration enabled.',
       timestamp: new Date()
     }
   ]);
@@ -134,11 +135,35 @@ const McpClient = () => {
     addMessage('user', inputMessage);
     setIsRunning(true);
     
-    // Simulate MCP processing
-    setTimeout(() => {
-      addMessage('assistant', `Processing: "${inputMessage}" - This would be handled by the connected MCP servers.`);
+    try {
+      const connectedServers = servers
+        .filter(s => s.status === 'connected')
+        .map(s => s.url);
+
+      const chatHistory = messages.map(m => ({
+        role: m.type === 'user' ? 'user' : 'assistant',
+        content: m.content
+      }));
+
+      const { data, error } = await supabase.functions.invoke('mcp-chat', {
+        body: {
+          message: inputMessage,
+          connectedServers,
+          chatHistory
+        }
+      });
+
+      if (error) throw error;
+
+      addMessage('assistant', data.response);
+      toast.success('Message processed successfully');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      addMessage('system', 'Error: Failed to process message. Please try again.');
+      toast.error('Failed to send message');
+    } finally {
       setIsRunning(false);
-    }, 1000);
+    }
     
     setInputMessage('');
   };
@@ -152,14 +177,34 @@ const McpClient = () => {
     }]);
   };
 
-  const executeTool = (toolName: string) => {
+  const executeTool = async (toolName: string) => {
     addMessage('system', `Executing tool: ${toolName}`);
     setIsRunning(true);
     
-    setTimeout(() => {
-      addMessage('assistant', `Tool "${toolName}" executed successfully. Results would appear here.`);
+    try {
+      const { data, error } = await supabase.functions.invoke('mcp-tool-execution', {
+        body: {
+          toolName,
+          parameters: {},
+          serverUrl: servers[0]?.url
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        addMessage('assistant', `Tool "${toolName}" executed successfully:\n\n${JSON.stringify(data.result, null, 2)}`);
+        toast.success(`Tool ${toolName} executed successfully`);
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error('Error executing tool:', error);
+      addMessage('system', `Error executing tool "${toolName}": ${error.message}`);
+      toast.error(`Failed to execute tool ${toolName}`);
+    } finally {
       setIsRunning(false);
-    }, 800);
+    }
   };
 
   return (
@@ -216,6 +261,7 @@ const McpClient = () => {
                   size="sm"
                   className="w-full justify-start"
                   onClick={() => executeTool(tool.name)}
+                  disabled={isRunning}
                 >
                   <Wrench className="w-4 h-4 mr-2" />
                   {tool.name}
@@ -233,6 +279,10 @@ const McpClient = () => {
             <CardTitle className="flex items-center gap-2">
               <MessageSquare className="w-5 h-5" />
               MCP Chat Interface
+              <Badge variant="outline" className="ml-2">
+                <Zap className="w-3 h-3 mr-1" />
+                AI Powered
+              </Badge>
             </CardTitle>
             <div className="flex gap-2">
               <Button size="sm" variant="outline" onClick={clearMessages}>
@@ -257,7 +307,7 @@ const McpClient = () => {
                       ? 'bg-gray-100 text-gray-700'
                       : 'bg-gray-200 text-gray-800'
                   }`}>
-                    <p className="text-sm">{message.content}</p>
+                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     <p className="text-xs opacity-70 mt-1">
                       {message.timestamp.toLocaleTimeString()}
                     </p>
