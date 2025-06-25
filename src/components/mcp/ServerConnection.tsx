@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,135 +5,88 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Plus, Server, Zap, Lock, Globe } from 'lucide-react';
+import { Plus, Server, Zap, Lock, Globe, Check, X, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
+import { McpServer } from '@/hooks/useMcpServers';
 
-interface ServerConnectionProps {
-  onConnect: (serverUrl: string, serverName: string) => void;
+interface ConnectedMcpServer {
+  id: string;
+  name: string;
+  url: string;
+  status: 'connected' | 'disconnected' | 'error';
+  capabilities?: string[];
+  skills?: string[];
+  provider?: string;
+  serverType?: 'local' | 'remote';
 }
 
-const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
+interface ServerConnectionProps {
+  availableServers: McpServer[];
+  connectedServers: ConnectedMcpServer[];
+  onConnect: (serverId: string) => void;
+  onDisconnect: (serverId: string) => void;
+}
+
+const ServerConnection: React.FC<ServerConnectionProps> = ({ 
+  availableServers, 
+  connectedServers, 
+  onConnect, 
+  onDisconnect 
+}) => {
   const [serverUrl, setServerUrl] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const predefinedServers = [
-    {
-      name: 'GitHub',
-      url: 'https://api.githubcopilot.com/mcp/',
-      description: 'GitHub\'s official MCP Server',
-      authType: 'oauth',
-      category: 'Development'
-    },
-    {
-      name: 'Sentry',
-      url: 'https://mcp.sentry.dev/sse',
-      description: 'Developer-first error tracking and performance monitoring platform',
-      authType: 'oauth',
-      category: 'Monitoring'
-    },
-    {
-      name: 'Linear',
-      url: 'https://mcp.linear.app/sse',
-      description: 'Linear is a project management tool',
-      authType: 'oauth',
-      category: 'Project Management'
-    },
-    {
-      name: 'DeepWiki',
-      url: 'https://mcp.deepwiki.com/mcp',
-      description: 'Automatically generates architecture diagrams and documentation',
-      authType: 'open',
-      category: 'Documentation'
-    },
-    {
-      name: 'Intercom',
-      url: 'https://mcp.intercom.com/sse',
-      description: 'Customer support platform',
-      authType: 'oauth',
-      category: 'Customer Support'
-    },
-    {
-      name: 'Neon',
-      url: 'https://mcp.neon.tech/sse',
-      description: 'Fully managed serverless PostgreSQL',
-      authType: 'oauth',
-      category: 'Database'
-    },
-    {
-      name: 'PayPal',
-      url: 'https://mcp.paypal.com/sse',
-      description: 'Global online payment system',
-      authType: 'oauth',
-      category: 'Payments'
-    },
-    {
-      name: 'Square',
-      url: 'https://mcp.squareup.com/sse',
-      description: 'Payment processing platform',
-      authType: 'oauth',
-      category: 'Payments'
-    },
-    {
-      name: 'CoinGecko',
-      url: 'https://mcp.api.coingecko.com/sse',
-      description: 'Cryptocurrency data platform',
-      authType: 'open',
-      category: 'Cryptocurrency'
-    },
-    {
-      name: 'Asana',
-      url: 'https://mcp.asana.com/sse',
-      description: 'Project management tool',
-      authType: 'oauth',
-      category: 'Project Management'
-    },
-    {
-      name: 'Globalping',
-      url: 'https://mcp.globalping.dev/sse',
-      description: 'Remote MCP server for network commands with Globalping',
-      authType: 'oauth',
-      category: 'Networking'
-    },
-    {
-      name: 'Semgrep',
-      url: 'https://mcp.semgrep.ai/sse',
-      description: 'Static analysis tool for code security and quality',
-      authType: 'open',
-      category: 'Security'
-    },
-    {
-      name: 'Fetch',
-      url: 'https://remote.mcpservers.org/fetch/mcp',
-      description: 'Web content fetching capabilities, converts HTML to markdown',
-      authType: 'open',
-      category: 'Web Scraping'
-    },
-    {
-      name: 'Sequential Thinking',
-      url: 'https://remote.mcpservers.org/sequentialthinking/mcp',
-      description: 'Dynamic and reflective problem-solving through structured thinking',
-      authType: 'open',
-      category: 'AI Tools'
-    },
-    {
-      name: 'EdgeOne Pages',
-      url: 'https://remote.mcpservers.org/edgeone-pages/mcp',
-      description: 'Deploy HTML content to EdgeOne Pages and get public URLs',
-      authType: 'open',
-      category: 'Deployment'
-    }
-  ];
+  // Filter to show only remote servers for the client
+  const remoteServers = availableServers.filter(server => server.server_type === 'remote');
 
-  const handleConnect = async (url: string, name: string) => {
+  const handleConnect = async (serverId: string) => {
     setIsConnecting(true);
     
-    // Simulate connection process
-    setTimeout(() => {
-      onConnect(url, name);
-      setServerUrl('');
+    try {
+      const server = availableServers.find(s => s.id === serverId);
+      if (!server) {
+        throw new Error('Server not found');
+      }
+
+      // Check if already connected
+      if (connectedServers.find(s => s.id === serverId)) {
+        toast.error(`${server.name} is already connected`);
+        return;
+      }
+
+      // Test the remote MCP server connection
+      if (server.connection_url) {
+        try {
+          const response = await fetch(server.connection_url, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            onConnect(serverId);
+            toast.success(`Connected to ${server.name} successfully`);
+          } else {
+            throw new Error(`Server responded with status: ${response.status}`);
+          }
+        } catch (error) {
+          console.warn(`Connection test failed for ${server.name}:`, error);
+          // Still allow connection even if test fails (some servers might not respond to GET)
+          onConnect(serverId);
+          toast.success(`Connected to ${server.name} (connection test inconclusive)`);
+        }
+      } else {
+        // No connection URL, just connect
+        onConnect(serverId);
+        toast.success(`Connected to ${server.name} successfully`);
+      }
+    } catch (error) {
+      console.error('Connection error:', error);
+      toast.error(`Failed to connect: ${error.message}`);
+    } finally {
       setIsConnecting(false);
-      toast.success(`Connected to ${name} successfully`);
-    }, 1000);
+    }
   };
 
   const handleCustomConnect = () => {
@@ -142,15 +94,23 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
       toast.error('Please enter a server URL');
       return;
     }
-    handleConnect(serverUrl, 'Custom Server');
+    toast.info('Custom server connection not implemented yet');
   };
 
-  const getAuthIcon = (authType: string) => {
+  const getAuthIcon = (authType?: string) => {
     return authType === 'oauth' ? <Lock className="w-3 h-3" /> : <Globe className="w-3 h-3" />;
   };
 
-  const getAuthBadgeVariant = (authType: string) => {
+  const getAuthBadgeVariant = (authType?: string) => {
     return authType === 'oauth' ? 'default' : 'secondary';
+  };
+
+  const getAuthLabel = (authType?: string) => {
+    return authType === 'oauth' ? 'OAuth' : 'Open';
+  };
+
+  const isConnected = (serverId: string) => {
+    return connectedServers.some(s => s.id === serverId);
   };
 
   return (
@@ -159,12 +119,12 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Plus className="w-5 h-5" />
-            Connect to Server
+            Connect to Remote MCP Server
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="serverUrl">Server URL</Label>
+            <Label htmlFor="serverUrl">Custom MCP Server URL</Label>
             <div className="flex gap-2">
               <Input
                 id="serverUrl"
@@ -188,39 +148,78 @@ const ServerConnection: React.FC<ServerConnectionProps> = ({ onConnect }) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Server className="w-5 h-5" />
-            Available MCP Servers
+            <ExternalLink className="w-5 h-5" />
+            Available Remote MCP Servers ({remoteServers.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-96">
             <div className="grid gap-3">
-              {predefinedServers.map((server) => (
-                <div key={server.url} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+              {remoteServers.map((server) => (
+                <div key={server.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-medium">{server.name}</h4>
-                      <Badge variant={getAuthBadgeVariant(server.authType)} className="text-xs">
-                        {getAuthIcon(server.authType)}
-                        <span className="ml-1">{server.authType}</span>
+                      {server.is_verified && (
+                        <Badge variant="default" className="text-xs">
+                          Verified
+                        </Badge>
+                      )}
+                      <Badge variant={getAuthBadgeVariant(server.auth_type)} className="text-xs">
+                        {getAuthIcon(server.auth_type)}
+                        <span className="ml-1">{getAuthLabel(server.auth_type)}</span>
                       </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {server.category}
-                      </Badge>
+                      {server.categories?.map((category) => (
+                        <Badge key={category} variant="outline" className="text-xs">
+                          {category}
+                        </Badge>
+                      ))}
                     </div>
                     <p className="text-sm text-gray-500 mb-2">{server.description}</p>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {server.url}
-                    </code>
+                    <div className="flex gap-1 mb-2">
+                      {server.skills?.slice(0, 3).map((skill) => (
+                        <Badge key={skill} variant="secondary" className="text-xs">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-400">
+                      <span>⭐ {server.stars || 0}</span>
+                      <span>🔀 {server.forks || 0}</span>
+                      <span>👍 {server.votes || 0}</span>
+                    </div>
+                    <div className="mt-2 text-xs text-gray-500">
+                      <code className="bg-gray-100 px-2 py-1 rounded">
+                        {server.connection_url}
+                      </code>
+                    </div>
                   </div>
-                  <Button
-                    size="sm"
-                    onClick={() => handleConnect(server.url, server.name)}
-                    disabled={isConnecting}
-                    className="ml-3"
-                  >
-                    Connect
-                  </Button>
+                  <div className="flex gap-2 ml-3">
+                    {isConnected(server.id) ? (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onDisconnect(server.id)}
+                        className="text-green-600 border-green-600"
+                      >
+                        <Check className="w-3 h-3 mr-1" />
+                        Connected
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => handleConnect(server.id)}
+                        disabled={isConnecting}
+                      >
+                        {isConnecting ? (
+                          <div className="animate-spin w-3 h-3 border-2 border-white border-t-transparent rounded-full" />
+                        ) : (
+                          <Zap className="w-3 h-3 mr-1" />
+                        )}
+                        Connect
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

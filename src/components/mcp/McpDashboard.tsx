@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -7,56 +6,71 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
+import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import McpClient from './McpClient';
 import ServerConnection from './ServerConnection';
 
-interface McpServer {
+interface ConnectedMcpServer {
   id: string;
   name: string;
   url: string;
   status: 'connected' | 'disconnected' | 'error';
   capabilities?: string[];
+  skills?: string[];
+  provider?: string;
+  serverType?: 'local' | 'remote';
 }
 
 const McpDashboard = () => {
   const { user } = useAuth();
-  const [mcpServers, setMcpServers] = useState<McpServer[]>([
-    {
-      id: '1',
-      name: 'GitHub Server',
-      url: 'mcp://github',
-      status: 'connected',
-      capabilities: ['tools', 'resources']
-    },
-    {
-      id: '2',
-      name: 'File System',
-      url: 'mcp://filesystem',
-      status: 'connected',
-      capabilities: ['tools', 'resources', 'prompts']
-    }
-  ]);
+  const { mcpServers, loading } = useMcpServers();
+  const [connectedServers, setConnectedServers] = useState<ConnectedMcpServer[]>([]);
 
   // Redirect to auth if not logged in
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
 
-  const handleServerConnect = (serverUrl: string, serverName: string) => {
-    const newServer: McpServer = {
-      id: Date.now().toString(),
-      name: serverName,
-      url: serverUrl,
+  const handleServerConnect = (serverId: string) => {
+    const server = mcpServers.find(s => s.id === serverId);
+    if (!server) return;
+
+    // Determine the connection URL based on server type
+    let connectionUrl: string;
+    if (server.server_type === 'remote') {
+      // Use the remote connection URL
+      connectionUrl = server.connection_url || `https://mcp.${server.provider}.com/mcp`;
+    } else {
+      // For local servers, use localhost with the specified port
+      connectionUrl = `http://localhost:${server.port || 3000}/mcp`;
+    }
+
+    const connectedServer: ConnectedMcpServer = {
+      id: server.id,
+      name: server.name,
+      url: connectionUrl,
       status: 'connected',
-      capabilities: ['tools']
+      capabilities: server.categories,
+      skills: server.skills,
+      provider: server.provider,
+      serverType: server.server_type
     };
     
-    setMcpServers(prev => [...prev, newServer]);
+    setConnectedServers(prev => [...prev, connectedServer]);
   };
 
   const handleServerDisconnect = (serverId: string) => {
-    setMcpServers(prev => prev.filter(s => s.id !== serverId));
+    setConnectedServers(prev => prev.filter(s => s.id !== serverId));
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full" />
+        <span className="ml-2">Loading MCP servers...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -76,14 +90,19 @@ const McpDashboard = () => {
         <TabsContent value="client">
           <div className="h-full">
             <McpClient 
-              servers={mcpServers} 
+              servers={connectedServers} 
               onServerDisconnect={handleServerDisconnect}
             />
           </div>
         </TabsContent>
 
         <TabsContent value="servers">
-          <ServerConnection onConnect={handleServerConnect} />
+          <ServerConnection 
+            availableServers={mcpServers}
+            connectedServers={connectedServers}
+            onConnect={handleServerConnect}
+            onDisconnect={handleServerDisconnect}
+          />
         </TabsContent>
       </Tabs>
     </div>

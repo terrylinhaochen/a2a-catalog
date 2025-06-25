@@ -84,6 +84,51 @@ serve(async (req) => {
         };
         break;
         
+      case 'web_search':
+        result = {
+          search_results: [
+            {
+              title: '2026 FIFA World Cup - Wikipedia',
+              url: 'https://en.wikipedia.org/wiki/2026_FIFA_World_Cup',
+              snippet: 'The 2026 FIFA World Cup will be the 23rd FIFA World Cup, the quadrennial international men\'s football championship contested by the national teams of the member associations of FIFA.',
+              relevance_score: 0.95
+            },
+            {
+              title: 'FIFA World Cup 2026: Host Cities and Venues',
+              url: 'https://www.fifa.com/tournaments/mens/worldcup/2026',
+              snippet: 'The 2026 World Cup will be hosted by the United States, Canada, and Mexico, marking the first time three countries will co-host the tournament.',
+              relevance_score: 0.92
+            }
+          ],
+          query: parameters?.query || 'search query',
+          total_results: 1250000,
+          note: 'Development environment - showing sample web search results'
+        };
+        break;
+        
+      case 'deep_wiki_search':
+        result = {
+          wiki_results: [
+            {
+              title: '2026 FIFA World Cup',
+              url: 'https://en.wikipedia.org/wiki/2026_FIFA_World_Cup',
+              summary: 'The 2026 FIFA World Cup will be the 23rd FIFA World Cup, scheduled to be the first World Cup hosted by three countries: the United States, Canada, and Mexico. It will be the first World Cup to feature 48 teams instead of the traditional 32.',
+              categories: ['FIFA World Cup', 'Football tournaments', '2026 in sports'],
+              page_views: 45000
+            },
+            {
+              title: 'FIFA World Cup',
+              url: 'https://en.wikipedia.org/wiki/FIFA_World_Cup',
+              summary: 'The FIFA World Cup is an international association football competition contested by the senior men\'s national teams of the members of FIFA.',
+              categories: ['FIFA competitions', 'International football', 'Association football'],
+              page_views: 89000
+            }
+          ],
+          query: parameters?.query || 'wiki search',
+          note: 'Development environment - showing sample Wikipedia search results'
+        };
+        break;
+        
       default:
         result = {
           toolName,
