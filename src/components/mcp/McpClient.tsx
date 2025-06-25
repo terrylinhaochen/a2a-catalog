@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -89,13 +88,18 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
   
   const [isRunning, setIsRunning] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const previousMessageCountRef = useRef(messages.length);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll to bottom if a new message was actually added
+    if (messages.length > previousMessageCountRef.current) {
+      scrollToBottom();
+    }
+    previousMessageCountRef.current = messages.length;
   }, [messages]);
 
   const addMessage = (type: 'user' | 'assistant' | 'system', content: string) => {
@@ -268,7 +272,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Available Tools</h4>
-            <ScrollArea className="h-40">
+            <ScrollArea className="h-48">
               <div className="space-y-1">
                 {availableTools.map((tool) => (
                   <Button
@@ -313,7 +317,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col p-4 min-h-0">
-          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 max-h-[500px]">
+          <ScrollArea className="flex-1 mb-4 border rounded-lg p-4 h-[500px]">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
