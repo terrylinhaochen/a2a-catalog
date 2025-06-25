@@ -88,15 +88,31 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
 
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Failed to send message. Please try again.');
       
-      const errorMessage: ChatMessage = {
+      // Show more specific error messages
+      let errorMessage = 'Sorry, I encountered an error while processing your request. Please try again.';
+      
+      if (error.message) {
+        if (error.message.includes('Function error')) {
+          errorMessage = 'Server function error. Please check if the MCP chat function is deployed.';
+        } else if (error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your connection.';
+        } else if (error.message.includes('OpenAI API')) {
+          errorMessage = 'AI service error. Please try again later.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+      }
+      
+      toast.error(errorMessage);
+      
+      const errorChatMessage: ChatMessage = {
         role: 'assistant',
-        content: 'Sorry, I encountered an error while processing your request. Please try again.',
+        content: errorMessage,
         timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, errorChatMessage]);
     } finally {
       setIsLoading(false);
     }

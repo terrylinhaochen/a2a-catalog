@@ -24,14 +24,20 @@ export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResp
   try {
     console.log('Sending MCP chat request:', {
       messageCount: request.messages.length,
-      connectedServers: request.connectedServers.length
+      connectedServers: request.connectedServers.length,
+      lastMessage: request.messages[request.messages.length - 1]?.content?.substring(0, 100)
     });
 
     const { data, error } = await supabase.functions.invoke('mcp-chat', {
       body: request
     });
 
-    console.log('Supabase function response:', { data, error });
+    console.log('Supabase function response:', { 
+      hasData: !!data, 
+      hasError: !!error,
+      dataKeys: data ? Object.keys(data) : null,
+      errorMessage: error?.message 
+    });
 
     if (error) {
       console.error('Supabase function error:', error);
@@ -39,6 +45,7 @@ export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResp
     }
 
     if (!data) {
+      console.error('No response data received from function');
       throw new Error('No response data received from function');
     }
 
@@ -48,20 +55,26 @@ export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResp
     }
 
     if (!data.message) {
+      console.error('No message in response data:', data);
       throw new Error('No message in response data');
     }
 
+    console.log('Successfully received response with message length:', data.message.length);
     return data;
   } catch (error) {
     console.error('Error in sendMcpChatMessage:', error);
     
     // Provide more specific error messages
     if (error.message?.includes('Function error')) {
-      throw new Error('Server function error. Please check if the MCP chat function is deployed.');
+      throw new Error(`Server function error: ${error.message}`);
     }
     
     if (error.message?.includes('fetch')) {
-      throw new Error('Network error. Please check your connection.');
+      throw new Error(`Network error: ${error.message}`);
+    }
+    
+    if (error.message?.includes('OpenAI API')) {
+      throw new Error(`AI service error: ${error.message}`);
     }
     
     throw error;
