@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -219,7 +218,7 @@ const McpClient = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <ScrollArea className="h-32">
+          <ScrollArea className="h-48">
             <div className="space-y-2">
               {servers.map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-2 border rounded-lg">
@@ -256,21 +255,23 @@ const McpClient = () => {
           
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Available Tools</h4>
-            <div className="space-y-1">
-              {availableTools.map((tool) => (
-                <Button
-                  key={tool.name}
-                  variant="ghost"
-                  size="sm"
-                  className="w-full justify-start text-xs"
-                  onClick={() => executeTool(tool.name)}
-                  disabled={isRunning}
-                >
-                  <Wrench className="w-3 h-3 mr-2" />
-                  {tool.name}
-                </Button>
-              ))}
-            </div>
+            <ScrollArea className="h-24">
+              <div className="space-y-1">
+                {availableTools.map((tool) => (
+                  <Button
+                    key={tool.name}
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs"
+                    onClick={() => executeTool(tool.name)}
+                    disabled={isRunning}
+                  >
+                    <Wrench className="w-3 h-3 mr-2" />
+                    {tool.name}
+                  </Button>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
         </CardContent>
       </Card>

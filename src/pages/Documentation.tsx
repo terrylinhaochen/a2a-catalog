@@ -20,39 +20,6 @@ import {
 } from 'lucide-react';
 
 const Documentation = () => {
-  const designPrinciples = [
-    {
-      icon: <Zap className="w-5 h-5 text-purple-600" />,
-      title: "Embrace agentic capabilities",
-      description: "A2A focuses on enabling agents to collaborate in their natural, unstructured modalities, even when they don't share memory, tools and context."
-    },
-    {
-      icon: <Globe className="w-5 h-5 text-purple-600" />,
-      title: "Build on existing standards",
-      description: "The protocol is built on top of existing, popular standards including HTTP/HTTPS, JSON, REST APIs, OAuth 2.0, and OpenAPI/Swagger, ensuring familiar patterns for developers and reducing the learning curve for implementation."
-    },
-    {
-      icon: <Shield className="w-5 h-5 text-purple-600" />,
-      title: "Secure by default",
-      description: "A2A is designed to support enterprise-grade authentication and authorization, with parity to OpenAPI's authentication schemes at launch."
-    },
-    {
-      icon: <Clock className="w-5 h-5 text-purple-600" />,
-      title: "Support for long-running tasks",
-      description: "Designed to support scenarios from quick tasks to deep research that may take hours or days, with real-time feedback and state updates."
-    },
-    {
-      icon: <Eye className="w-5 h-5 text-purple-600" />,
-      title: "Modality agnostic",
-      description: "The agentic world isn't limited to just text, which is why we've designed A2A to support various modalities, including audio and video streaming."
-    },
-    {
-      icon: <Code className="w-5 h-5 text-purple-600" />,
-      title: "Developer experience first",
-      description: "Simple APIs, comprehensive documentation, rich tooling, and community support make A2A easy to implement and debug across multiple programming languages."
-    }
-  ];
-
   const keyCapabilities = [
     {
       icon: <MessageSquare className="w-5 h-5 text-blue-600" />,
@@ -159,9 +126,6 @@ const Documentation = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
               A2A Protocol Overview
             </h2>
-            <p className="text-lg text-gray-600 mb-12">
-              Understanding the foundation of agent interoperability
-            </p>
             
             {/* Protocol Overview */}
             <div className="mb-12">
@@ -180,79 +144,6 @@ const Documentation = () => {
                   multi-agent systems for enterprise customers.
                 </p>
               </div>
-            </div>
-
-            {/* What A2A Enables */}
-            <div className="mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">What A2A Enables</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <Globe className="w-6 h-6 text-purple-600" />
-                      <CardTitle className="text-lg">Cross-Platform Connectivity</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Connect agents built on different platforms (LangGraph, CrewAI, Semantic Kernel, custom solutions)
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <Workflow className="w-6 h-6 text-purple-600" />
-                      <CardTitle className="text-lg">Task Delegation</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Enable agents to delegate sub-tasks, exchange information, and coordinate actions
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      <Shield className="w-6 h-6 text-purple-600" />
-                      <CardTitle className="text-lg">Secure Interaction</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Agents interact without sharing internal memory, tools, or proprietary logic
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-
-          {/* Design Principles */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              A2A Design Principles
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {designPrinciples.map((principle, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      {principle.icon}
-                      <CardTitle className="text-lg">{principle.title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 leading-relaxed">
-                      {principle.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </section>
 
