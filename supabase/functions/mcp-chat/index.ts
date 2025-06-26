@@ -27,6 +27,95 @@ interface ChatRequest {
   connectedServers: string[]; // Array of connected server IDs
 }
 
+// MCP Protocol interfaces
+interface McpRequest {
+  jsonrpc: "2.0";
+  id: string;
+  method: string;
+  params?: any;
+}
+
+interface McpResponse {
+  jsonrpc: "2.0";
+  id: string;
+  result?: any;
+  error?: {
+    code: number;
+    message: string;
+  };
+}
+
+// Function to communicate with MCP servers
+async function callMcpServer(serverUrl: string, method: string, params?: any): Promise<any> {
+  try {
+    const request: McpRequest = {
+      jsonrpc: "2.0",
+      id: crypto.randomUUID(),
+      method,
+      params
+    };
+
+    console.log(`Calling MCP server ${serverUrl} with method: ${method}`);
+
+    const response = await fetch(serverUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      throw new Error(`MCP server responded with status: ${response.status}`);
+    }
+
+    const data: McpResponse = await response.json();
+    
+    if (data.error) {
+      throw new Error(`MCP server error: ${data.error.message}`);
+    }
+
+    return data.result;
+  } catch (error) {
+    console.error(`Error calling MCP server ${serverUrl}:`, error);
+    throw error;
+  }
+}
+
+// Function to get server capabilities
+async function getServerCapabilities(serverUrl: string): Promise<any> {
+  try {
+    return await callMcpServer(serverUrl, 'initialize', {
+      protocolVersion: '2024-11-05',
+      capabilities: {
+        tools: {},
+        resources: {}
+      },
+      clientInfo: {
+        name: 'a2a-catalog-mcp-client',
+        version: '1.0.0'
+      }
+    });
+  } catch (error) {
+    console.warn(`Could not get capabilities for ${serverUrl}:`, error);
+    return null;
+  }
+}
+
+// Function to call specific MCP tools
+async function callMcpTool(serverUrl: string, toolName: string, params: any): Promise<any> {
+  try {
+    return await callMcpServer(serverUrl, 'tools/call', {
+      name: toolName,
+      arguments: params
+    });
+  } catch (error) {
+    console.error(`Error calling tool ${toolName} on ${serverUrl}:`, error);
+    throw error;
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -73,7 +162,86 @@ serve(async (req) => {
       mcpServers = data || []
     }
 
-    // Build system prompt with available MCP servers
+    // Get the last user message
+    const lastUserMessage = messages.filter(m => m.role === 'user').pop()?.content || '';
+    
+    // Try to use MCP servers for specific requests
+    let mcpResults: any[] = [];
+    let mcpContext = '';
+
+    for (const server of mcpServers) {
+      if (!server.connection_url) continue;
+
+      try {
+        // Check if the user is asking for something this server can help with
+        const serverName = server.name.toLowerCase();
+        const message = lastUserMessage.toLowerCase();
+
+        if (serverName.includes('deepwiki') && (message.includes('diagram') || message.includes('architecture') || message.includes('documentation'))) {
+          // Try to use DeepWiki for architecture diagrams
+          try {
+            const result = await callMcpTool(server.connection_url, 'generate_diagram', {
+              repository_url: message.match(/https:\/\/github\.com\/[^\s]+/)?.[0] || 'https://github.com/terrylinhaochen/a2a-open-catalog',
+              diagram_type: 'architecture'
+            });
+            
+            mcpResults.push({
+              server: server.name,
+              result: result,
+              success: true
+            });
+            
+            mcpContext += `\n\n**DeepWiki Result:** Successfully generated architecture diagram for the repository.`;
+          } catch (error) {
+            mcpResults.push({
+              server: server.name,
+              error: error.message,
+              success: false
+            });
+            mcpContext += `\n\n**DeepWiki Error:** ${error.message}`;
+          }
+        }
+        
+        else if (serverName.includes('fetch') && (message.includes('fetch') || message.includes('web') || message.includes('url'))) {
+          // Try to use Fetch MCP for web content
+          try {
+            const url = message.match(/https?:\/\/[^\s]+/)?.[0];
+            if (url) {
+              const result = await callMcpTool(server.connection_url, 'fetch_url', {
+                url: url
+              });
+              
+              mcpResults.push({
+                server: server.name,
+                result: result,
+                success: true
+              });
+              
+              mcpContext += `\n\n**Fetch Result:** Retrieved content from ${url}`;
+            }
+          } catch (error) {
+            mcpResults.push({
+              server: server.name,
+              error: error.message,
+              success: false
+            });
+            mcpContext += `\n\n**Fetch Error:** ${error.message}`;
+          }
+        }
+
+        // Add more server-specific logic here for other MCP servers
+        
+      } catch (error) {
+        console.error(`Error with server ${server.name}:`, error);
+        mcpResults.push({
+          server: server.name,
+          error: error.message,
+          success: false
+        });
+      }
+    }
+
+    // Build system prompt with available MCP servers and results
     let systemPrompt = `You are an AI assistant with access to the following remote MCP (Model Context Protocol) servers:
 
 ${mcpServers.map(server => `
@@ -87,12 +255,16 @@ ${mcpServers.map(server => `
 
 ${mcpServers.length === 0 ? 'No MCP servers are currently connected. Users can connect remote servers through the MCP dashboard.' : ''}
 
+**MCP Server Results:**
+${mcpContext || 'No MCP servers were called for this request.'}
+
 **Instructions:**
 1. Use the available remote MCP servers to help users with their requests
 2. When a user asks for information that can be retrieved through an MCP server, reference the appropriate server
 3. Provide clear explanations of what you're doing and which server you're using
-4. If no relevant MCP server is available, inform the user and suggest alternatives
-5. Always be helpful and informative in your responses
+4. If MCP server results are available, incorporate them into your response
+5. If no relevant MCP server is available, inform the user and suggest alternatives
+6. Always be helpful and informative in your responses
 
 **Available Remote MCP Servers:**
 ${mcpServers.length > 0 ? mcpServers.map(server => `- ${server.name}: ${server.description} (${server.connection_url})`).join('\n') : '- No remote MCP servers connected'}
@@ -148,7 +320,8 @@ Remember to use the MCP servers when appropriate to provide real, up-to-date inf
           description: server.description,
           connectionUrl: server.connection_url,
           authType: server.auth_type
-        }))
+        })),
+        mcpResults: mcpResults
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
