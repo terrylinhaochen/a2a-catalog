@@ -34,16 +34,31 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, connectedServers } = await req.json() as ChatRequest
+    const body = await req.json()
+    const { messages, connectedServers } = body as ChatRequest
+
+    // Validate input
+    if (!messages || !Array.isArray(messages)) {
+      throw new Error('Invalid messages array')
+    }
+
+    if (!connectedServers || !Array.isArray(connectedServers)) {
+      throw new Error('Invalid connectedServers array')
+    }
 
     // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+    
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Missing Supabase configuration')
+    }
+    
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Fetch connected MCP servers from database
     let mcpServers: McpServer[] = []
-    if (connectedServers && connectedServers.length > 0) {
+    if (connectedServers.length > 0) {
       const { data, error } = await supabase
         .from('mcp_servers')
         .select('*')
@@ -144,7 +159,10 @@ Remember to use the MCP servers when appropriate to provide real, up-to-date inf
   } catch (error) {
     console.error('Error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: 'Failed to process chat message',
+        details: error.message 
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500,
