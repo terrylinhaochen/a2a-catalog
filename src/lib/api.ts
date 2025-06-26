@@ -11,7 +11,10 @@ export interface ChatRequest {
 }
 
 export interface ChatResponse {
-  message: string;
+  messages: Array<{
+    role: string;
+    content: string;
+  }>;
   mcpServers: Array<{
     id: string;
     name: string;
@@ -54,12 +57,12 @@ export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResp
       throw new Error(data.error);
     }
 
-    if (!data.message) {
-      console.error('No message in response data:', data);
-      throw new Error('No message in response data');
+    if (!data.messages || !Array.isArray(data.messages)) {
+      console.error('No messages array in response data:', data);
+      throw new Error('No messages array in response data');
     }
 
-    console.log('Successfully received response with message length:', data.message.length);
+    console.log('Successfully received response with message count:', data.messages.length);
     return data;
   } catch (error) {
     console.error('Error in sendMcpChatMessage:', error);

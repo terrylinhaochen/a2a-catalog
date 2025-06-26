@@ -78,13 +78,13 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         connectedServers: connectedServerIds
       });
 
-      const assistantMessage: ChatMessage = {
-        role: 'assistant',
-        content: response.message,
+      // Append all assistant messages from the response
+      const assistantMessages: ChatMessage[] = (response.messages || []).map((msg) => ({
+        role: msg.role as 'assistant' | 'system' | 'user',
+        content: msg.content,
         timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
+      }));
+      setMessages(prev => [...prev, ...assistantMessages]);
 
     } catch (error) {
       console.error('Error sending message:', error);
@@ -196,7 +196,6 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                         <Bot className="w-4 h-4 text-blue-600" />
                       </div>
                     )}
-                    
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-2 ${
                         message.role === 'user'
@@ -213,7 +212,6 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                         {formatTimestamp(message.timestamp)}
                       </div>
                     </div>
-
                     {message.role === 'user' && (
                       <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <User className="w-4 h-4 text-gray-600" />
@@ -221,7 +219,6 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                     )}
                   </div>
                 ))}
-                
                 {isLoading && (
                   <div className="flex gap-3 justify-start">
                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -235,12 +232,10 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                     </div>
                   </div>
                 )}
-                
                 <div ref={messagesEndRef} />
               </div>
             </ScrollArea>
           </div>
-
           {/* Input Area */}
           <div className="border-t p-4 flex-shrink-0">
             <div className="flex gap-2">
