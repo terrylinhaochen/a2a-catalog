@@ -13,7 +13,7 @@ A comprehensive marketplace for Agent-to-Agent (A2A) compatible AI agents and Mo
 
 1. **Clone the repository**
    ```bash
-   git clone <YOUR_GIT_URL>
+git clone <YOUR_GIT_URL>
    cd a2a-catalog
    ```
 
@@ -26,7 +26,7 @@ A comprehensive marketplace for Agent-to-Agent (A2A) compatible AI agents and Mo
 
 3. **Start the development server**
    ```bash
-   npm run dev
+npm run dev
    # or if using Bun
    bun dev
    ```

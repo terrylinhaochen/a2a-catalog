@@ -41,7 +41,7 @@ interface McpResponse {
   result?: any;
   error?: {
     code: number;
-    message: string;
+  message: string;
   };
 }
 
@@ -165,13 +165,6 @@ serve(async (req) => {
     // Get the last user message
     const lastUserMessage = messages.filter(m => m.role === 'user').pop()?.content || '';
     
-    // Prepare an array of messages to return
-    let responseMessages: ChatMessage[] = [];
-    responseMessages.push({
-      role: 'assistant',
-      content: `Let me fetch the information from the connected MCP servers for your request. One moment please.`
-    });
-
     // Try to use MCP servers for specific requests
     let mcpResults: any[] = [];
     let mcpContext = '';
@@ -199,10 +192,6 @@ serve(async (req) => {
             });
             
             mcpContext += `\n\n**DeepWiki Result:** Successfully generated architecture diagram for the repository.`;
-            responseMessages.push({
-              role: 'assistant',
-              content: `DeepWiki generated the following architecture diagram/result: ${typeof result === 'string' ? result : JSON.stringify(result)}`
-            });
           } catch (error) {
             mcpResults.push({
               server: server.name,
@@ -210,10 +199,6 @@ serve(async (req) => {
               success: false
             });
             mcpContext += `\n\n**DeepWiki Error:** ${error.message}`;
-            responseMessages.push({
-              role: 'assistant',
-              content: `DeepWiki error: ${error.message}`
-            });
           }
         }
         
@@ -233,10 +218,6 @@ serve(async (req) => {
               });
               
               mcpContext += `\n\n**Fetch Result:** Retrieved content from ${url}`;
-              responseMessages.push({
-                role: 'assistant',
-                content: `Fetch MCP retrieved content from ${url}: ${typeof result === 'string' ? result : JSON.stringify(result)}`
-              });
             }
           } catch (error) {
             mcpResults.push({
@@ -245,10 +226,6 @@ serve(async (req) => {
               success: false
             });
             mcpContext += `\n\n**Fetch Error:** ${error.message}`;
-            responseMessages.push({
-              role: 'assistant',
-              content: `Fetch MCP error: ${error.message}`
-            });
           }
         }
 
@@ -260,10 +237,6 @@ serve(async (req) => {
           server: server.name,
           error: error.message,
           success: false
-        });
-        responseMessages.push({
-          role: 'assistant',
-          content: `Error with server ${server.name}: ${error.message}`
         });
       }
     }
@@ -336,14 +309,10 @@ Remember to use the MCP servers when appropriate to provide real, up-to-date inf
 
     const data = await response.json()
     const assistantMessage = data.choices[0]?.message?.content || 'No response generated'
-    responseMessages.push({
-      role: 'assistant',
-      content: assistantMessage
-    });
 
     return new Response(
       JSON.stringify({
-        messages: responseMessages,
+        message: assistantMessage,
         mcpServers: mcpServers.map(server => ({
           id: server.id,
           name: server.name,
@@ -364,12 +333,12 @@ Remember to use the MCP servers when appropriate to provide real, up-to-date inf
     console.error('Error:', error)
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to process chat message',
-        details: error.message 
+      error: 'Failed to process chat message',
+      details: error.message 
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500,
+      status: 500,
       }
     )
   }
