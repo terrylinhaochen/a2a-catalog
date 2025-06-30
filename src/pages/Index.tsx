@@ -9,9 +9,8 @@ import { useMcpServers } from '@/hooks/useMcpServers';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Search, Sparkles, TrendingUp, Clock, Globe, Zap, BookOpen, Code, Users, GitBranch, Briefcase } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Search, Sparkles, TrendingUp, Clock, BookOpen, Code, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -81,41 +80,22 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      {/* Hero Section */}
+      {/* Hero Section with Overlaid Gallery */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+        
+        {/* Hero Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
             A New Era of AI Agent Collaboration
-            <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-              Seamless Interoperability
-            </span>
           </h1>
-          <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
-            Discover a dynamic ecosystem where AI agents from any platform connect, communicate, and automate—together. Unlock seamless interoperability and drive innovation with the A2A Catalog.
+          <p className="text-xl text-gray-300 mb-8">
+            Discover Now
           </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/agents">
-              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                <Globe className="w-5 h-5 mr-2" />
-                Browse All Agents
-              </Button>
-            </a>
-            <a href="/submit">
-              <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
-                <Zap className="w-5 h-5 mr-2" />
-                Submit Your Agent
-              </Button>
-            </a>
-          </div>
         </div>
-      </div>
 
-      {/* Main Gallery Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Gallery Section - Overlaid on Hero */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative max-w-2xl mx-auto">
@@ -125,7 +105,7 @@ const Index = () => {
                 placeholder="Search agents, skills, or descriptions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-3 text-lg"
+                className="pl-10 pr-4 py-3 text-lg bg-white/90 backdrop-blur-sm border-white/20"
               />
             </div>
           </div>
@@ -135,7 +115,11 @@ const Index = () => {
             <Button
               variant={filterType === 'featured' ? 'default' : 'outline'}
               onClick={() => setFilterType('featured')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${
+                filterType === 'featured' 
+                  ? 'bg-white text-purple-900 hover:bg-gray-100' 
+                  : 'bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600'
+              }`}
             >
               <Sparkles className="w-4 h-4" />
               Featured
@@ -143,7 +127,11 @@ const Index = () => {
             <Button
               variant={filterType === 'popular' ? 'default' : 'outline'}
               onClick={() => setFilterType('popular')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${
+                filterType === 'popular' 
+                  ? 'bg-white text-purple-900 hover:bg-gray-100' 
+                  : 'bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600'
+              }`}
             >
               <TrendingUp className="w-4 h-4" />
               Popular
@@ -151,7 +139,11 @@ const Index = () => {
             <Button
               variant={filterType === 'recent' ? 'default' : 'outline'}
               onClick={() => setFilterType('recent')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${
+                filterType === 'recent' 
+                  ? 'bg-white text-purple-900 hover:bg-gray-100' 
+                  : 'bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600'
+              }`}
             >
               <Clock className="w-4 h-4" />
               Recent
@@ -162,22 +154,23 @@ const Index = () => {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(12)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-200 animate-pulse rounded-lg"></div>
+                <div key={i} className="h-64 bg-white/10 backdrop-blur-sm animate-pulse rounded-lg"></div>
               ))}
             </div>
           ) : filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredItems.map((item) => (
-                <GenericCard 
-                  key={item.id} 
-                  item={item} 
-                  type={getItemType(item)}
-                  onVote={handleVote} 
-                />
+                <div key={item.id} className="bg-white/95 backdrop-blur-sm rounded-lg overflow-hidden">
+                  <GenericCard 
+                    item={item} 
+                    type={getItemType(item)}
+                    onVote={handleVote} 
+                  />
+                </div>
               ))}
             </div>
           ) : (
-            <Card className="text-center py-12">
+            <Card className="text-center py-12 bg-white/90 backdrop-blur-sm border-white/20">
               <CardContent>
                 <p className="text-gray-500 mb-4">No items found matching your search.</p>
                 <Button onClick={() => setSearchQuery('')} variant="outline">
@@ -189,15 +182,15 @@ const Index = () => {
 
           {/* View All Links */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
               <Link to="/agents">View All AI Agents</Link>
             </Button>
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
               <Link to="/mcps">View All MCP Servers</Link>
             </Button>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Getting Started Section */}
       <section className="py-16 bg-gray-50">
