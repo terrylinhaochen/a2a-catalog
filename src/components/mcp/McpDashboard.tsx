@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Server, Plus, Trash2, Settings, Play, Stop } from 'lucide-react';
+import { Server, Plus, Trash2, Settings, Play, Square } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface McpServer {
@@ -135,7 +135,7 @@ const McpDashboard = () => {
                   {server.status === 'disconnected' ? (
                     <Button onClick={() => connectServer(server.id)}><Play className="w-4 h-4 mr-2" />Connect</Button>
                   ) : server.status === 'connected' ? (
-                    <Button variant="destructive" onClick={() => disconnectServer(server.id)}><Stop className="w-4 h-4 mr-2" />Disconnect</Button>
+                    <Button variant="destructive" onClick={() => disconnectServer(server.id)}><Square className="w-4 h-4 mr-2" />Disconnect</Button>
                   ) : (
                     <Button variant="secondary" disabled><Server className="w-4 h-4 mr-2" />Connecting...</Button>
                   )}
