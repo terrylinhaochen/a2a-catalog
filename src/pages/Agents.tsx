@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -10,8 +11,8 @@ const Agents = () => {
       
       <ItemCatalog
         defaultProtocol="agent"
-        title="A2A Agent Catalog - 96 AI Agents with Agent-to-Agent Protocol"
-        description="Discover and integrate 96 A2A-compliant AI agents for seamless interoperability. Browse the most comprehensive collection of AI agents supporting the Agent-to-Agent protocol from AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more frameworks."
+        title="A2A Agent Catalog"
+        description="Discover and integrate A2A-compliant AI agents for seamless interoperability. Browse the most comprehensive collection of AI agents supporting the Agent-to-Agent protocol from AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more frameworks."
         url="https://a2acatalog.com/agents"
       />
 

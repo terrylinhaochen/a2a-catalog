@@ -1,22 +1,55 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GenericCard from '@/components/GenericCard';
 import { useAgents } from '@/hooks/useAgents';
+import { useMcpServers } from '@/hooks/useMcpServers';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Star, TrendingUp, Sparkles, Globe, Zap, BookOpen, Code, Users, GitBranch, Briefcase } from 'lucide-react';
+import { Search, Sparkles, TrendingUp, Clock, Globe, Zap, BookOpen, Code, Users, GitBranch, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Index = () => {
-  const { agents, categories, loading, voteForAgent } = useAgents();
+  const { agents, loading: agentsLoading, voteForAgent } = useAgents();
+  const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
   const { user } = useAuth();
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState<'featured' | 'popular' | 'recent'>('featured');
 
-  const featuredAgents = agents.filter(agent => agent.featured).slice(0, 6);
-  const popularAgents = agents.sort((a, b) => b.votes - a.votes).slice(0, 6);
+  const loading = agentsLoading || mcpLoading;
+  const allItems = [...agents, ...mcpServers];
+
+  // Filter items based on selected filter
+  const getFilteredItems = () => {
+    let filtered = allItems;
+    
+    if (searchQuery) {
+      filtered = filtered.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.skills?.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    switch (filterType) {
+      case 'featured':
+        return filtered.filter(item => item.featured).slice(0, 12);
+      case 'popular':
+        return filtered.sort((a, b) => b.votes - a.votes).slice(0, 12);
+      case 'recent':
+        return filtered.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime()).slice(0, 12);
+      default:
+        return filtered.slice(0, 12);
+    }
+  };
+
+  const filteredItems = getFilteredItems();
 
   const handleVote = async (itemId: string, voteType: 'up' | 'down') => {
     if (!user) {
@@ -25,7 +58,14 @@ const Index = () => {
     }
 
     try {
-      await voteForAgent(itemId, user.id);
+      const isAgent = agents.some(a => a.id === itemId);
+      
+      if (isAgent) {
+        await voteForAgent(itemId, user.id);
+      } else {
+        await voteForMcpServer(itemId, user.id);
+      }
+      
       toast.success('Vote recorded successfully!');
     } catch (error) {
       console.error('Voting error:', error);
@@ -33,267 +73,134 @@ const Index = () => {
     }
   };
 
+  const getItemType = (item: any): 'agent' | 'mcp' => {
+    return agents.some(a => a.id === item.id) ? 'agent' : 'mcp';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
       {/* Hero Section */}
-      
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-64 md:py-80 flex flex-col items-center justify-center min-h-screen">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              A New Era of AI Agent Collaboration
-              <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Seamless Interoperability
-              </span>
-            </h1>
-            <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
-              Discover a dynamic ecosystem where AI agents from any platform connect, communicate, and automate—together. Unlock seamless interoperability and drive innovation with the A2A Catalog.
-            </p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            A New Era of AI Agent Collaboration
+            <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Seamless Interoperability
+            </span>
+          </h1>
+          <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
+            Discover a dynamic ecosystem where AI agents from any platform connect, communicate, and automate—together. Unlock seamless interoperability and drive innovation with the A2A Catalog.
+          </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/agents">
-                <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                  <Globe className="w-5 h-5 mr-2" />
-                  Browse All Agents
-                </Button>
-              </a>
-              <a href="/submit">
-                <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
-                  <Zap className="w-5 h-5 mr-2" />
-                  Submit Your Agent
-                </Button>
-              </a>
-            </div>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/agents">
+              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
+                <Globe className="w-5 h-5 mr-2" />
+                Browse All Agents
+              </Button>
+            </a>
+            <a href="/submit">
+              <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
+                <Zap className="w-5 h-5 mr-2" />
+                Submit Your Agent
+              </Button>
+            </a>
           </div>
         </div>
       </div>
 
-      {/* NEW: Popular Frameworks Section */}
+      {/* Main Gallery Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Popular A2A Frameworks</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore agents built with leading frameworks that support the Agent-to-Agent protocol
-            </p>
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Input
+                type="text"
+                placeholder="Search agents, skills, or descriptions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-3 text-lg"
+              />
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/frameworks/autogen">
-              <Card className="hover:shadow-lg transition-all duration-300 group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                    <Users className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <CardTitle className="group-hover:text-blue-600 transition-colors">AutoGen</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-600 mb-4">Multi-agent conversations and collaborative AI systems</p>
-                  <div className="flex items-center justify-center text-blue-600">
-                    <span className="text-sm">Explore AutoGen Agents</span>
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
 
-            <Link to="/frameworks/langgraph">
-              <Card className="hover:shadow-lg transition-all duration-300 group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-                    <GitBranch className="w-8 h-8 text-green-600" />
-                  </div>
-                  <CardTitle className="group-hover:text-green-600 transition-colors">LangGraph</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-600 mb-4">Stateful multi-agent workflows and complex decision trees</p>
-                  <div className="flex items-center justify-center text-green-600">
-                    <span className="text-sm">Explore LangGraph Agents</span>
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link to="/frameworks/crewai">
-              <Card className="hover:shadow-lg transition-all duration-300 group">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 transition-colors">
-                    <Briefcase className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <CardTitle className="group-hover:text-orange-600 transition-colors">CrewAI</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-600 mb-4">Role-based agent teams for business automation</p>
-                  <div className="flex items-center justify-center text-orange-600">
-                    <span className="text-sm">Explore CrewAI Agents</span>
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-          
-          <div className="text-center mt-8">
-            <Button variant="outline" asChild>
-              <Link to="/framework-comparison">Compare All Frameworks</Link>
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <Button
+              variant={filterType === 'featured' ? 'default' : 'outline'}
+              onClick={() => setFilterType('featured')}
+              className="flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              Featured
+            </Button>
+            <Button
+              variant={filterType === 'popular' ? 'default' : 'outline'}
+              onClick={() => setFilterType('popular')}
+              className="flex items-center gap-2"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Popular
+            </Button>
+            <Button
+              variant={filterType === 'recent' ? 'default' : 'outline'}
+              onClick={() => setFilterType('recent')}
+              className="flex items-center gap-2"
+            >
+              <Clock className="w-4 h-4" />
+              Recent
             </Button>
           </div>
-        </div>
-      </section>
 
-      {/* Featured Agents Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="w-6 h-6 text-purple-600 mr-2" />
-              <h2 className="text-3xl font-bold text-gray-900">Featured Agents</h2>
-            </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Hand-picked agents that showcase the best of A2A capabilities
-            </p>
-          </div>
-          
+          {/* Gallery Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(12)].map((_, i) => (
                 <div key={i} className="h-64 bg-gray-200 animate-pulse rounded-lg"></div>
               ))}
             </div>
-          ) : featuredAgents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredAgents.map((agent) => (
-                <GenericCard key={agent.id} item={agent} type="agent" onVote={handleVote} />
+          ) : filteredItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredItems.map((item) => (
+                <GenericCard 
+                  key={item.id} 
+                  item={item} 
+                  type={getItemType(item)}
+                  onVote={handleVote} 
+                />
               ))}
             </div>
           ) : (
             <Card className="text-center py-12">
               <CardContent>
-                <p className="text-gray-500 mb-4">No featured agents available yet.</p>
-                <Button asChild>
-                  <Link to="/submit">Be the first to submit an agent</Link>
+                <p className="text-gray-500 mb-4">No items found matching your search.</p>
+                <Button onClick={() => setSearchQuery('')} variant="outline">
+                  Clear Search
                 </Button>
               </CardContent>
             </Card>
           )}
-          
-          <div className="text-center mt-8">
+
+          {/* View All Links */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
             <Button variant="outline" asChild>
-              <Link to="/agents">View All Agents</Link>
+              <Link to="/agents">View All AI Agents</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/mcps">View All MCP Servers</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Explore by Category Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Explore by Category</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Find agents organized by their primary capabilities and use cases
-            </p>
-          </div>
-          
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="h-20 bg-gray-200 animate-pulse rounded-lg"></div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categories.slice(0, 8).map((category) => (
-                <Link
-                  key={category.id}
-                  to={`/agents?category=${encodeURIComponent(category.name)}`}
-                  className="group"
-                >
-                  <Card className="hover:shadow-md transition-shadow duration-200 group-hover:border-purple-200">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl mb-2">{category.icon}</div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-purple-600">
-                        {category.name}
-                      </h3>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {category.count || 0} agents
-                      </p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          )}
-          
-          <div className="text-center mt-8">
-            <Button variant="outline" asChild>
-              <Link to="/categories">View All Categories</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Most Popular Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-4">
-              <TrendingUp className="w-6 h-6 text-purple-600 mr-2" />
-              <h2 className="text-3xl font-bold text-gray-900">Most Popular</h2>
-            </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Community favorites with the highest ratings
-            </p>
-          </div>
-          
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-64 bg-gray-200 animate-pulse rounded-lg"></div>
-              ))}
-            </div>
-          ) : popularAgents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {popularAgents.map((agent, index) => (
-                <div key={agent.id} className="relative">
-                  {index < 3 && (
-                    <Badge 
-                      className="absolute -top-2 -right-2 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white"
-                    >
-                      <Star className="w-3 h-3 mr-1" />
-                      #{index + 1}
-                    </Badge>
-                  )}
-                  <GenericCard item={agent} type="agent" onVote={handleVote} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <Card className="text-center py-12">
-              <CardContent>
-                <p className="text-gray-500 mb-4">No agents available yet.</p>
-                <Button asChild>
-                  <Link to="/submit">Be the first to submit an agent</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-          
-          <div className="text-center mt-8">
-            <Button variant="outline" asChild>
-              <Link to="/agents">View All Agents</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Getting Started with A2A Section */}
-      <section className="py-16 bg-white">
+      {/* Getting Started Section */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Getting Started with A2A</h2>
@@ -303,7 +210,7 @@ const Index = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
+            <Card className="hover:shadow-lg transition-all duration-300">
               <CardHeader className="text-center pb-4">
                 <BookOpen className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Documentation</CardTitle>
@@ -320,7 +227,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
+            <Card className="hover:shadow-lg transition-all duration-300">
               <CardHeader className="text-center pb-4">
                 <Code className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Examples</CardTitle>
@@ -337,7 +244,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300 backdrop-blur-md bg-white/70 border border-white/20">
+            <Card className="hover:shadow-lg transition-all duration-300">
               <CardHeader className="text-center pb-4">
                 <Zap className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <CardTitle className="text-xl">Tutorials</CardTitle>
@@ -353,26 +260,6 @@ const Index = () => {
                 </Button>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-blue-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Get Started?
-          </h2>
-          <p className="text-xl text-purple-100 mb-8">
-            Join the A2A ecosystem and contribute to the next generation of collaborative AI agents.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild className="bg-white text-purple-600 hover:bg-gray-100">
-              <Link to="/submit">Submit Your Agent</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white hover:text-purple-600 bg-white/10 backdrop-blur-sm">
-              <Link to="/docs">Read Documentation</Link>
-            </Button>
           </div>
         </div>
       </section>

@@ -168,19 +168,26 @@ export type Database = {
       }
       mcp_servers: {
         Row: {
+          auth_required: boolean | null
+          auth_type: string | null
           categories: string[] | null
+          connection_url: string | null
           created_at: string | null
           description: string
           forks: number | null
           github_url: string | null
           id: string
+          install_command: string | null
           is_verified: boolean | null
           last_updated: string | null
           logo: string | null
           name: string
           package_name: string | null
+          port: number | null
           provider: string
           repository_url: string | null
+          run_command: string | null
+          server_type: string | null
           skills: string[] | null
           stars: number | null
           updated_at: string | null
@@ -188,19 +195,26 @@ export type Database = {
           votes: number | null
         }
         Insert: {
+          auth_required?: boolean | null
+          auth_type?: string | null
           categories?: string[] | null
+          connection_url?: string | null
           created_at?: string | null
           description: string
           forks?: number | null
           github_url?: string | null
           id?: string
+          install_command?: string | null
           is_verified?: boolean | null
           last_updated?: string | null
           logo?: string | null
           name: string
           package_name?: string | null
+          port?: number | null
           provider: string
           repository_url?: string | null
+          run_command?: string | null
+          server_type?: string | null
           skills?: string[] | null
           stars?: number | null
           updated_at?: string | null
@@ -208,19 +222,26 @@ export type Database = {
           votes?: number | null
         }
         Update: {
+          auth_required?: boolean | null
+          auth_type?: string | null
           categories?: string[] | null
+          connection_url?: string | null
           created_at?: string | null
           description?: string
           forks?: number | null
           github_url?: string | null
           id?: string
+          install_command?: string | null
           is_verified?: boolean | null
           last_updated?: string | null
           logo?: string | null
           name?: string
           package_name?: string | null
+          port?: number | null
           provider?: string
           repository_url?: string | null
+          run_command?: string | null
+          server_type?: string | null
           skills?: string[] | null
           stars?: number | null
           updated_at?: string | null
