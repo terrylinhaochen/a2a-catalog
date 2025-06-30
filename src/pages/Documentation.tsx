@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -47,22 +48,19 @@ const Documentation = () => {
       icon: <Code className="w-8 h-8 text-green-600" />,
       title: "AutoGen",
       description: "Multi-agent conversation framework that enables multiple agents to converse with each other to solve complex tasks collaboratively.",
-      link: "/frameworks/autogen",
-      features: ["Multi-agent conversations", "Code execution", "Human-in-the-loop", "Customizable agent roles"]
+      link: "/frameworks/autogen"
     },
     {
       icon: <Network className="w-8 h-8 text-blue-600" />,
       title: "CrewAI",
       description: "Framework for orchestrating role-playing, autonomous AI agents to work together and tackle complex tasks as a cohesive team.",
-      link: "/frameworks/crewai", 
-      features: ["Role-based agents", "Task delegation", "Crew collaboration", "Goal-oriented execution"]
+      link: "/frameworks/crewai"
     },
     {
       icon: <Workflow className="w-8 h-8 text-purple-600" />,
       title: "LangGraph", 
       description: "Library for building stateful, multi-actor applications with LLMs, built on top of LangChain for complex workflows.",
-      link: "/frameworks/langgraph",
-      features: ["Stateful workflows", "Graph-based orchestration", "LangChain integration", "Complex reasoning paths"]
+      link: "/frameworks/langgraph"
     }
   ];
 
@@ -119,55 +117,48 @@ const Documentation = () => {
                 </p>
               </div>
             </div>
-          </section>
 
-          {/* Popular A2A Frameworks */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Popular A2A Frameworks
-            </h2>
-            
-            <div className="space-y-6 text-gray-700 mb-8">
-              <p>
-                Choose from the most popular frameworks that support A2A protocol integration. 
-                Each framework offers unique approaches to building and orchestrating AI agents.
-              </p>
-            </div>
+            {/* Popular A2A Frameworks */}
+            <div className="mt-16">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8">
+                Popular A2A Frameworks
+              </h3>
+              
+              <div className="space-y-6 text-gray-700 mb-8">
+                <p>
+                  Choose from the most popular frameworks that support A2A protocol integration. 
+                  Each framework offers unique approaches to building and orchestrating AI agents.
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {frameworks.map((framework, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
-                  <CardHeader className="text-center pb-4">
-                    <div className="flex justify-center mb-4">
-                      {framework.icon}
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
-                      {framework.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <p className="text-gray-600 mb-4">
-                      {framework.description}
-                    </p>
-                    <div className="space-y-2 mb-4">
-                      {framework.features.map((feature, idx) => (
-                        <div key={idx} className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
-                          {feature}
-                        </div>
-                      ))}
-                    </div>
-                    <Button variant="outline" asChild className="w-full">
-                      <a href={framework.link}>Learn More</a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {frameworks.map((framework, index) => (
+                  <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                    <CardHeader className="text-center pb-4">
+                      <div className="flex justify-center mb-4">
+                        {framework.icon}
+                      </div>
+                      <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
+                        {framework.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <p className="text-gray-600 mb-4">
+                        {framework.description}
+                      </p>
+                      <Button variant="outline" asChild className="w-full">
+                        <a href={framework.link}>Learn More</a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-            <div className="text-center">
-              <Button asChild className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
-                <a href="/frameworks">View All Frameworks</a>
-              </Button>
+              <div className="text-center">
+                <Button asChild className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
+                  <a href="/frameworks">View All Frameworks</a>
+                </Button>
+              </div>
             </div>
           </section>
 

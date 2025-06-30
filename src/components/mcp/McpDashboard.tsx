@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -37,22 +38,8 @@ const McpDashboard = () => {
   const [selectedServer, setSelectedServer] = useState<McpServer | null>(null);
 
   useEffect(() => {
-    // Fetch servers from local storage or database here
-    // For now, let's use a mock server
-    setServers([
-      {
-        id: '1',
-        name: 'My Local Server',
-        connection_url: 'http://localhost:8080',
-        server_type: 'local',
-        install_command: 'npm install',
-        run_command: 'npm start',
-        port: 8080,
-        auth_required: false,
-        auth_type: 'none',
-        status: 'connected',
-      },
-    ]);
+    // Initialize with empty servers array - no mock data
+    setServers([]);
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -122,30 +109,37 @@ const McpDashboard = () => {
       {/* Server List */}
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Existing Servers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {servers.map((server) => (
-            <Card key={server.id}>
-              <CardHeader>
-                <CardTitle>{server.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>URL: {server.connection_url}</p>
-                <Badge variant="secondary">{server.status}</Badge>
-                <div className="flex justify-end space-x-2 mt-4">
-                  {server.status === 'disconnected' ? (
-                    <Button onClick={() => connectServer(server.id)}><Play className="w-4 h-4 mr-2" />Connect</Button>
-                  ) : server.status === 'connected' ? (
-                    <Button variant="destructive" onClick={() => disconnectServer(server.id)}><Square className="w-4 h-4 mr-2" />Disconnect</Button>
-                  ) : (
-                    <Button variant="secondary" disabled><Server className="w-4 h-4 mr-2" />Connecting...</Button>
-                  )}
-                  <Button variant="outline" onClick={() => setSelectedServer(server)}><Settings className="w-4 h-4 mr-2" />Edit</Button>
-                  <Button variant="destructive" onClick={() => deleteServer(server.id)}><Trash2 className="w-4 h-4 mr-2" />Delete</Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {servers.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <Server className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <p>No servers configured yet. Add your first MCP server below.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {servers.map((server) => (
+              <Card key={server.id}>
+                <CardHeader>
+                  <CardTitle>{server.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>URL: {server.connection_url}</p>
+                  <Badge variant="secondary">{server.status}</Badge>
+                  <div className="flex justify-end space-x-2 mt-4">
+                    {server.status === 'disconnected' ? (
+                      <Button onClick={() => connectServer(server.id)}><Play className="w-4 h-4 mr-2" />Connect</Button>
+                    ) : server.status === 'connected' ? (
+                      <Button variant="destructive" onClick={() => disconnectServer(server.id)}><Square className="w-4 h-4 mr-2" />Disconnect</Button>
+                    ) : (
+                      <Button variant="secondary" disabled><Server className="w-4 h-4 mr-2" />Connecting...</Button>
+                    )}
+                    <Button variant="outline" onClick={() => setSelectedServer(server)}><Settings className="w-4 h-4 mr-2" />Edit</Button>
+                    <Button variant="destructive" onClick={() => deleteServer(server.id)}><Trash2 className="w-4 h-4 mr-2" />Delete</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Add Server Form */}
