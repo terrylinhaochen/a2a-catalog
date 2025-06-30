@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -20,13 +21,14 @@ export interface McpServer {
   updated_at?: string;
   package_name?: string;
   repository_url?: string;
-  server_type?: 'local' | 'remote';
+  server_type?: string; // Changed from 'local' | 'remote' to string to match database
   connection_url?: string; // For remote servers
   install_command?: string; // For local servers
   run_command?: string; // For local servers
   port?: number; // Default port for local servers
   auth_required?: boolean;
-  auth_type?: 'oauth' | 'api_key' | 'none';
+  auth_type?: string; // Changed from 'oauth' | 'api_key' | 'none' to string to match database
+  featured?: boolean; // Added featured property
 }
 
 export const useMcpServers = () => {

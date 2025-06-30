@@ -39,7 +39,7 @@ const Index = () => {
 
     switch (filterType) {
       case 'featured':
-        return filtered.filter(item => item.featured).slice(0, 12);
+        return filtered.filter(item => item.featured === true).slice(0, 12);
       case 'popular':
         return filtered.sort((a, b) => b.votes - a.votes).slice(0, 12);
       case 'recent':
