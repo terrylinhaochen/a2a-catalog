@@ -8,7 +8,7 @@ const HeroSection = () => {
         A New Era of AI Agent Collaboration
       </h1>
       <p className="text-xl text-gray-300 mb-8">
-        Discover Now
+        Find the right MCP Server and A2A Agent for any use case. Skip the workflows to actual results.
       </p>
     </div>
   );

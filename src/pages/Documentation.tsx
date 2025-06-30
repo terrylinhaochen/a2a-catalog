@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -43,6 +42,30 @@ const Documentation = () => {
     }
   ];
 
+  const frameworks = [
+    {
+      icon: <Code className="w-8 h-8 text-green-600" />,
+      title: "AutoGen",
+      description: "Multi-agent conversation framework that enables multiple agents to converse with each other to solve complex tasks collaboratively.",
+      link: "/frameworks/autogen",
+      features: ["Multi-agent conversations", "Code execution", "Human-in-the-loop", "Customizable agent roles"]
+    },
+    {
+      icon: <Network className="w-8 h-8 text-blue-600" />,
+      title: "CrewAI",
+      description: "Framework for orchestrating role-playing, autonomous AI agents to work together and tackle complex tasks as a cohesive team.",
+      link: "/frameworks/crewai", 
+      features: ["Role-based agents", "Task delegation", "Crew collaboration", "Goal-oriented execution"]
+    },
+    {
+      icon: <Workflow className="w-8 h-8 text-purple-600" />,
+      title: "LangGraph", 
+      description: "Library for building stateful, multi-actor applications with LLMs, built on top of LangChain for complex workflows.",
+      link: "/frameworks/langgraph",
+      features: ["Stateful workflows", "Graph-based orchestration", "LangChain integration", "Complex reasoning paths"]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
@@ -54,7 +77,7 @@ const Documentation = () => {
           <div className="relative p-12 md:p-16 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               A2A Agent Catalog
-          </h1>
+            </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
               The comprehensive discovery platform for AI agents supporting the Agent-to-Agent (A2A) protocol. 
               Built with support from 50+ technology partners to create a new era of Agent Interoperability.
@@ -94,7 +117,57 @@ const Documentation = () => {
                   A2A-compatible agents, making it easier for developers and enterprises to build 
                   interoperable AI ecosystems that maximize productivity and innovation.
                 </p>
-                  </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Popular A2A Frameworks */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              Popular A2A Frameworks
+            </h2>
+            
+            <div className="space-y-6 text-gray-700 mb-8">
+              <p>
+                Choose from the most popular frameworks that support A2A protocol integration. 
+                Each framework offers unique approaches to building and orchestrating AI agents.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {frameworks.map((framework, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                  <CardHeader className="text-center pb-4">
+                    <div className="flex justify-center mb-4">
+                      {framework.icon}
+                    </div>
+                    <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
+                      {framework.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-gray-600 mb-4">
+                      {framework.description}
+                    </p>
+                    <div className="space-y-2 mb-4">
+                      {framework.features.map((feature, idx) => (
+                        <div key={idx} className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                          {feature}
+                        </div>
+                      ))}
+                    </div>
+                    <Button variant="outline" asChild className="w-full">
+                      <a href={framework.link}>Learn More</a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Button asChild className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
+                <a href="/frameworks">View All Frameworks</a>
+              </Button>
             </div>
           </section>
 
@@ -117,8 +190,8 @@ const Documentation = () => {
                 <p className="text-blue-800 font-medium">
                   <strong>Google has launched a new, open protocol called Agent2Agent (A2A)</strong>, with support and contributions from more than 50 technology partners and leading service providers. The A2A protocol allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
                 </p>
-                      </div>
-                    </div>
+              </div>
+            </div>
           </section>
 
           {/* A2A Protocol Overview Section */}
@@ -143,7 +216,7 @@ const Documentation = () => {
                   systems, the A2A protocol addresses the challenges identified in deploying large-scale, 
                   multi-agent systems for enterprise customers.
                 </p>
-                  </div>
+              </div>
             </div>
           </section>
 
@@ -157,7 +230,7 @@ const Documentation = () => {
               <p className="text-gray-700">
                 A2A facilitates communication between a "client" agent and a "remote" agent. A client agent is responsible for formulating and communicating tasks, while the remote agent is responsible for acting on those tasks in an attempt to provide the correct information or take the correct action.
               </p>
-                        </div>
+            </div>
                         
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {keyCapabilities.map((capability, index) => (
@@ -177,7 +250,7 @@ const Documentation = () => {
               ))}
             </div>
           </section>
-                </div>
+        </div>
 
         {/* Ready to Build with A2A - Glassmorphism Card */}
         <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mt-20">
@@ -187,8 +260,8 @@ const Documentation = () => {
             </CardTitle>
             <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
               Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
-                  </CardDescription>
-                </CardHeader>
+            </CardDescription>
+          </CardHeader>
           <CardContent className="text-center">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
@@ -197,9 +270,9 @@ const Documentation = () => {
               <Button size="lg" variant="outline" asChild>
                 <a href="/submit">Submit Your Agent</a>
               </Button>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Footer />
