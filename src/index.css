@@ -100,4 +100,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Disable smooth scrolling */
+  html {
+    scroll-behavior: auto !important;
+  }
+  
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
 }
