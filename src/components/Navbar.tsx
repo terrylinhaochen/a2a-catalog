@@ -41,16 +41,16 @@ const Navbar = () => {
                 MCPs
               </Link>
               <Link
-                to="/orchestrate"
+                to="/hire"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Orchestrate
+                Hire
               </Link>
               <Link
-                to="/docs"
+                to="/about"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Documentation
+                About
               </Link>
             </div>
           </div>
@@ -151,18 +151,18 @@ const Navbar = () => {
               MCPs
             </Link>
             <Link
-              to="/orchestrate"
+              to="/hire"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Orchestrate
+              Hire
             </Link>
             <Link
-              to="/docs"
+              to="/about"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Documentation
+              About
             </Link>
             
             {user ? (
