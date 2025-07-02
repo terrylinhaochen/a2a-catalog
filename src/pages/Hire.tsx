@@ -28,27 +28,31 @@ const Hire = () => {
   const trendingServices = [
     {
       title: "AI Development",
-      description: "Custom AI models and integrations",
+      description: "Custom AI models, machine learning algorithms, and intelligent automation solutions tailored to your business needs.",
       image: "🤖",
-      color: "from-purple-500 to-blue-500"
+      color: "from-purple-500 to-blue-500",
+      skills: ["Machine Learning", "Neural Networks", "API Integration", "Model Training"]
     },
     {
       title: "Agent Creation",
-      description: "Human-guided AI agent development", 
+      description: "Human-guided AI agent development with specialized training for customer service, sales, and business automation.", 
       image: "🎯",
-      color: "from-blue-500 to-indigo-500"
+      color: "from-blue-500 to-indigo-500",
+      skills: ["Conversational AI", "Workflow Automation", "Custom Training", "Integration"]
     },
     {
       title: "Data Analysis",
-      description: "Advanced analytics and insights",
+      description: "Advanced analytics, predictive modeling, and business intelligence solutions with human oversight and interpretation.",
       image: "📊", 
-      color: "from-indigo-500 to-purple-500"
+      color: "from-indigo-500 to-purple-500",
+      skills: ["Statistical Analysis", "Data Visualization", "Predictive Modeling", "Reporting"]
     },
     {
       title: "Content Creation",
-      description: "AI-assisted content and copywriting",
+      description: "AI-assisted content writing, copywriting, and creative projects with human editing and quality assurance.",
       image: "✍️",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
+      skills: ["Copywriting", "Blog Posts", "Marketing Content", "SEO Optimization"]
     }
   ];
 
@@ -57,51 +61,57 @@ const Hire = () => {
       icon: <Code className="w-6 h-6" />,
       title: "Development & AI",
       rating: "4.9/5",
-      skills: "+1,853 skills",
-      color: "bg-green-50 border-green-200"
+      skills: "+453 skills",
+      color: "bg-purple-50 border-purple-200",
+      description: "Full-stack development, AI integration, machine learning models, and intelligent automation solutions."
     },
     {
       icon: <Palette className="w-6 h-6" />,
       title: "Design & Creative",
-      rating: "4.9/5", 
-      skills: "+968 skills",
-      color: "bg-blue-50 border-blue-200"
+      rating: "4.8/5", 
+      skills: "+268 skills",
+      color: "bg-blue-50 border-blue-200",
+      description: "UI/UX design, graphic design, branding, and creative content with AI-assisted workflows."
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Sales & Marketing",
-      rating: "4.8/5",
-      skills: "+392 skills", 
-      color: "bg-orange-50 border-orange-200"
+      rating: "4.7/5",
+      skills: "+192 skills", 
+      color: "bg-indigo-50 border-indigo-200",
+      description: "Digital marketing campaigns, lead generation, sales automation, and performance analytics."
     },
     {
       icon: <PenTool className="w-6 h-6" />,
       title: "Writing & Translation",
       rating: "4.9/5",
-      skills: "+505 skills",
-      color: "bg-purple-50 border-purple-200"
+      skills: "+305 skills",
+      color: "bg-purple-50 border-purple-200",
+      description: "Content writing, technical documentation, copywriting, and multilingual translation services."
     },
     {
       icon: <Headphones className="w-6 h-6" />,
       title: "Admin & Customer Support", 
       rating: "4.8/5",
-      skills: "+508 skills",
-      color: "bg-green-50 border-green-200"
+      skills: "+208 skills",
+      color: "bg-blue-50 border-blue-200",
+      description: "Virtual assistance, customer service automation, administrative tasks, and support workflows."
     },
     {
       icon: <Calculator className="w-6 h-6" />,
       title: "Finance & Accounting",
-      rating: "4.8/5", 
-      skills: "+214 skills",
-      color: "bg-blue-50 border-blue-200"
+      rating: "4.7/5", 
+      skills: "+114 skills",
+      color: "bg-indigo-50 border-indigo-200",
+      description: "Financial analysis, bookkeeping automation, budget planning, and compliance reporting."
     }
   ];
 
   const stats = [
-    { number: "25,000", label: "AI agents available", description: "ready to enhance your next project, anytime, anywhere." },
-    { number: "200+", label: "countries represented", description: "so you can get things done without borders, barriers, or delays." },
-    { number: "15", label: "minutes average", description: "to connect with the perfect human-guided agent." },
-    { number: "4M", label: "satisfied businesses", description: "turned to our platform to reach their goals this past year." }
+    { number: "1,200", label: "AI agents available", description: "ready to enhance your next project with human oversight and quality assurance." },
+    { number: "200", label: "skills represented", description: "across all major industries and technical domains for comprehensive solutions." },
+    { number: "15", label: "minutes average", description: "to connect with the perfect human-guided agent for your specific requirements." },
+    { number: "100+", label: "satisfied businesses", description: "have successfully scaled their operations using our human-mediated AI solutions." }
   ];
 
   return (
@@ -181,7 +191,14 @@ const Hire = () => {
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-purple-600 transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-gray-600">{service.description}</p>
+                <p className="text-gray-600 text-sm mb-3">{service.description}</p>
+                <div className="flex flex-wrap gap-1">
+                  {service.skills.map((skill, skillIndex) => (
+                    <Badge key={skillIndex} variant="secondary" className="text-xs">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -189,13 +206,13 @@ const Hire = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-gradient-to-r from-yellow-300 to-green-300 py-16">
+      <div className="bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Make it all happen with AI agents
+              Make it all happen with human-mediated AI agents
             </h2>
-            <Button size="lg" className="bg-gray-900 hover:bg-gray-800 text-white">
+            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
               Join now
             </Button>
           </div>
@@ -227,14 +244,15 @@ const Hire = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {serviceCategories.map((category, index) => (
             <Card key={index} className={`hover:shadow-lg transition-shadow cursor-pointer ${category.color}`}>
-              <CardContent className="p-6 flex items-center justify-between">
-                <div className="flex items-center space-x-4">
+              <CardContent className="p-6">
+                <div className="flex items-start space-x-4">
                   <div className="p-3 bg-white rounded-lg shadow-sm">
                     {category.icon}
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-gray-900">{category.title}</h3>
-                    <div className="flex items-center space-x-4 mt-1">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-2">{category.title}</h3>
+                    <p className="text-gray-600 text-sm mb-3">{category.description}</p>
+                    <div className="flex items-center space-x-4">
                       <div className="flex items-center">
                         <Star className="w-4 h-4 text-green-500 mr-1" />
                         <span className="text-sm font-medium">{category.rating}</span>
@@ -249,7 +267,7 @@ const Hire = () => {
         </div>
         
         <div className="text-left">
-          <Button variant="link" className="text-green-600 hover:text-green-700 p-0 text-lg underline">
+          <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 text-lg underline">
             View more
           </Button>
         </div>
