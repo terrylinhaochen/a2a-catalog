@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 import { useAgents } from '@/hooks/useAgents';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -46,7 +48,53 @@ const AgentDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <SEO 
+        title={`${agent.name} - AI Agent | AI Agent Marketplace`}
+        description={`${agent.description} Discover ${agent.name} by ${agent.provider} with capabilities in ${agent.skills?.slice(0, 3).join(', ')}. Part of our AI Agent Marketplace supporting A2A protocol.`}
+        url={`https://a2acatalog.com/agents/${agent.id}`}
+        image={agent.logo}
+        type="article"
+      />
+      
+      <StructuredData 
+        type="softwareApplication"
+        data={{
+          '@type': 'SoftwareApplication',
+          name: agent.name,
+          description: agent.description,
+          applicationCategory: 'AI Agent',
+          operatingSystem: 'Web',
+          author: {
+            '@type': 'Organization',
+            name: agent.provider
+          },
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Math.min(5, Math.max(1, agent.votes / 10 + 3)),
+            reviewCount: agent.votes,
+            bestRating: 5,
+            worstRating: 1
+          },
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD'
+          },
+          programmingLanguage: ['Python', 'JavaScript', 'TypeScript'],
+          runtimePlatform: ['Web Browser', 'Node.js', 'Cloud'],
+          featureList: agent.skills || [],
+          keywords: agent.categories?.join(', '),
+          url: `https://a2acatalog.com/agents/${agent.id}`,
+          downloadUrl: agent.github_url,
+          codeRepository: agent.github_url,
+          ...(agent.github_url && { sameAs: [agent.github_url] }),
+          ...(agent.documentation && { documentation: agent.documentation }),
+          ...(agent.endpoint && { serviceUrl: agent.endpoint })
+        }}
+      />
+      
+      <div className="min-h-screen bg-gray-50">
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -260,6 +308,7 @@ const AgentDetails = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 import { useMcpServers } from '@/hooks/useMcpServers';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -46,7 +48,52 @@ const McpDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <SEO 
+        title={`${mcpServer.name} - MCP Server | AI Agent Marketplace`}
+        description={`${mcpServer.description} Discover ${mcpServer.name} by ${mcpServer.provider} with capabilities in ${mcpServer.skills?.slice(0, 3).join(', ')}. Part of our AI Agent Marketplace supporting Model Context Protocol.`}
+        url={`https://a2acatalog.com/mcps/${mcpServer.id}`}
+        image={mcpServer.logo}
+        type="article"
+      />
+      
+      <StructuredData 
+        type="softwareApplication" 
+        data={{
+          '@type': 'SoftwareApplication',
+          name: mcpServer.name,
+          description: mcpServer.description,
+          applicationCategory: 'MCP Server',
+          operatingSystem: 'Web',
+          author: {
+            '@type': 'Organization',
+            name: mcpServer.provider
+          },
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Math.min(5, Math.max(1, mcpServer.votes / 10 + 3)),
+            reviewCount: mcpServer.votes,
+            bestRating: 5,
+            worstRating: 1
+          },
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD'
+          },
+          programmingLanguage: ['Python', 'JavaScript'],
+          runtimePlatform: ['Web Browser', 'Node.js', 'Cloud'],
+          featureList: mcpServer.skills || [],
+          keywords: mcpServer.categories?.join(', '),
+          url: `https://a2acatalog.com/mcps/${mcpServer.id}`,
+          downloadUrl: mcpServer.github_url,
+          codeRepository: mcpServer.github_url,
+          ...(mcpServer.github_url && { sameAs: [mcpServer.github_url] }),
+          ...(mcpServer.connection_url && { serviceUrl: mcpServer.connection_url })
+        }}
+      />
+      
+      <div className="min-h-screen bg-gray-50">
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -211,6 +258,7 @@ const McpDetails = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 
