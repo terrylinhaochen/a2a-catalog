@@ -9,7 +9,7 @@ import AgentDetails from './pages/AgentDetails';
 import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import Categories from './pages/Categories';
-import Documentation from './pages/Documentation';
+import About from './pages/About';
 import Submit from './pages/Submit';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
@@ -26,7 +26,7 @@ import LangGraph from './pages/frameworks/LangGraph';
 import CrewAI from './pages/frameworks/CrewAI';
 import McpFaq from './pages/McpFaq';
 import FrameworkComparison from './pages/FrameworkComparison';
-import Orchestrate from './pages/Orchestrate';
+import Hire from './pages/Hire';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,8 +50,8 @@ function App() {
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/orchestrate" element={<Orchestrate />} />
-              <Route path="/docs" element={<Documentation />} />
+              <Route path="/hire" element={<Hire />} />
+              <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
