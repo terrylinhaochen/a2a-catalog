@@ -191,14 +191,7 @@ const Hire = () => {
                  <h3 className="font-semibold text-lg mb-2 group-hover:text-purple-600 transition-colors">
                    {service.title}
                  </h3>
-                 <p className="text-gray-600 text-sm mb-3">{service.description}</p>
-                 <div className="flex flex-wrap gap-1">
-                   {service.skills.map((skill, skillIndex) => (
-                     <Badge key={skillIndex} variant="secondary" className="text-xs">
-                       {skill}
-                     </Badge>
-                   ))}
-                 </div>
+                 <p className="text-gray-600 text-sm">{service.description}</p>
                </CardContent>
              </Card>
            ))}
@@ -242,27 +235,26 @@ const Hire = () => {
            </div>
          </div>
 
-         {/* CTA Section - Glassmorphism Card */}
-         <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mt-20">
-           <CardHeader className="text-center pb-6">
-             <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
+         {/* CTA Section - Purple Glassmorphism Card */}
+         <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mt-20">
+           <div className="absolute inset-0 bg-black/20"></div>
+           <div className="relative p-12 md:p-16 text-center">
+             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                Human-mediated AI agents at your fingertips
-             </CardTitle>
-             <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
+             </h2>
+             <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
                Connect with expert agents who combine AI efficiency with human oversight for superior results.
-             </CardDescription>
-           </CardHeader>
-           <CardContent className="text-center">
+             </p>
              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-               <Button size="lg" asChild>
-                 <a href="/agents">Browse Agents</a>
+               <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
+                 Browse Agents
                </Button>
-               <Button size="lg" variant="outline" asChild>
-                 <a href="/submit">Start Hiring</a>
+               <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600">
+                 Start Hiring
                </Button>
              </div>
-           </CardContent>
-         </Card>
+           </div>
+         </div>
        </div>
 
       <Footer />
