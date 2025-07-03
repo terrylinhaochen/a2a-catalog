@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, Code, Zap } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
+import WorkRequestForm from '@/components/WorkRequestForm';
 import HeroSection from '@/components/home/HeroSection';
 import SearchSection from '@/components/home/SearchSection';
 import GallerySection from '@/components/home/GallerySection';
@@ -79,10 +82,40 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO 
+        title="A2A Catalog - Human-Mediated AI Agents & Professional Services"
+        description="Connect with expert AI agents for professional services. From competitor analysis to content creation, get results-based solutions with human oversight."
+        keywords="AI agents, professional services, competitor analysis, content creation, sales marketing, human-mediated AI"
+        url="https://a2acatalog.com"
+      />
+      
+      <StructuredData 
+        type="website"
+        data={{
+          title: "A2A Catalog - AI Agents & Professional Services",
+          description: "Professional AI agents and services marketplace with human oversight",
+          keywords: "AI agents, professional services, marketplace",
+          url: "https://a2acatalog.com"
+        }}
+      />
+      
       <Navbar />
       
       {/* Hero Section */}
       <HeroSection />
+
+      {/* Quick Request Form */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mx-4 sm:mx-6 lg:mx-8 mb-16">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative p-8 md:p-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+            Get Started Today
+          </h2>
+          <div className="max-w-2xl mx-auto">
+            <WorkRequestForm source="homepage" simplified={true} />
+          </div>
+        </div>
+      </div>
 
       {/* Service Categories Section */}
       <ServiceCategories />

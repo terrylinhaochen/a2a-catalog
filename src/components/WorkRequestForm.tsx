@@ -8,7 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const WorkRequestForm = () => {
+interface WorkRequestFormProps {
+  source?: string;
+  simplified?: boolean;
+}
+
+const WorkRequestForm = ({ source = 'general', simplified = false }: WorkRequestFormProps) => {
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,7 +75,8 @@ const WorkRequestForm = () => {
         .insert({
           user_id: user.id,
           description: description.trim(),
-          file_urls: fileUrls
+          file_urls: fileUrls,
+          service_source: source
         });
 
       if (error) throw error;
