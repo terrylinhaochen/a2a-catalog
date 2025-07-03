@@ -1,10 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Upload, X, FileText } from 'lucide-react';
+import { Upload, X, FileText, Plus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -47,7 +45,7 @@ const WorkRequestForm = () => {
     e.preventDefault();
     
     if (!description.trim()) {
-      toast.error('Please describe what you want to accomplish');
+      toast.error('Please describe what task you want to complete');
       return;
     }
 
@@ -89,40 +87,33 @@ const WorkRequestForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardContent className="p-8">
+    <div className="w-full max-w-4xl mx-auto">
+      {/* Title */}
+      <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-12">
+        What can I do for you?
+      </h2>
+      
+      {/* Glassmorphism Form Container */}
+      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-xl">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <Label htmlFor="description" className="text-sm font-medium text-gray-700 mb-2 block">
-              Project Description
-            </Label>
+          {/* Input Area with integrated controls */}
+          <div className="relative">
             <Textarea
-              id="description"
-              placeholder="Describe what you want to accomplish and upload samples"
+              placeholder="Describe what task you want to complete or a workflow you have"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[120px] resize-none"
+              className="w-full min-h-[120px] bg-white/90 backdrop-blur-sm border-0 rounded-2xl px-6 py-4 pr-20 text-gray-900 placeholder:text-gray-500 resize-none focus:ring-2 focus:ring-white/30"
               required
             />
-          </div>
-
-          <div>
-            <Label className="text-sm font-medium text-gray-700 mb-2 block">
-              Upload Files (Optional)
-            </Label>
             
-            <div 
+            {/* Upload Button - Small and positioned in the input */}
+            <Button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-purple-400 transition-colors"
+              className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-gray-600 hover:bg-gray-700 p-0 transition-colors"
             >
-              <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-              <p className="text-sm text-gray-600">
-                Click to upload files or drag and drop
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                PDF, DOC, DOCX, images up to 10MB each
-              </p>
-            </div>
+              <Plus className="h-4 w-4" />
+            </Button>
             
             <Input
               ref={fileInputRef}
@@ -132,49 +123,47 @@ const WorkRequestForm = () => {
               className="hidden"
               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
             />
-
-            {files.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {files.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                    <div className="flex items-center space-x-2">
-                      <FileText className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-700 truncate">{file.name}</span>
-                      <span className="text-xs text-gray-500">
-                        ({(file.size / 1024 / 1024).toFixed(1)} MB)
-                      </span>
-                    </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeFile(index)}
-                      className="h-6 w-6 p-0 hover:bg-red-100"
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
-          <Button 
-            type="submit" 
-            className="w-full bg-purple-600 hover:bg-purple-700"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit Work Request'}
-          </Button>
-          
-          {!user && (
-            <p className="text-sm text-gray-600 text-center">
-              You'll be asked to sign in to submit your request
-            </p>
+          {/* File List */}
+          {files.length > 0 && (
+            <div className="space-y-2">
+              {files.map((file, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                  <div className="flex items-center space-x-3">
+                    <FileText className="h-4 w-4 text-white/70" />
+                    <span className="text-sm text-white/90 truncate">{file.name}</span>
+                    <span className="text-xs text-white/60">
+                      ({(file.size / 1024 / 1024).toFixed(1)} MB)
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeFile(index)}
+                    className="h-6 w-6 p-0 hover:bg-white/20 text-white/70 hover:text-white"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
           )}
+
+          {/* Submit Button */}
+          <div className="flex justify-center">
+            <Button 
+              type="submit" 
+              className="bg-white text-gray-900 hover:bg-white/90 px-8 py-3 rounded-full font-medium transition-colors"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            </Button>
+          </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
