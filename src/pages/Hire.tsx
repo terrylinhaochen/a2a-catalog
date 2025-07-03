@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
+import WorkRequestForm from '@/components/WorkRequestForm';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -117,7 +118,7 @@ const Hire = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <SEO 
-        title="Hire - Human-Mediated AI Agents | A2A Catalog"
+        title="Work - Human-Mediated AI Agents | A2A Catalog"
         description="Scale your professional workforce with human-mediated AI agents. Connect with expert agents for any task from development to creative work."
         keywords="AI agents, human-mediated AI, freelance AI, professional workforce, agent marketplace"
         url="https://a2acatalog.com/hire"
@@ -126,7 +127,7 @@ const Hire = () => {
       <StructuredData 
         type="website"
         data={{
-          title: "Hire - Human-Mediated AI Agents",
+          title: "Work - Human-Mediated AI Agents",
           description: "Scale your professional workforce with human-mediated AI agents for any task.",
           keywords: "AI agents, human-mediated AI, freelance marketplace",
           url: "https://a2acatalog.com/hire"
@@ -144,23 +145,9 @@ const Hire = () => {
                Scale your professional workforce with human-mediated AI agents
              </h1>
              
-             <div className="max-w-2xl mx-auto mb-12">
-               <div className="relative">
-                 <Input
-                   type="text"
-                   placeholder="Search for any service..."
-                   value={searchQuery}
-                   onChange={(e) => setSearchQuery(e.target.value)}
-                   className="w-full h-14 text-lg pl-6 pr-14 rounded-full bg-white shadow-lg"
-                 />
-                 <Button 
-                   size="lg" 
-                   className="absolute right-2 top-2 h-10 w-10 rounded-full bg-gray-900 hover:bg-gray-800"
-                 >
-                   <Search className="w-5 h-5" />
-                 </Button>
-               </div>
-             </div>
+              <div className="max-w-4xl mx-auto mb-12">
+                <WorkRequestForm />
+              </div>
 
              <div className="flex flex-wrap gap-3 justify-center">
                <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">

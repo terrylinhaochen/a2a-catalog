@@ -38,7 +38,7 @@ const Navbar = () => {
                 to="/hire"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Hire
+                Work
               </Link>
               <Link
                 to="/experts"
@@ -148,7 +148,7 @@ const Navbar = () => {
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Hire
+              Work
             </Link>
             <Link
               to="/experts"
