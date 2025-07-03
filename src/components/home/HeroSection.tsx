@@ -70,8 +70,7 @@ const HeroSection = () => {
                   {activeTab === 'upload' && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <p className="text-white/90 text-sm mb-4 leading-relaxed">
-                        Build your agent workflow with AI-powered automation, with
-                        thousands of capabilities available instantly.
+                        Build your agent workflow with MCP & A2A Agents.
                       </p>
                       <Button 
                         size="lg"
