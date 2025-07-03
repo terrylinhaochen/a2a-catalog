@@ -88,25 +88,16 @@ const Index = () => {
         {/* Hero Content */}
         <HeroSection />
 
-        {/* Gallery Section - Overlaid on Hero */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <SearchSection
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            filterType={filterType}
-            setFilterType={setFilterType}
-          />
-
-          <GallerySection
-            filteredItems={filteredItems}
-            loading={loading}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            handleVote={handleVote}
-            getItemType={getItemType}
-            agents={agents}
-          />
-        </div>
+        {/* Gallery Section - Now structured with its own container */}
+        <GallerySection
+          filteredItems={filteredItems}
+          loading={loading}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          handleVote={handleVote}
+          getItemType={getItemType}
+          agents={agents}
+        />
       </div>
 
       <GettingStartedSection />

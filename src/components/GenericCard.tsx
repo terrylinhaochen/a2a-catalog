@@ -52,7 +52,24 @@ const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) 
       <CardContent className={`space-y-3 ${compact ? 'flex-1' : ''}`}>
         <p className="text-gray-600 text-sm line-clamp-2">{item.description}</p>
 
-        {item.categories && item.categories.length > 0 && (
+        {/* Skills Display */}
+        {item.skills && item.skills.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {item.skills.slice(0, 3).map((skill) => (
+              <Badge key={skill} variant="secondary" className="text-xs bg-purple-100 text-purple-700 hover:bg-purple-200">
+                {skill}
+              </Badge>
+            ))}
+            {item.skills.length > 3 && (
+              <Badge variant="outline" className="text-xs text-purple-600 border-purple-300">
+                +{item.skills.length - 3} more
+              </Badge>
+            )}
+          </div>
+        )}
+
+        {/* Categories as fallback if no skills */}
+        {(!item.skills || item.skills.length === 0) && item.categories && item.categories.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {item.categories.slice(0, 3).map((category) => (
               <Badge key={category} variant="secondary" className="text-xs">
