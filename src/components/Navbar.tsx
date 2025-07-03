@@ -32,19 +32,13 @@ const Navbar = () => {
                 to="/agents"
                 className="text-gray-900 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Agents
-              </Link>
-              <Link
-                to="/mcps"
-                className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                MCPs
+                Agent Capabilities
               </Link>
               <Link
                 to="/hire"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Hire
+                Complete Tasks
               </Link>
               <Link
                 to="/about"
@@ -141,21 +135,14 @@ const Navbar = () => {
               className="text-gray-900 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Agents
-            </Link>
-            <Link
-              to="/mcps"
-              className="text-gray-500 block px-3 py-2 text-base font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              MCPs
+              Agent Capabilities
             </Link>
             <Link
               to="/hire"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Hire
+              Complete Tasks
             </Link>
             <Link
               to="/about"
