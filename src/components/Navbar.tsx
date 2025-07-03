@@ -29,16 +29,16 @@ const Navbar = () => {
             
             <div className="hidden md:ml-8 md:flex md:space-x-8">
               <Link
-                to="/agents"
-                className="text-gray-900 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Agents
-              </Link>
-              <Link
                 to="/hire"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
                 Work
+              </Link>
+              <Link
+                to="/agents"
+                className="text-gray-900 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Agents
               </Link>
               <Link
                 to="/experts"
@@ -137,18 +137,18 @@ const Navbar = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-b">
             <Link
-              to="/agents"
-              className="text-gray-900 block px-3 py-2 text-base font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              Agents
-            </Link>
-            <Link
               to="/hire"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
               Work
+            </Link>
+            <Link
+              to="/agents"
+              className="text-gray-900 block px-3 py-2 text-base font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Agents
             </Link>
             <Link
               to="/experts"

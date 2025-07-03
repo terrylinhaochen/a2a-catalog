@@ -30,6 +30,12 @@ import Hire from './pages/Hire';
 import Experts from './pages/Experts';
 import ExpertDetails from './pages/ExpertDetails';
 
+// Service pages
+import CompetitorAnalysis from './pages/services/CompetitorAnalysis';
+import SalesMarketing from './pages/services/SalesMarketing';
+import WritingTranslation from './pages/services/WritingTranslation';
+import LiteratureResearch from './pages/services/LiteratureResearch';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -67,6 +73,12 @@ function App() {
               <Route path="/frameworks/crewai" element={<CrewAI />} />
               <Route path="/mcp-faq" element={<McpFaq />} />
               <Route path="/framework-comparison" element={<FrameworkComparison />} />
+              
+              {/* Service pages */}
+              <Route path="/services/competitor-analysis" element={<CompetitorAnalysis />} />
+              <Route path="/services/sales-marketing" element={<SalesMarketing />} />
+              <Route path="/services/writing-translation" element={<WritingTranslation />} />
+              <Route path="/services/literature-research" element={<LiteratureResearch />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
