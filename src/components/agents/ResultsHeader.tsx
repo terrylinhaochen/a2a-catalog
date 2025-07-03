@@ -7,6 +7,7 @@ interface ResultsHeaderProps {
   selectedCategories: string[];
   showAgents?: boolean;
   showMcps?: boolean;
+  showExperts?: boolean;
 }
 
 const ResultsHeader = ({ 
@@ -14,15 +15,20 @@ const ResultsHeader = ({
   searchQuery, 
   selectedCategories, 
   showAgents = true, 
-  showMcps = false 
+  showMcps = false,
+  showExperts = false 
 }: ResultsHeaderProps) => {
   const getResultsText = () => {
-    if (showAgents && showMcps) {
+    if (showAgents && showMcps && showExperts) {
+      return `${resultsCount} items found`;
+    } else if (showAgents && showMcps) {
       return `${resultsCount} protocols found`;
     } else if (showAgents) {
       return `${resultsCount} agents found`;
     } else if (showMcps) {
       return `${resultsCount} MCPs found`;
+    } else if (showExperts) {
+      return `${resultsCount} experts found`;
     } else {
       return `${resultsCount} items found`;
     }

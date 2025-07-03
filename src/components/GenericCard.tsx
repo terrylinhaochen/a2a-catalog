@@ -7,26 +7,38 @@ import { Button } from '@/components/ui/button';
 import { Heart, ExternalLink, CheckCircle, Star, GitFork } from 'lucide-react';
 import { Agent } from '@/hooks/useAgents';
 import { McpServer } from '@/hooks/useMcpServers';
+import { Expert } from '@/hooks/useExperts';
 
 interface GenericCardProps {
-  item: Agent | McpServer;
+  item: Agent | McpServer | Expert;
   onVote: (id: string, voteType: 'up' | 'down') => void;
   compact?: boolean;
-  type: 'agent' | 'mcp';
+  type: 'agent' | 'mcp' | 'expert';
 }
 
 const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) => {
-  const isAgent = type === 'agent';
-  const detailsPath = isAgent ? `/agents/${item.id}` : `/mcps/${item.id}`;
+  const getDetailsPath = () => {
+    switch (type) {
+      case 'agent': return `/agents/${item.id}`;
+      case 'expert': return `/experts/${item.id}`;
+      default: return `/mcps/${item.id}`;
+    }
+  };
+  const detailsPath = getDetailsPath();
+  
+  // Type-safe property access
+  const logo = 'logo' in item ? item.logo : ('avatar_url' in item ? item.avatar_url : undefined);
+  const stars = 'stars' in item ? item.stars : undefined;
+  const forks = 'forks' in item ? item.forks : undefined;
 
   return (
     <Card className={`h-full hover:shadow-lg transition-all duration-200 ${compact ? 'flex flex-row' : ''}`}>
       <CardHeader className={compact ? 'pb-2 flex-shrink-0' : 'pb-3'}>
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-2">
-            {item.logo && (
+            {logo && (
               <img
-                src={item.logo}
+                src={logo}
                 alt={`${item.name} logo`}
                 className="w-8 h-8 rounded-full object-cover"
               />
@@ -96,17 +108,17 @@ const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) 
               <span>{item.votes}</span>
             </Button>
             
-            {item.stars !== undefined && (
+            {stars !== undefined && (
               <div className="flex items-center space-x-1">
                 <Star className="w-4 h-4" />
-                <span>{item.stars}</span>
+                <span>{stars}</span>
               </div>
             )}
             
-            {item.forks !== undefined && (
+            {forks !== undefined && (
               <div className="flex items-center space-x-1">
                 <GitFork className="w-4 h-4" />
-                <span>{item.forks}</span>
+                <span>{forks}</span>
               </div>
             )}
           </div>

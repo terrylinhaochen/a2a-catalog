@@ -11,10 +11,11 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
+import { useExperts, Expert } from '@/hooks/useExperts';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
-type ProtocolType = 'agent' | 'mcp' | 'all';
+type ProtocolType = 'agent' | 'mcp' | 'expert' | 'all';
 
 interface ItemCatalogProps {
   defaultProtocol?: ProtocolType;
@@ -26,6 +27,7 @@ interface ItemCatalogProps {
 const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemCatalogProps) => {
   const { agents, categories, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
+  const { experts, loading: expertsLoading, voteForExpert } = useExperts();
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   
@@ -36,8 +38,9 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const [showFilters, setShowFilters] = useState(false);
   const [showAgents, setShowAgents] = useState(defaultProtocol === 'all' || defaultProtocol === 'agent');
   const [showMcps, setShowMcps] = useState(defaultProtocol === 'all' || defaultProtocol === 'mcp');
+  const [showExperts, setShowExperts] = useState(defaultProtocol === 'all' || defaultProtocol === 'expert');
 
-  const loading = agentsLoading || mcpLoading;
+  const loading = agentsLoading || mcpLoading || expertsLoading;
 
   // Handle category filter from URL params
   useEffect(() => {
@@ -48,8 +51,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   }, [searchParams]);
 
   // Combined items based on protocol filter
-  const combinedItems = useMemo((): (Agent | McpServer)[] => {
-    let items: (Agent | McpServer)[] = [];
+  const combinedItems = useMemo((): (Agent | McpServer | Expert)[] => {
+    let items: (Agent | McpServer | Expert)[] = [];
     
     if (showAgents) {
       items = [...items, ...agents];
@@ -59,8 +62,12 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
       items = [...items, ...mcpServers];
     }
     
+    if (showExperts) {
+      items = [...items, ...experts];
+    }
+    
     return items;
-  }, [agents, mcpServers, showAgents, showMcps]);
+  }, [agents, mcpServers, experts, showAgents, showMcps, showExperts]);
 
   const filteredAndSortedItems = useMemo(() => {
     let filtered = combinedItems.filter(item => {
@@ -121,9 +128,12 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
 
     try {
       const isAgent = agents.some(a => a.id === itemId);
+      const isExpert = experts.some(e => e.id === itemId);
       
       if (isAgent) {
         await voteForAgent(itemId, user.id);
+      } else if (isExpert) {
+        await voteForExpert(itemId, user.id);
       } else {
         await voteForMcpServer(itemId, user.id);
       }
@@ -135,8 +145,10 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
     }
   };
 
-  const getItemType = (item: Agent | McpServer): 'agent' | 'mcp' => {
-    return agents.some(a => a.id === item.id) ? 'agent' : 'mcp';
+  const getItemType = (item: Agent | McpServer | Expert): 'agent' | 'mcp' | 'expert' => {
+    if (agents.some(a => a.id === item.id)) return 'agent';
+    if (experts.some(e => e.id === item.id)) return 'expert';
+    return 'mcp';
   };
 
   if (loading) {
@@ -235,20 +247,35 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                     </Badge>
                   </label>
                   
-                  <label className="flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={showMcps}
-                        onChange={(e) => setShowMcps(e.target.checked)}
-                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                      />
-                      <span className="text-sm text-gray-700">MCPs</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {mcpServers.length}
-                    </Badge>
-                  </label>
+                   <label className="flex items-center justify-between cursor-pointer">
+                     <div className="flex items-center space-x-2">
+                       <input
+                         type="checkbox"
+                         checked={showMcps}
+                         onChange={(e) => setShowMcps(e.target.checked)}
+                         className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                       />
+                       <span className="text-sm text-gray-700">MCPs</span>
+                     </div>
+                     <Badge variant="outline" className="text-xs">
+                       {mcpServers.length}
+                     </Badge>
+                   </label>
+                   
+                   <label className="flex items-center justify-between cursor-pointer">
+                     <div className="flex items-center space-x-2">
+                       <input
+                         type="checkbox"
+                         checked={showExperts}
+                         onChange={(e) => setShowExperts(e.target.checked)}
+                         className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                       />
+                       <span className="text-sm text-gray-700">Experts</span>
+                     </div>
+                     <Badge variant="outline" className="text-xs">
+                       {experts.length}
+                     </Badge>
+                   </label>
                 </div>
               </div>
 
@@ -290,6 +317,7 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
               selectedCategories={selectedCategories}
               showAgents={showAgents}
               showMcps={showMcps}
+              showExperts={showExperts}
             />
 
             {/* Items Grid */}

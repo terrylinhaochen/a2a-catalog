@@ -27,6 +27,8 @@ import CrewAI from './pages/frameworks/CrewAI';
 import McpFaq from './pages/McpFaq';
 import FrameworkComparison from './pages/FrameworkComparison';
 import Hire from './pages/Hire';
+import Experts from './pages/Experts';
+import ExpertDetails from './pages/ExpertDetails';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,7 +52,9 @@ function App() {
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/tasks" element={<Hire />} />
+              <Route path="/hire" element={<Hire />} />
+              <Route path="/experts" element={<Experts />} />
+              <Route path="/experts/:id" element={<ExpertDetails />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
