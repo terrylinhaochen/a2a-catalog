@@ -79,17 +79,19 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
-      {/* Hero Section with Overlaid Gallery */}
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* Service Categories Section */}
+      <ServiceCategories />
+      
+      {/* Gallery Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="absolute inset-0 bg-black/20"></div>
         
-        {/* Hero Content */}
-        <HeroSection />
-
-        {/* Gallery Section - Now structured with its own container */}
         <GallerySection
           filteredItems={filteredItems}
           loading={loading}
@@ -100,8 +102,6 @@ const Index = () => {
           agents={agents}
         />
       </div>
-
-      <ServiceCategories />
 
       <GettingStartedSection />
 
