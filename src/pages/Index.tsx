@@ -9,6 +9,7 @@ import StructuredData from '@/components/StructuredData';
 import WorkRequestForm from '@/components/WorkRequestForm';
 import HeroSection from '@/components/home/HeroSection';
 import SearchSection from '@/components/home/SearchSection';
+import TaskRequestSection from '@/components/home/TaskRequestSection';
 import GallerySection from '@/components/home/GallerySection';
 import ServiceCategories from '@/components/home/ServiceCategories';
 import GettingStartedSection from '@/components/home/GettingStartedSection';
@@ -104,16 +105,17 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Quick Request Form */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mx-4 sm:mx-6 lg:mx-8 mb-16">
+      {/* Task Request Section */}
+      <div className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-20">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative p-8 md:p-12 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
-            Get Started Today
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            What can we help you with today?
           </h2>
-          <div className="max-w-2xl mx-auto">
-            <WorkRequestForm source="homepage" simplified={true} />
-          </div>
+          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            Describe your task and get connected with expert agents
+          </p>
+          <TaskRequestSection />
         </div>
       </div>
 
