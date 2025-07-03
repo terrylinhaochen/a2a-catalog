@@ -26,7 +26,7 @@ const HeroSection = () => {
               
               {/* Glassmorphism Card - Left aligned and wider */}
               <div className="max-w-2xl">
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-xl">
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-xl h-64">
                   {/* Toggle Buttons */}
                   <div className="flex gap-2 mb-6 bg-white/10 p-1 rounded-full">
                     <Button
