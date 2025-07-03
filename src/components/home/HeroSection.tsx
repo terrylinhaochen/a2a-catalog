@@ -51,20 +51,22 @@ const HeroSection = () => {
                     </Button>
                   </div>
                   
-                  {/* Search Bar */}
-                  <div className="relative mb-6">
-                    <Input
-                      type="text"
-                      placeholder="Search by role, skills, or keywords"
-                      className="w-full h-14 text-base pl-6 pr-16 rounded-full bg-white/90 backdrop-blur-sm border-0 text-gray-900 placeholder:text-gray-500"
-                    />
-                    <Button 
-                      size="sm"
-                      className="absolute right-2 top-2 h-10 w-10 rounded-full bg-purple-600 hover:bg-purple-700 p-0"
-                    >
-                      <Search className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  {/* Search Bar - Only show for Find Skills */}
+                  {activeTab === 'find' && (
+                    <div className="relative mb-6">
+                      <Input
+                        type="text"
+                        placeholder="Search by role, skills, or keywords"
+                        className="w-full h-14 text-base pl-6 pr-16 rounded-full bg-white/90 backdrop-blur-sm border-0 text-gray-900 placeholder:text-gray-500"
+                      />
+                      <Button 
+                        size="sm"
+                        className="absolute right-2 top-2 h-10 w-10 rounded-full bg-purple-600 hover:bg-purple-700 p-0"
+                      >
+                        <Search className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  )}
                   
                   {/* Upload Agents Content */}
                   {activeTab === 'upload' && (
