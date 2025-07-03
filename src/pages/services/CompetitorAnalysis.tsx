@@ -104,7 +104,7 @@ const CompetitorAnalysis = () => {
 
           {/* Right Panel - Pricing */}
           <div className="lg:w-80">
-            <Card className="sticky top-4">
+            <Card className="sticky top-16">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Pricing Options</h3>
                 
@@ -115,7 +115,7 @@ const CompetitorAnalysis = () => {
                       <span className="text-2xl font-bold">$19</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-3">One-time competitor analysis report</p>
-                    <Button className="w-full">Get Started</Button>
+                    <Button className="w-full" onClick={() => window.location.href = '/submit-request?source=competitor-analysis'}>Get Started</Button>
                   </div>
                   
                   <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
@@ -124,7 +124,7 @@ const CompetitorAnalysis = () => {
                       <span className="text-2xl font-bold">$89</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-3">Ongoing competitive monitoring and monthly reports</p>
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700">Subscribe</Button>
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700" onClick={() => window.location.href = '/submit-request?source=competitor-analysis'}>Subscribe</Button>
                   </div>
                 </div>
                 

@@ -379,6 +379,7 @@ export type Database = {
           description: string
           file_urls: string[] | null
           id: string
+          service_source: string | null
           status: string | null
           updated_at: string
           user_id: string
@@ -388,6 +389,7 @@ export type Database = {
           description: string
           file_urls?: string[] | null
           id?: string
+          service_source?: string | null
           status?: string | null
           updated_at?: string
           user_id: string
@@ -397,6 +399,7 @@ export type Database = {
           description?: string
           file_urls?: string[] | null
           id?: string
+          service_source?: string | null
           status?: string | null
           updated_at?: string
           user_id?: string

@@ -88,10 +88,6 @@ const WorkRequestForm = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      {/* Title */}
-      <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-12">
-        What can I do for you?
-      </h2>
       
       {/* Glassmorphism Form Container */}
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-xl">

@@ -35,6 +35,7 @@ import CompetitorAnalysis from './pages/services/CompetitorAnalysis';
 import SalesMarketing from './pages/services/SalesMarketing';
 import WritingTranslation from './pages/services/WritingTranslation';
 import LiteratureResearch from './pages/services/LiteratureResearch';
+import SubmitRequest from './pages/SubmitRequest';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,6 +80,7 @@ function App() {
               <Route path="/services/sales-marketing" element={<SalesMarketing />} />
               <Route path="/services/writing-translation" element={<WritingTranslation />} />
               <Route path="/services/literature-research" element={<LiteratureResearch />} />
+              <Route path="/submit-request" element={<ProtectedRoute><SubmitRequest /></ProtectedRoute>} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>

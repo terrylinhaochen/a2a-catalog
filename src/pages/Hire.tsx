@@ -28,32 +28,32 @@ const Hire = () => {
 
   const trendingServices = [
     {
-      title: "AI Development",
-      description: "Custom AI models, machine learning algorithms, and intelligent automation solutions tailored to your business needs.",
-      image: "🤖",
-      color: "from-purple-500 to-blue-500",
-      skills: ["Machine Learning", "Neural Networks", "API Integration", "Model Training"]
-    },
-    {
-      title: "Agent Creation",
-      description: "Human-guided AI agent development with specialized training for customer service, sales, and business automation.", 
+      title: "Competitor Analysis",
+      description: "Comprehensive competitor research, market analysis, pricing strategies, and competitive intelligence gathering.",
       image: "🎯",
+      color: "from-purple-500 to-blue-500",
+      slug: "competitor-analysis"
+    },
+    {
+      title: "Sales & Marketing",
+      description: "Digital marketing campaigns, lead generation, sales automation, and performance analytics.", 
+      image: "📈",
       color: "from-blue-500 to-indigo-500",
-      skills: ["Conversational AI", "Workflow Automation", "Custom Training", "Integration"]
+      slug: "sales-marketing"
     },
     {
-      title: "Data Analysis",
-      description: "Advanced analytics, predictive modeling, and business intelligence solutions with human oversight and interpretation.",
-      image: "📊", 
+      title: "Writing & Translation",
+      description: "Content writing, technical documentation, copywriting, and multilingual translation services.",
+      image: "✍️", 
       color: "from-indigo-500 to-purple-500",
-      skills: ["Statistical Analysis", "Data Visualization", "Predictive Modeling", "Reporting"]
+      slug: "writing-translation"
     },
     {
-      title: "Content Creation",
-      description: "AI-assisted content writing, copywriting, and creative projects with human editing and quality assurance.",
-      image: "✍️",
+      title: "Literature Review & Research",
+      description: "Academic research, literature reviews, data analysis, and comprehensive research reports.",
+      image: "📚",
       color: "from-purple-500 to-pink-500",
-      skills: ["Copywriting", "Blog Posts", "Marketing Content", "SEO Optimization"]
+      slug: "literature-research"
     }
   ];
 
@@ -169,20 +169,24 @@ const Hire = () => {
 
          {/* Trending Services */}
          <h2 className="text-3xl font-bold text-gray-900 mb-8">Trending services</h2>
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-           {trendingServices.map((service, index) => (
-             <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-               <div className={`h-32 bg-gradient-to-br ${service.color} flex items-center justify-center text-4xl`}>
-                 {service.image}
-               </div>
-               <CardContent className="p-6">
-                 <h3 className="font-semibold text-lg mb-2 group-hover:text-purple-600 transition-colors">
-                   {service.title}
-                 </h3>
-                 <p className="text-gray-600 text-sm">{service.description}</p>
-               </CardContent>
-             </Card>
-           ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {trendingServices.map((service, index) => (
+              <Card 
+                key={index} 
+                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden cursor-pointer"
+                onClick={() => window.location.href = `/services/${service.slug}`}
+              >
+                <div className={`h-32 bg-gradient-to-br ${service.color} flex items-center justify-center text-4xl`}>
+                  {service.image}
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-lg mb-2 group-hover:text-purple-600 transition-colors">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{service.description}</p>
+                </CardContent>
+              </Card>
+            ))}
          </div>
 
          {/* Service Categories */}
