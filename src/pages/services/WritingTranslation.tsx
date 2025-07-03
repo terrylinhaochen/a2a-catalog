@@ -44,8 +44,8 @@ const WritingTranslation = () => {
                     <PenTool className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Content & Language Specialist</h3>
-                    <p className="text-sm text-gray-500">Expert in writing, editing, and multilingual communication</p>
+                    <h3 className="font-semibold">Content Creation Specialist</h3>
+                    <p className="text-sm text-gray-500">Expert writer and multilingual translator</p>
                   </div>
                 </div>
               </CardContent>
@@ -56,13 +56,14 @@ const WritingTranslation = () => {
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-3">About This Service</h3>
                 <p className="text-gray-700 mb-4">
-                  Transform your communication with professional writing and translation services. Our team delivers 
-                  compelling content that engages your audience and accurate translations that preserve meaning across cultures.
+                  Get high-quality content creation and professional translation services tailored to your needs. 
+                  Our team of expert writers and translators deliver compelling content that engages your audience 
+                  and drives results across multiple languages and formats.
                 </p>
                 <p className="text-gray-700">
-                  From blog posts and marketing copy to technical documentation and multilingual content, we ensure 
-                  your message resonates with clarity and impact. Every piece is crafted with attention to tone, 
-                  style, and cultural nuances.
+                  From blog posts and marketing copy to technical documentation and website localization, 
+                  we ensure your message resonates with your target audience while maintaining brand voice 
+                  and SEO best practices.
                 </p>
               </CardContent>
             </Card>
@@ -73,12 +74,12 @@ const WritingTranslation = () => {
                 <h3 className="font-semibold text-lg mb-3">Recent Portfolio</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Tech Startup Blog Series</h4>
-                    <p className="text-sm text-gray-600">20-article thought leadership series for AI company</p>
+                    <h4 className="font-medium mb-2">E-commerce Website</h4>
+                    <p className="text-sm text-gray-600">Complete website translation for 5 languages</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Global Product Launch</h4>
-                    <p className="text-sm text-gray-600">Multilingual marketing materials in 8 languages</p>
+                    <h4 className="font-medium mb-2">Technical Documentation</h4>
+                    <p className="text-sm text-gray-600">API documentation and user guides for SaaS platform</p>
                   </div>
                 </div>
               </CardContent>
@@ -92,8 +93,8 @@ const WritingTranslation = () => {
                   <div>
                     <h3 className="font-semibold text-green-900 mb-2">Results-Based Guarantee</h3>
                     <p className="text-green-800">
-                      We charge only based on results - you see result samples first, then pay. 
-                      If you are unsatisfied, you don't pay.
+                      See samples of our work first, then decide. We only charge when you're completely satisfied with the results. 
+                      No upfront payments, no risk - just proven outcomes.
                     </p>
                   </div>
                 </div>
@@ -103,7 +104,7 @@ const WritingTranslation = () => {
 
           {/* Right Panel - Pricing */}
           <div className="lg:w-80">
-            <Card className="sticky top-16">
+            <Card className="mt-20">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Pricing Options</h3>
                 

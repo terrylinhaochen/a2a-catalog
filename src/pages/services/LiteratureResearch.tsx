@@ -32,7 +32,7 @@ const LiteratureResearch = () => {
                   <span className="ml-1 text-sm text-gray-500">(73 reviews)</span>
                 </div>
                 <span className="text-sm text-gray-500">•</span>
-                <span className="text-sm text-gray-500">194 research projects completed</span>
+                <span className="text-sm text-gray-500">156 research projects completed</span>
               </div>
             </div>
 
@@ -44,8 +44,8 @@ const LiteratureResearch = () => {
                     <BookOpen className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Academic Research Specialist</h3>
-                    <p className="text-sm text-gray-500">PhD-level researcher with expertise in systematic reviews</p>
+                    <h3 className="font-semibold">Research & Analysis Specialist</h3>
+                    <p className="text-sm text-gray-500">Expert in academic research and data analysis</p>
                   </div>
                 </div>
               </CardContent>
@@ -93,8 +93,8 @@ const LiteratureResearch = () => {
                   <div>
                     <h3 className="font-semibold text-green-900 mb-2">Results-Based Guarantee</h3>
                     <p className="text-green-800">
-                      We charge only based on results - you see result samples first, then pay. 
-                      If you are unsatisfied, you don't pay.
+                      See samples of our work first, then decide. We only charge when you're completely satisfied with the results. 
+                      No upfront payments, no risk - just proven outcomes.
                     </p>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ const LiteratureResearch = () => {
 
           {/* Right Panel - Pricing */}
           <div className="lg:w-80">
-            <Card className="sticky top-16">
+            <Card className="mt-20">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Pricing Options</h3>
                 

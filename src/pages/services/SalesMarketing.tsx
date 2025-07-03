@@ -92,8 +92,8 @@ const SalesMarketing = () => {
                   <div>
                     <h3 className="font-semibold text-green-900 mb-2">Results-Based Guarantee</h3>
                     <p className="text-green-800">
-                      We charge only based on results - you see result samples first, then pay. 
-                      If you are unsatisfied, you don't pay.
+                      See samples of our work first, then decide. We only charge when you're completely satisfied with the results. 
+                      No upfront payments, no risk - just proven outcomes.
                     </p>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ const SalesMarketing = () => {
 
           {/* Right Panel - Pricing */}
           <div className="lg:w-80">
-            <Card className="sticky top-16">
+            <Card className="mt-20">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-lg mb-4">Pricing Options</h3>
                 
