@@ -226,58 +226,60 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           {/* Filters Panel */}
           <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="space-y-6">
-              {/* Protocol Filter */}
-              <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-gray-900">Protocols</h3>
+              {/* Protocol Filter - Only show when not specifically for experts */}
+              {defaultProtocol !== 'expert' && (
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-gray-900">Protocols</h3>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={showAgents}
+                          onChange={(e) => setShowAgents(e.target.checked)}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-sm text-gray-700">A2A Agents</span>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {agents.length}
+                      </Badge>
+                    </label>
+                    
+                    <label className="flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={showMcps}
+                          onChange={(e) => setShowMcps(e.target.checked)}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-sm text-gray-700">MCPs</span>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {mcpServers.length}
+                      </Badge>
+                    </label>
+                    
+                    <label className="flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={showExperts}
+                          onChange={(e) => setShowExperts(e.target.checked)}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                        />
+                        <span className="text-sm text-gray-700">Experts</span>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {experts.length}
+                      </Badge>
+                    </label>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={showAgents}
-                        onChange={(e) => setShowAgents(e.target.checked)}
-                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                      />
-                      <span className="text-sm text-gray-700">A2A Agents</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {agents.length}
-                    </Badge>
-                  </label>
-                  
-                   <label className="flex items-center justify-between cursor-pointer">
-                     <div className="flex items-center space-x-2">
-                       <input
-                         type="checkbox"
-                         checked={showMcps}
-                         onChange={(e) => setShowMcps(e.target.checked)}
-                         className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                       />
-                       <span className="text-sm text-gray-700">MCPs</span>
-                     </div>
-                     <Badge variant="outline" className="text-xs">
-                       {mcpServers.length}
-                     </Badge>
-                   </label>
-                   
-                   <label className="flex items-center justify-between cursor-pointer">
-                     <div className="flex items-center space-x-2">
-                       <input
-                         type="checkbox"
-                         checked={showExperts}
-                         onChange={(e) => setShowExperts(e.target.checked)}
-                         className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
-                       />
-                       <span className="text-sm text-gray-700">Experts</span>
-                     </div>
-                     <Badge variant="outline" className="text-xs">
-                       {experts.length}
-                     </Badge>
-                   </label>
-                </div>
-              </div>
+              )}
 
               {/* Categories Filter */}
               <div className="bg-white p-4 rounded-lg shadow-sm">
