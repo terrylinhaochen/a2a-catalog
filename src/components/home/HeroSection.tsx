@@ -91,7 +91,7 @@ const HeroSection = () => {
 
   return (
     <div className="bg-gray-50 py-20">
-      <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Purple Card */}
         <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-0 shadow-2xl overflow-hidden">
           <CardContent className="p-10 lg:p-14">
@@ -203,7 +203,8 @@ const HeroSection = () => {
                   {activeTab === 'upload' && (
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                       <p className="text-white/90 text-sm mb-4 leading-relaxed">
-                        Build your agent workflow with MCP & A2A Agents.
+                        Build your agent workflow with AI-powered automation, with
+                        thousands of capabilities available instantly.
                       </p>
                       <Button 
                         size="lg"
