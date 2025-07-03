@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import HeroSection from '@/components/home/HeroSection';
 import SearchSection from '@/components/home/SearchSection';
 import GallerySection from '@/components/home/GallerySection';
+import ServiceCategories from '@/components/home/ServiceCategories';
 import GettingStartedSection from '@/components/home/GettingStartedSection';
 import { useAgents } from '@/hooks/useAgents';
 import { useMcpServers } from '@/hooks/useMcpServers';
@@ -99,6 +100,8 @@ const Index = () => {
           agents={agents}
         />
       </div>
+
+      <ServiceCategories />
 
       <GettingStartedSection />
 
