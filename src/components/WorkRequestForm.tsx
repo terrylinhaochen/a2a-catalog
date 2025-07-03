@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Upload, X, FileText, Plus } from 'lucide-react';
+import { Upload, X, FileText, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -102,17 +102,26 @@ const WorkRequestForm = () => {
               placeholder="Describe what task you want to complete or a workflow you have"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full min-h-[120px] bg-white/90 backdrop-blur-sm border-0 rounded-2xl px-6 py-4 pr-20 text-gray-900 placeholder:text-gray-500 resize-none focus:ring-2 focus:ring-white/30"
+              className="w-full min-h-[120px] bg-white/90 backdrop-blur-sm border-0 rounded-2xl px-6 py-4 pl-16 pr-16 text-gray-900 placeholder:text-gray-500 resize-none focus:ring-2 focus:ring-white/30"
               required
             />
             
-            {/* Upload Button - Small and positioned in the input */}
+            {/* Upload Button - Left side */}
             <Button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-gray-600 hover:bg-gray-700 p-0 transition-colors"
+              className="absolute bottom-4 left-4 h-10 w-10 rounded-full bg-gray-600 hover:bg-gray-700 p-0 transition-colors"
             >
-              <Plus className="h-4 w-4" />
+              <Upload className="h-4 w-4" />
+            </Button>
+            
+            {/* Submit Button - Right side */}
+            <Button 
+              type="submit" 
+              className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-white text-gray-900 hover:bg-white/90 p-0 transition-colors"
+              disabled={isSubmitting}
+            >
+              <ArrowRight className="h-4 w-4" />
             </Button>
             
             <Input
@@ -151,16 +160,6 @@ const WorkRequestForm = () => {
             </div>
           )}
 
-          {/* Submit Button */}
-          <div className="flex justify-center">
-            <Button 
-              type="submit" 
-              className="bg-white text-gray-900 hover:bg-white/90 px-8 py-3 rounded-full font-medium transition-colors"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit Request'}
-            </Button>
-          </div>
         </form>
       </div>
     </div>

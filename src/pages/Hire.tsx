@@ -145,24 +145,25 @@ const Hire = () => {
                Scale your professional workforce with human-mediated AI agents
              </h1>
              
-              <div className="max-w-4xl mx-auto mb-12">
+              <div className="max-w-4xl mx-auto mb-8">
                 <WorkRequestForm />
               </div>
 
-             <div className="flex flex-wrap gap-3 justify-center">
-               <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                 AI development
-               </Badge>
-               <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                 data analysis
-               </Badge>
-               <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                 content creation
-               </Badge>
-               <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
-                 agent training
-               </Badge>
-             </div>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                  user research
+                </Badge>
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                  competitor analysis
+                </Badge>
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                  content creation
+                </Badge>
+                <Badge variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                  lead compilation
+                </Badge>
+              </div>
+
            </div>
          </div>
 
