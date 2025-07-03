@@ -118,9 +118,9 @@ const Hire = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <SEO 
-        title="Work - Human-Mediated AI Agents | A2A Catalog"
-        description="Scale your professional workforce with human-mediated AI agents. Connect with expert agents for any task from development to creative work."
-        keywords="AI agents, human-mediated AI, freelance AI, professional workforce, agent marketplace"
+        title="Work - Professional AI Agents & Human-Mediated Services | A2A Catalog"
+        description="Scale your workforce with human-mediated AI agents. Expert services for competitor analysis, sales & marketing, writing, and research. Results-based pricing."
+        keywords="AI agents, human-mediated AI, professional services, competitor analysis, sales marketing, content writing, research services"
         url="https://a2acatalog.com/hire"
       />
       

@@ -10,9 +10,9 @@ const CompetitorAnalysis = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Competitor Analysis Services | A2A Catalog"
-        description="Professional competitor analysis and market intelligence services. See results first, then pay. If unsatisfied, you don't pay."
-        keywords="competitor analysis, market research, competitive intelligence, business analysis"
+        title="Professional Competitor Analysis Services - Market Intelligence | A2A Catalog"
+        description="Expert competitor analysis and market research services. Get comprehensive competitive intelligence reports with results-based pricing. See samples first, pay only if satisfied."
+        keywords="competitor analysis, market research, competitive intelligence, business analysis, market intelligence, competitor research"
         url="https://a2acatalog.com/services/competitor-analysis"
       />
       

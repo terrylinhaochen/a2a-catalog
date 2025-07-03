@@ -10,9 +10,9 @@ const LiteratureResearch = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Literature Review & Research Services | A2A Catalog"
-        description="Professional academic research and literature review services. Comprehensive analysis and evidence-based insights. See results first, then pay."
-        keywords="literature review, academic research, data analysis, research reports, meta-analysis"
+        title="Professional Literature Review & Research Services - Academic Research & Data Analysis | A2A Catalog"
+        description="Expert academic research and literature review services. Comprehensive analysis, systematic reviews, and evidence-based insights. Results-based pricing with sample previews."
+        keywords="literature review, academic research, data analysis, research reports, meta-analysis, systematic review, evidence-based research"
         url="https://a2acatalog.com/services/literature-research"
       />
       

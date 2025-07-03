@@ -10,9 +10,9 @@ const SalesMarketing = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Sales & Marketing Services | A2A Catalog"
-        description="Professional sales and marketing services. Digital campaigns, lead generation, and performance analytics. See results first, then pay."
-        keywords="sales marketing, lead generation, digital advertising, email marketing, sales automation"
+        title="Professional Sales & Marketing Services - Digital Campaigns & Lead Generation | A2A Catalog"
+        description="Expert sales and marketing services including digital campaigns, lead generation, email marketing, and performance analytics. Results-based pricing - see samples first."
+        keywords="sales marketing, lead generation, digital advertising, email marketing, sales automation, marketing campaigns, conversion optimization"
         url="https://a2acatalog.com/services/sales-marketing"
       />
       
