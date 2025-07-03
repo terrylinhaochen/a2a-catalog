@@ -50,7 +50,7 @@ function App() {
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/hire" element={<Hire />} />
+              <Route path="/tasks" element={<Hire />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />

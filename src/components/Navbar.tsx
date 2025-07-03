@@ -32,13 +32,13 @@ const Navbar = () => {
                 to="/agents"
                 className="text-gray-900 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Agent Capabilities
+                Agents
               </Link>
               <Link
-                to="/hire"
+                to="/tasks"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Complete Tasks
+                Tasks
               </Link>
               <Link
                 to="/about"
@@ -135,14 +135,14 @@ const Navbar = () => {
               className="text-gray-900 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Agent Capabilities
+              Agents
             </Link>
             <Link
-              to="/hire"
+              to="/tasks"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Complete Tasks
+              Tasks
             </Link>
             <Link
               to="/about"

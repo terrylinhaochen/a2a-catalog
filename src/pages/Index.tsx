@@ -89,9 +89,7 @@ const Index = () => {
       <ServiceCategories />
       
       {/* Gallery Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        <div className="absolute inset-0 bg-black/20"></div>
-        
+      <div className="bg-gray-50 py-16">
         <GallerySection
           filteredItems={filteredItems}
           loading={loading}
