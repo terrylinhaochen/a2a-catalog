@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -48,7 +47,7 @@ const GallerySection = ({
       ) : filteredItems.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
           {filteredItems.map((item) => (
-            <div key={item.id} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div key={item.id} className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-purple-100">
               <GenericCard 
                 item={item} 
                 type={getItemType(item)}
@@ -70,10 +69,10 @@ const GallerySection = ({
 
       {/* View All Links */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="outline" asChild className="bg-purple-600 text-white hover:bg-purple-700 border-purple-600">
+        <Button variant="outline" asChild className="bg-purple-800 text-white hover:bg-purple-700 border-purple-800">
           <Link to="/agents">View All Agents</Link>
         </Button>
-        <Button variant="outline" asChild className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600">
+        <Button variant="outline" asChild className="bg-purple-800 text-white hover:bg-purple-700 border-purple-800">
           <Link to="/mcps">View All MCP Servers</Link>
         </Button>
       </div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +9,7 @@ const HeroSection = () => {
   const [activeTab, setActiveTab] = useState<'find' | 'upload'>('find');
 
   return (
-    <div className="bg-white py-20">
+    <div className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16">
         {/* Main Purple Card */}
         <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-0 shadow-2xl overflow-hidden">

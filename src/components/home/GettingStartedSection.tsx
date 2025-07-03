@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +15,7 @@ const GettingStartedSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-lg transition-all duration-300">
+          <Card className="hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
             <CardHeader className="text-center pb-4">
               <BookOpen className="w-12 h-12 text-purple-600 mx-auto mb-4" />
               <CardTitle className="text-xl">Documentation</CardTitle>
@@ -25,7 +24,7 @@ const GettingStartedSection = () => {
               <p className="text-gray-600 mb-6">
                 Explore the official A2A protocol documentation and specification
               </p>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
                 <a href="https://google-a2a.github.io/A2A/latest/" target="_blank" rel="noopener noreferrer">
                   Read Docs
                 </a>
@@ -33,7 +32,7 @@ const GettingStartedSection = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-all duration-300">
+          <Card className="hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
             <CardHeader className="text-center pb-4">
               <Code className="w-12 h-12 text-purple-600 mx-auto mb-4" />
               <CardTitle className="text-xl">Examples</CardTitle>
@@ -42,7 +41,7 @@ const GettingStartedSection = () => {
               <p className="text-gray-600 mb-6">
                 Browse working examples and sample implementations
               </p>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
                 <a href="https://github.com/google-a2a/A2A" target="_blank" rel="noopener noreferrer">
                   View Examples
                 </a>
@@ -50,7 +49,7 @@ const GettingStartedSection = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-lg transition-all duration-300">
+          <Card className="hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
             <CardHeader className="text-center pb-4">
               <Zap className="w-12 h-12 text-purple-600 mx-auto mb-4" />
               <CardTitle className="text-xl">Tutorials</CardTitle>
@@ -59,7 +58,7 @@ const GettingStartedSection = () => {
               <p className="text-gray-600 mb-6">
                 Follow step-by-step guides to implement A2A in your projects
               </p>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
                 <a href="https://google-a2a.github.io/A2A/latest/tutorials/python/" target="_blank" rel="noopener noreferrer">
                   Start Learning
                 </a>
