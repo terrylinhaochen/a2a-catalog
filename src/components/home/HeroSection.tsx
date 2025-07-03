@@ -78,7 +78,7 @@ const HeroSection = () => {
 
       if (error) throw error;
 
-      toast.success('Request submitted successfully!');
+      toast.success('Our agent team has received your task and will let you know if we have clarification questions, check your email for updates!');
       setDescription('');
       setFiles([]);
     } catch (error) {
