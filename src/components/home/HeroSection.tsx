@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16">
         {/* Main Purple Card */}
         <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-0 shadow-2xl overflow-hidden">
-          <CardContent className="p-12 lg:p-16">
+          <CardContent className="p-12 lg:p-20">
             <div className="max-w-4xl">
               {/* Hero Text - Left aligned inside the card */}
               <div className="mb-12">
@@ -26,7 +26,7 @@ const HeroSection = () => {
               
               {/* Glassmorphism Card - Left aligned and wider */}
               <div className="max-w-2xl">
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-xl h-64">
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 border border-white/20 shadow-xl h-80">
                   {/* Toggle Buttons */}
                   <div className="flex gap-2 mb-6 bg-white/10 p-1 rounded-full">
                     <Button
