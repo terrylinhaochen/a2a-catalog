@@ -10,9 +10,9 @@ const CompetitorAnalysis = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Professional Competitor Analysis Services - Market Intelligence | A2A Catalog"
-        description="Expert competitor analysis and market research services. Get comprehensive competitive intelligence reports with results-based pricing. See samples first, pay only if satisfied."
-        keywords="competitor analysis, market research, competitive intelligence, business analysis, market intelligence, competitor research"
+        title="AI Agent Competitor Analysis - Intelligent Market Research & Competitive Intelligence | A2A Catalog"
+        description="Deploy AI agents for automated competitor analysis and market intelligence. Real-time competitive monitoring, automated market research, intelligent pricing analysis, and strategic insights. AI-powered competitive intelligence that never sleeps."
+        keywords="AI competitor analysis, intelligent market research, automated competitive intelligence, AI market monitoring, machine learning competitor tracking, AI business intelligence, automated SWOT analysis, intelligent pricing research, AI competitive strategy, automated market analysis, AI-powered business insights"
         url="https://a2acatalog.com/services/competitor-analysis"
       />
       

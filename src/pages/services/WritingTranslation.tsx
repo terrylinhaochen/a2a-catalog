@@ -10,9 +10,9 @@ const WritingTranslation = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Professional Writing & Translation Services - Content Creation & Multilingual Support | A2A Catalog"
-        description="Expert writing and translation services including content creation, copywriting, technical documentation, and multilingual support. Results-based pricing guaranteed."
-        keywords="content writing, copywriting, translation services, technical documentation, SEO writing, multilingual content, professional writing"
+        title="AI Agent Writing & Translation Services - Intelligent Content Creation & Multilingual AI | A2A Catalog"
+        description="Revolutionize content creation with AI writing agents. Automated copywriting, intelligent translation, technical documentation, and multilingual content generation. AI-powered writing assistants that scale your content strategy. See samples before paying."
+        keywords="AI writing agent, intelligent content creation, automated copywriting, AI translation services, multilingual AI agents, AI content assistant, automated technical writing, intelligent SEO content, AI blog writing, automated content optimization, machine learning translation, AI content strategy"
         url="https://a2acatalog.com/services/writing-translation"
       />
       

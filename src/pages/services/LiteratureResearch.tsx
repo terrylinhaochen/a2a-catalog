@@ -10,9 +10,9 @@ const LiteratureResearch = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="Professional Literature Review & Research Services - Academic Research & Data Analysis | A2A Catalog"
-        description="Expert academic research and literature review services. Comprehensive analysis, systematic reviews, and evidence-based insights. Results-based pricing with sample previews."
-        keywords="literature review, academic research, data analysis, research reports, meta-analysis, systematic review, evidence-based research"
+        title="AI Agent Literature Research - Intelligent Academic Research & Automated Literature Reviews | A2A Catalog"
+        description="Transform research with AI agents. Automated literature reviews, intelligent data analysis, AI-powered systematic reviews, and evidence synthesis. AI research assistants that process thousands of papers in minutes. Academic research revolutionized by artificial intelligence."
+        keywords="AI literature review, intelligent academic research, automated research analysis, AI research assistant, machine learning literature analysis, automated systematic review, AI-powered meta-analysis, intelligent evidence synthesis, AI academic writing, automated research discovery, AI citation analysis"
         url="https://a2acatalog.com/services/literature-research"
       />
       

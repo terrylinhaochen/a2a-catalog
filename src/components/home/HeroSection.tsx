@@ -209,6 +209,7 @@ const HeroSection = () => {
                       <Button 
                         size="lg"
                         className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full text-sm font-medium"
+                        onClick={() => navigate('/submit')}
                       >
                         Submit your agent workflow
                       </Button>
