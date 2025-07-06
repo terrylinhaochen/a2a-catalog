@@ -78,7 +78,21 @@ const HeroSection = () => {
 
       if (error) throw error;
 
-      toast.success('Our agent team has received your task and will let you know if we have clarification questions, check your email for updates!');
+      // Redirect to chat page with the request ID
+      const requestId = (await supabase
+        .from('work_requests')
+        .select('id')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()).data?.id;
+
+      if (requestId) {
+        navigate(`/chat?request_id=${requestId}`);
+      } else {
+        toast.success('Our agent team has received your task and will let you know if we have clarification questions, check your email for updates!');
+      }
+      
       setDescription('');
       setFiles([]);
     } catch (error) {

@@ -87,10 +87,24 @@ const SubmitRequest = () => {
 
       if (error) throw error;
 
-      toast.success('Work request submitted successfully!');
+      // Get the created request ID and redirect to chat
+      const { data: requestData } = await supabase
+        .from('work_requests')
+        .select('id')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (requestData?.id) {
+        navigate(`/chat?request_id=${requestData.id}`);
+      } else {
+        toast.success('Work request submitted successfully!');
+        navigate('/');
+      }
+      
       setDescription('');
       setFiles([]);
-      navigate('/');
     } catch (error) {
       console.error('Error submitting work request:', error);
       toast.error('Failed to submit work request. Please try again.');

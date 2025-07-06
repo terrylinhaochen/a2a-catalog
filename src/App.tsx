@@ -36,6 +36,7 @@ import SalesMarketing from './pages/services/SalesMarketing';
 import WritingTranslation from './pages/services/WritingTranslation';
 import LiteratureResearch from './pages/services/LiteratureResearch';
 import SubmitRequest from './pages/SubmitRequest';
+import Chat from './pages/Chat';
 
 // Profession pages
 import DevelopmentAI from './pages/professions/DevelopmentAI';
@@ -87,6 +88,7 @@ function App() {
               <Route path="/services/writing-translation" element={<WritingTranslation />} />
               <Route path="/services/literature-research" element={<LiteratureResearch />} />
               <Route path="/submit-request" element={<ProtectedRoute><SubmitRequest /></ProtectedRoute>} />
+              <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
               
               {/* Profession pages */}
               <Route path="/professions/development-ai" element={<DevelopmentAI />} />

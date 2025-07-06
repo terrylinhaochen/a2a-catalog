@@ -382,6 +382,7 @@ export type Database = {
           service_source: string | null
           status: string | null
           updated_at: string
+          user_email: string | null
           user_id: string
         }
         Insert: {
@@ -392,6 +393,7 @@ export type Database = {
           service_source?: string | null
           status?: string | null
           updated_at?: string
+          user_email?: string | null
           user_id: string
         }
         Update: {
@@ -402,6 +404,7 @@ export type Database = {
           service_source?: string | null
           status?: string | null
           updated_at?: string
+          user_email?: string | null
           user_id?: string
         }
         Relationships: []
