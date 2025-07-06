@@ -189,43 +189,164 @@ const Hire = () => {
             ))}
          </div>
 
-         {/* Service Categories */}
-         <div className="py-16">
-           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-             Hire for anything, from quick to longer jobs
-           </h2>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-             {serviceCategories.map((category, index) => (
-               <Card key={index} className={`hover:shadow-lg transition-shadow cursor-pointer ${category.color}`}>
-                 <CardContent className="p-6">
-                   <div className="flex items-start space-x-4">
-                     <div className="p-3 bg-white rounded-lg shadow-sm">
-                       {category.icon}
-                     </div>
-                     <div className="flex-1">
-                       <h3 className="font-semibold text-lg text-gray-900 mb-2">{category.title}</h3>
-                       <p className="text-gray-600 text-sm mb-3">{category.description}</p>
-                       <div className="flex items-center space-x-4">
-                         <div className="flex items-center">
-                           <Star className="w-4 h-4 text-green-500 mr-1" />
-                           <span className="text-sm font-medium">{category.rating}</span>
-                         </div>
-                         <span className="text-sm text-gray-600">{category.skills}</span>
-                       </div>
-                     </div>
-                   </div>
-                 </CardContent>
-               </Card>
-             ))}
-           </div>
-           
-           <div className="text-left">
-             <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 text-lg underline">
-               View more
-             </Button>
-           </div>
-         </div>
+          {/* Professional Categories */}
+          <div className="py-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Hire expert professionals across all disciplines
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-purple-50 border-purple-200"
+                onClick={() => window.location.href = '/professions/development-ai'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <Code className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Development & AI Professionals</h3>
+                      <p className="text-gray-600 text-sm mb-3">Full-stack developers, AI specialists, and software engineers for custom solutions.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.9/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">128 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-blue-50 border-blue-200"
+                onClick={() => window.location.href = '/professions/design-creative'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <Palette className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Design & Creative Professionals</h3>
+                      <p className="text-gray-600 text-sm mb-3">UI/UX designers, graphic artists, and creative specialists for visual excellence.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.8/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">89 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-indigo-50 border-indigo-200"
+                onClick={() => window.location.href = '/services/sales-marketing'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <BarChart3 className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Sales & Marketing Specialists</h3>
+                      <p className="text-gray-600 text-sm mb-3">Growth marketers, sales experts, and campaign specialists for business expansion.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.7/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">67 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-purple-50 border-purple-200"
+                onClick={() => window.location.href = '/services/writing-translation'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <PenTool className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Writing & Translation Experts</h3>
+                      <p className="text-gray-600 text-sm mb-3">Content creators, technical writers, and multilingual translation specialists.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.9/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">94 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-blue-50 border-blue-200"
+                onClick={() => window.location.href = '/professions/admin-support'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <Headphones className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Admin & Support Professionals</h3>
+                      <p className="text-gray-600 text-sm mb-3">Virtual assistants, customer service experts, and administrative specialists.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.8/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">76 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="hover:shadow-lg transition-shadow cursor-pointer bg-indigo-50 border-indigo-200"
+                onClick={() => window.location.href = '/professions/finance-accounting'}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-white rounded-lg shadow-sm">
+                      <Calculator className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 mb-2">Finance & Accounting Experts</h3>
+                      <p className="text-gray-600 text-sm mb-3">Financial analysts, certified accountants, and bookkeeping specialists.</p>
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 text-green-500 mr-1" />
+                          <span className="text-sm font-medium">4.7/5</span>
+                        </div>
+                        <span className="text-sm text-gray-600">42 professionals</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="text-left">
+              <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 text-lg underline">
+                View all professions
+              </Button>
+            </div>
+          </div>
 
          {/* CTA Section - Purple Glassmorphism Card */}
          <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mt-20">

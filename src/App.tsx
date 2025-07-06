@@ -37,6 +37,12 @@ import WritingTranslation from './pages/services/WritingTranslation';
 import LiteratureResearch from './pages/services/LiteratureResearch';
 import SubmitRequest from './pages/SubmitRequest';
 
+// Profession pages
+import DevelopmentAI from './pages/professions/DevelopmentAI';
+import DesignCreative from './pages/professions/DesignCreative';
+import AdminSupport from './pages/professions/AdminSupport';
+import FinanceAccounting from './pages/professions/FinanceAccounting';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -81,6 +87,12 @@ function App() {
               <Route path="/services/writing-translation" element={<WritingTranslation />} />
               <Route path="/services/literature-research" element={<LiteratureResearch />} />
               <Route path="/submit-request" element={<ProtectedRoute><SubmitRequest /></ProtectedRoute>} />
+              
+              {/* Profession pages */}
+              <Route path="/professions/development-ai" element={<DevelopmentAI />} />
+              <Route path="/professions/design-creative" element={<DesignCreative />} />
+              <Route path="/professions/admin-support" element={<AdminSupport />} />
+              <Route path="/professions/finance-accounting" element={<FinanceAccounting />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
