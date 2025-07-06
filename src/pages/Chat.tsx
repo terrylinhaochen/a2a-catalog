@@ -202,7 +202,7 @@ const Chat = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
+    <div className="h-screen bg-gray-900 flex flex-col">
       <SEO 
         title="Chat - A2A Catalog"
         description="Chat with our agent team about your request"
@@ -211,42 +211,44 @@ const Chat = () => {
       
       <Navbar />
       
-      <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-2xl shadow-xl min-h-[600px] flex flex-col">
+      {/* Two Panel Layout */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Chat */}
+        <div className="w-1/2 bg-gray-800 flex flex-col">
           {/* Chat Header */}
-          <div className="border-b border-gray-200 p-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <Bot className="w-5 h-5 text-purple-600" />
+          <div className="border-b border-gray-700 p-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Agent Team Chat</h1>
-                <p className="text-sm text-gray-500">We're here to help with your request</p>
+                <h1 className="text-lg font-semibold text-white">Agent Team</h1>
+                <p className="text-xs text-gray-400">Ready to help with your request</p>
               </div>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className={`flex space-x-3 max-w-xs lg:max-w-md ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                <div className={`flex space-x-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
                     message.sender === 'user' 
                       ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-100 text-gray-600'
+                      : 'bg-gray-600 text-gray-200'
                   }`}>
-                    {message.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                    {message.sender === 'user' ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
                   </div>
-                  <div className={`rounded-2xl px-4 py-3 ${
+                  <div className={`rounded-lg px-3 py-2 ${
                     message.sender === 'user'
                       ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-900'
+                      : 'bg-gray-700 text-gray-100'
                   }`}>
-                    <p className="text-sm">{message.content}</p>
+                    <p className="text-sm leading-relaxed">{message.content}</p>
                     {message.files && message.files.length > 0 && (
                       <div className="mt-2 space-y-1">
                         {message.files.map((file, index) => (
@@ -265,15 +267,15 @@ const Chat = () => {
             {/* Thinking indicator */}
             {showThinking && (
               <div className="flex justify-start">
-                <div className="flex space-x-3 max-w-xs lg:max-w-md">
-                  <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-gray-600" />
+                <div className="flex space-x-2 max-w-[80%]">
+                  <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-3 h-3 text-gray-200" />
                   </div>
-                  <div className="bg-gray-100 rounded-2xl px-4 py-3">
+                  <div className="bg-gray-700 rounded-lg px-3 py-2">
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -284,36 +286,36 @@ const Chat = () => {
           </div>
 
           {/* Message Input */}
-          <div className="border-t border-gray-200 p-6">
-            <form onSubmit={handleSendMessage} className="space-y-4">
+          <div className="border-t border-gray-700 p-4">
+            <form onSubmit={handleSendMessage} className="space-y-3">
               <div className="relative">
                 <Textarea
-                  placeholder="Type your message..."
+                  placeholder="Respond, give feedback, or ask questions"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  className="w-full min-h-[60px] pr-24 resize-none"
+                  className="w-full min-h-[60px] bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 pr-20 resize-none"
                   disabled={isSending}
                 />
                 
-                <div className="absolute bottom-3 right-3 flex space-x-2">
+                <div className="absolute bottom-2 right-2 flex space-x-1">
                   <Button
                     type="button"
                     size="sm"
                     variant="ghost"
                     onClick={() => fileInputRef.current?.click()}
-                    className="h-8 w-8 p-0"
+                    className="h-7 w-7 p-0 hover:bg-gray-600 text-gray-400"
                     disabled={isSending}
                   >
-                    <Upload className="h-4 w-4" />
+                    <Upload className="h-3 w-3" />
                   </Button>
                   
                   <Button
                     type="submit"
                     size="sm"
-                    className="h-8 w-8 p-0"
+                    className="h-7 px-3 bg-white text-gray-900 hover:bg-gray-100 text-xs"
                     disabled={isSending || (!newMessage.trim() && files.length === 0)}
                   >
-                    <Send className="h-4 w-4" />
+                    Send
                   </Button>
                 </div>
                 
@@ -329,12 +331,12 @@ const Chat = () => {
 
               {/* File List */}
               {files.length > 0 && (
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {files.map((file, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-2 bg-gray-700 rounded text-sm">
                       <div className="flex items-center space-x-2">
-                        <FileText className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">{file.name}</span>
+                        <FileText className="h-3 w-3 text-gray-400" />
+                        <span className="text-gray-200">{file.name}</span>
                         <span className="text-xs text-gray-500">
                           ({(file.size / 1024 / 1024).toFixed(1)} MB)
                         </span>
@@ -344,7 +346,7 @@ const Chat = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeFile(index)}
-                        className="h-6 w-6 p-0"
+                        className="h-5 w-5 p-0 hover:bg-gray-600 text-gray-400"
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -353,6 +355,23 @@ const Chat = () => {
                 </div>
               )}
             </form>
+          </div>
+        </div>
+
+        {/* Right Panel - Artifacts */}
+        <div className="w-1/2 bg-white border-l border-gray-300 flex flex-col">
+          <div className="border-b border-gray-200 p-4">
+            <h2 className="text-lg font-semibold text-gray-900">Artifacts</h2>
+            <p className="text-sm text-gray-500">Generated content will appear here</p>
+          </div>
+          
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-gray-400">
+              <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center">
+                <Bot className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-sm">Steps will appear here. Teach Autotab<br />your task to get started!</p>
+            </div>
           </div>
         </div>
       </div>
