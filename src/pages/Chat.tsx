@@ -8,7 +8,8 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, Upload, FileText, X, User, Bot, Plus } from 'lucide-react';
+import { Send, FileText, X, User, Bot, Plus } from 'lucide-react';
+import { DraftingCompass } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface WorkRequest {
@@ -233,12 +234,7 @@ const Chat = () => {
                   variant="ghost"
                   size="sm"
                   className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
-                  onClick={() => {
-                    setMessages([]);
-                    setWorkRequest(null);
-                    setNewMessage('');
-                    setFiles([]);
-                  }}
+                  onClick={() => navigate('/submit')}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   New Chat
@@ -311,11 +307,11 @@ const Chat = () => {
                     placeholder="Type your message here..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="w-full min-h-[80px] bg-white/10 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/50 pr-24 resize-none rounded-xl"
+                    className="w-full min-h-[80px] bg-white/10 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/50 pl-16 pr-24 resize-none rounded-xl"
                     disabled={isSending}
                   />
                   
-                  <div className="absolute bottom-3 right-3 flex space-x-2">
+                  <div className="absolute bottom-3 left-3">
                     <Button
                       type="button"
                       size="sm"
@@ -324,9 +320,11 @@ const Chat = () => {
                       className="h-8 w-8 p-0 hover:bg-white/20 text-white/70 hover:text-white"
                       disabled={isSending}
                     >
-                      <Upload className="h-4 w-4" />
+                      <DraftingCompass className="h-4 w-4" />
                     </Button>
-                    
+                  </div>
+                  
+                  <div className="absolute bottom-3 right-3">
                     <Button
                       type="submit"
                       size="sm"
