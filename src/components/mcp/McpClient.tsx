@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Send, Bot, User, Server, Loader2, ExternalLink } from 'lucide-react';
+import { Send, Bot, User, Server, Loader2, ExternalLink, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { sendMcpChatMessage, ChatMessage as ApiChatMessage } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ConnectedMcpServer {
   id: string;
@@ -31,15 +32,17 @@ interface ChatMessage {
 }
 
 const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) => {
+  const { user } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: 'system',
-      content: `Welcome to the MCP Client! You have ${servers.length} remote MCP server(s) connected. Ask me anything and I'll use the available servers to help you.`,
+      content: `Welcome to the AI Project Assistant! I'm here to help you define clear project deliverables and requirements. I'll ask you some questions to understand your needs better and then provide you with a detailed proposal within 2 business days.`,
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string>(`session_${Date.now()}`);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -52,6 +55,11 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
+
+    if (!user) {
+      toast.error('Please sign in to use the chat feature');
+      return;
+    }
 
     const userMessage: ChatMessage = {
       role: 'user',
@@ -75,7 +83,8 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
 
       const response = await sendMcpChatMessage({
         messages: apiMessages,
-        connectedServers: connectedServerIds
+        connectedServers: connectedServerIds,
+        sessionId: sessionId
       });
 
       const assistantMessage: ChatMessage = {
@@ -85,6 +94,11 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+
+      // Update session ID if provided
+      if (response.sessionId) {
+        setSessionId(response.sessionId);
+      }
 
     } catch (error) {
       console.error('Error sending message:', error);
@@ -99,6 +113,8 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
           errorMessage = 'Network error. Please check your connection.';
         } else if (error.message.includes('OpenAI API')) {
           errorMessage = 'AI service error. Please try again later.';
+        } else if (error.message.includes('not authenticated')) {
+          errorMessage = 'Please sign in to use the chat feature.';
         } else {
           errorMessage = `Error: ${error.message}`;
         }
@@ -129,20 +145,40 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
     return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  if (!user) {
+    return (
+      <div className="flex flex-col h-[600px] max-h-[600px] space-y-4">
+        <Card className="flex-shrink-0">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Upload className="w-5 h-5" />
+              AI Project Assistant
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-500 text-sm">
+              Please sign in to start a conversation with our AI assistant and get help with your project requirements.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-[600px] max-h-[600px] space-y-4">
       {/* Connected Servers Status */}
       <Card className="flex-shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-lg">
-            <ExternalLink className="w-5 h-5" />
-            Connected Remote MCP Servers ({servers.length})
+            <Upload className="w-5 h-5" />
+            AI Project Assistant
           </CardTitle>
         </CardHeader>
         <CardContent>
           {servers.length === 0 ? (
             <p className="text-gray-500 text-sm">
-              No remote MCP servers connected. Connect servers in the Servers tab to start using them.
+              No MCP servers connected. Connect servers in the Servers tab to enhance the AI assistant's capabilities.
             </p>
           ) : (
             <div className="flex flex-wrap gap-2">
@@ -176,7 +212,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
         <CardHeader className="pb-3 flex-shrink-0">
           <CardTitle className="flex items-center gap-2">
             <Bot className="w-5 h-5" />
-            MCP Chat
+            Project Requirements Chat
           </CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col p-0 min-h-0">
@@ -248,7 +284,7 @@ const McpClient: React.FC<McpClientProps> = ({ servers, onServerDisconnect }) =>
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message..."
+                placeholder="Describe your project requirements..."
                 disabled={isLoading}
                 className="flex-1"
               />

@@ -8,8 +8,7 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, FileText, X, User, Bot, Plus } from 'lucide-react';
-import { DraftingCompass } from 'lucide-react';
+import { Send, FileText, X, User, Bot, Plus, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface WorkRequest {
@@ -29,6 +28,24 @@ interface ChatMessage {
   files?: string[];
 }
 
+interface ChatLog {
+  id: string;
+  user_id: string;
+  session_id: string;
+  messages: Array<{
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+  }>;
+  metadata: {
+    work_request_id?: string;
+    service_source?: string;
+    model_used: string;
+    tokens_used?: number;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
 const Chat = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -40,6 +57,7 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
+  const [sessionId, setSessionId] = useState<string>(`chat_${Date.now()}`);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -91,17 +109,8 @@ const Chat = () => {
       // Show thinking state after loading the request
       setTimeout(() => {
         setShowThinking(true);
-        // Simulate agent response
-        setTimeout(() => {
-          const agentResponse: ChatMessage = {
-            id: `agent-${Date.now()}`,
-            content: "Thanks for your request! Our agent team has received your task and will review it shortly. We may have some follow-up questions to better understand your requirements. Is there any additional context or specific requirements you'd like to share?",
-            sender: 'agent',
-            timestamp: new Date()
-          };
-          setMessages(prev => [...prev, agentResponse]);
-          setShowThinking(false);
-        }, 2000);
+        // Get AI response
+        getAIResponse([initialMessage], data.service_source);
       }, 1000);
       
     } catch (error) {
@@ -109,6 +118,77 @@ const Chat = () => {
       toast.error('Failed to load your request');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const getAIResponse = async (currentMessages: ChatMessage[], serviceSource?: string) => {
+    try {
+      // Convert messages to API format
+      const apiMessages = currentMessages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'assistant' as const,
+        content: msg.content
+      }));
+
+      // Add system prompt
+      const systemPrompt = `You are an AI assistant specializing in helping users define clear project deliverables and requirements. Your role is to:
+
+1. **Ask clarifying questions** to understand the user's needs thoroughly
+2. **Request sample work cases** to better understand their project scope
+3. **Define clear deliverables** with specific outcomes and timelines
+4. **Provide realistic expectations** about project complexity and requirements
+
+**Key Guidelines:**
+- Always ask for specific examples of what they want to achieve
+- Request sample work cases or similar projects they've seen
+- Help break down complex projects into clear, actionable deliverables
+- Set realistic timelines and expectations
+- Ask about their budget and timeline constraints
+- Inquire about their technical requirements and constraints
+
+**Response Format:**
+- Ask 2-3 specific questions to clarify their needs
+- Request sample work cases or examples
+- Suggest a clear deliverable structure
+- Mention that you'll provide a detailed proposal within 2 business days
+- Ask them to check their email for follow-up
+
+**Service Context:** ${serviceSource ? `This request is related to: ${serviceSource}` : 'General project request'}
+
+Remember: Your goal is to gather enough information to create a comprehensive project proposal that will be delivered within 2 business days.`;
+
+      // For now, use a simple response based on the prompt
+      // In a real implementation, this would call an actual LLM API
+      const agentResponse: ChatMessage = {
+        id: `agent-${Date.now()}`,
+        content: `Thank you for sharing your project requirements! I'd like to understand your needs better to provide you with a comprehensive proposal.
+
+To help me create the best solution for you, could you please share:
+
+1. **Specific examples** of what you're looking to achieve - do you have any similar projects or case studies in mind?
+2. **Timeline and budget** - what's your preferred timeline and budget range for this project?
+3. **Technical requirements** - are there any specific technologies, platforms, or constraints I should know about?
+
+Once I have this information, I'll be able to provide you with a detailed project proposal within 2 business days. Please keep an eye on your email for our follow-up communication.
+
+What specific aspects of your project would you like to discuss first?`,
+        sender: 'agent',
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, agentResponse]);
+      
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      // Fallback response
+      const fallbackResponse: ChatMessage = {
+        id: `agent-${Date.now()}`,
+        content: "Thanks for your request! Our agent team has received your task and will review it shortly. We may have some follow-up questions to better understand your requirements. Is there any additional context or specific requirements you'd like to share?",
+        sender: 'agent',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, fallbackResponse]);
+    } finally {
+      setShowThinking(false);
     }
   };
 
@@ -160,24 +240,16 @@ const Chat = () => {
         files: fileUrls
       };
 
-      setMessages(prev => [...prev, message]);
+      const updatedMessages = [...messages, message];
+      setMessages(updatedMessages);
       setNewMessage('');
       setFiles([]);
       
       // Show thinking state
       setShowThinking(true);
       
-      // Simulate agent response delay
-      setTimeout(() => {
-        const agentResponse: ChatMessage = {
-          id: `agent-${Date.now()}`,
-          content: "Thank you for the additional information. Our team is reviewing your request and will get back to you shortly with next steps.",
-          sender: 'agent',
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, agentResponse]);
-        setShowThinking(false);
-      }, 1500);
+      // Get AI response
+      await getAIResponse(updatedMessages, workRequest?.service_source);
       
     } catch (error) {
       console.error('Error sending message:', error);
@@ -217,17 +289,17 @@ const Chat = () => {
         {/* Left Panel - Chat */}
         <div className="w-1/2 flex flex-col p-6">
           {/* Chat Container with Glassmorphism */}
-          <div className="flex-1 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-xl flex flex-col">
+          <div className="flex-1 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-xl flex flex-col min-h-0">
             {/* Chat Header */}
-            <div className="border-b border-white/20 p-6">
+            <div className="border-b border-white/20 p-6 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                     <Bot className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h1 className="text-xl font-semibold text-white">Agent Team</h1>
-                    <p className="text-sm text-white/70">Ready to help with your request</p>
+                    <h1 className="text-xl font-semibold text-white">AI Project Assistant</h1>
+                    <p className="text-sm text-white/70">Ready to help define your project requirements</p>
                   </div>
                 </div>
                 <Button
@@ -242,8 +314,8 @@ const Chat = () => {
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {/* Messages - Fixed height with scroll */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -262,7 +334,7 @@ const Chat = () => {
                         ? 'bg-white text-gray-900'
                         : 'bg-white/10 backdrop-blur-sm text-white border border-white/20'
                     }`}>
-                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                       {message.files && message.files.length > 0 && (
                         <div className="mt-3 space-y-1">
                           {message.files.map((file, index) => (
@@ -299,12 +371,12 @@ const Chat = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Message Input */}
-            <div className="border-t border-white/20 p-6">
+            {/* Message Input - Fixed at bottom */}
+            <div className="border-t border-white/20 p-6 flex-shrink-0">
               <form onSubmit={handleSendMessage} className="space-y-4">
                 <div className="relative">
                   <Textarea
-                    placeholder="Type your message here..."
+                    placeholder="Describe your project requirements..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     className="w-full min-h-[80px] bg-white/10 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/50 pl-16 pr-24 resize-none rounded-xl"
@@ -320,7 +392,7 @@ const Chat = () => {
                       className="h-8 w-8 p-0 hover:bg-white/20 text-white/70 hover:text-white"
                       disabled={isSending}
                     >
-                      <DraftingCompass className="h-4 w-4" />
+                      <Upload className="h-4 w-4" />
                     </Button>
                   </div>
                   
@@ -377,18 +449,18 @@ const Chat = () => {
 
         {/* Right Panel - Artifacts */}
         <div className="w-1/2 flex flex-col p-6 pl-3">
-          <div className="flex-1 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-xl flex flex-col">
-            <div className="border-b border-white/10 p-6">
-              <h2 className="text-xl font-semibold text-white">Artifacts</h2>
-              <p className="text-sm text-white/70">Generated content will appear here</p>
+          <div className="flex-1 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-xl flex flex-col min-h-0">
+            <div className="border-b border-white/10 p-6 flex-shrink-0">
+              <h2 className="text-xl font-semibold text-white">Project Requirements</h2>
+              <p className="text-sm text-white/70">Your project details and deliverables will appear here</p>
             </div>
             
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex-1 flex items-center justify-center min-h-0">
               <div className="text-center text-white/50">
                 <div className="w-24 h-24 mx-auto mb-6 bg-white/10 rounded-2xl flex items-center justify-center">
                   <Bot className="w-10 h-10 text-white/50" />
                 </div>
-                <p className="text-sm">Artifacts and generated content<br />will appear here as you chat</p>
+                <p className="text-sm">Project requirements and deliverables<br />will be generated as we discuss your needs</p>
               </div>
             </div>
           </div>

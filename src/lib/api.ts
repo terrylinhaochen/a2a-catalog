@@ -8,10 +8,12 @@ export interface ChatMessage {
 export interface ChatRequest {
   messages: ChatMessage[];
   connectedServers: string[];
+  sessionId?: string;
 }
 
 export interface ChatResponse {
   message: string;
+  sessionId: string;
   mcpServers: Array<{
     id: string;
     name: string;
@@ -22,14 +24,24 @@ export interface ChatResponse {
 
 export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResponse> => {
   try {
+    // Get the current user session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !session) {
+      throw new Error('User not authenticated');
+    }
+
     console.log('Sending MCP chat request:', {
       messageCount: request.messages.length,
       connectedServers: request.connectedServers.length,
-      lastMessage: request.messages[request.messages.length - 1]?.content?.substring(0, 100)
+      lastMessage: request.messages[request.messages.length - 1]?.content?.substring(0, 100),
+      sessionId: request.sessionId
     });
 
     const { data, error } = await supabase.functions.invoke('mcp-chat', {
-      body: request
+      body: request,
+      headers: {
+        Authorization: `Bearer ${session.access_token}`
+      }
     });
 
     console.log('Supabase function response:', { 
@@ -75,6 +87,10 @@ export const sendMcpChatMessage = async (request: ChatRequest): Promise<ChatResp
     
     if (error.message?.includes('OpenAI API')) {
       throw new Error(`AI service error: ${error.message}`);
+    }
+    
+    if (error.message?.includes('not authenticated')) {
+      throw new Error('Please sign in to use the chat feature');
     }
     
     throw error;

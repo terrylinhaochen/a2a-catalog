@@ -6,17 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface McpServer {
-  id: string;
-  name: string;
-  description: string;
-  provider: string;
-  connection_url?: string;
-  categories?: string[];
-  skills?: string[];
-  auth_type?: string;
-}
-
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
@@ -25,14 +14,18 @@ interface ChatMessage {
 interface ChatRequest {
   messages: ChatMessage[];
   connectedServers: string[]; // Array of connected server IDs
+  sessionId?: string; // Optional session ID for chat continuity
 }
 
-// MCP Protocol interfaces
-interface McpRequest {
-  jsonrpc: "2.0";
+interface McpServer {
   id: string;
-  method: string;
-  params?: any;
+  name: string;
+  description: string;
+  provider: string;
+  categories?: string[];
+  skills?: string[];
+  connection_url?: string;
+  auth_type?: string;
 }
 
 interface McpResponse {
@@ -41,70 +34,40 @@ interface McpResponse {
   result?: any;
   error?: {
     code: number;
-  message: string;
+    message: string;
   };
 }
 
-// Function to communicate with MCP servers
-async function callMcpServer(serverUrl: string, method: string, params?: any): Promise<any> {
-  try {
-    const request: McpRequest = {
-      jsonrpc: "2.0",
-      id: crypto.randomUUID(),
-      method,
-      params
-    };
+// Function to call MCP server
+async function callMcpServer(url: string, method: string, params: Record<string, unknown>): Promise<unknown> {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: '1',
+      method: method,
+      params: params
+    })
+  });
 
-    console.log(`Calling MCP server ${serverUrl} with method: ${method}`);
-
-    const response = await fetch(serverUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(request),
-    });
-
-    if (!response.ok) {
-      throw new Error(`MCP server responded with status: ${response.status}`);
-    }
-
-    const data: McpResponse = await response.json();
-    
-    if (data.error) {
-      throw new Error(`MCP server error: ${data.error.message}`);
-    }
-
-    return data.result;
-  } catch (error) {
-    console.error(`Error calling MCP server ${serverUrl}:`, error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
-}
 
-// Function to get server capabilities
-async function getServerCapabilities(serverUrl: string): Promise<any> {
-  try {
-    return await callMcpServer(serverUrl, 'initialize', {
-      protocolVersion: '2024-11-05',
-      capabilities: {
-        tools: {},
-        resources: {}
-      },
-      clientInfo: {
-        name: 'a2a-catalog-mcp-client',
-        version: '1.0.0'
-      }
-    });
-  } catch (error) {
-    console.warn(`Could not get capabilities for ${serverUrl}:`, error);
-    return null;
+  const data: McpResponse = await response.json();
+  
+  if (data.error) {
+    throw new Error(`MCP server error: ${data.error.message}`);
   }
+
+  return data.result;
 }
 
 // Function to call specific MCP tools
-async function callMcpTool(serverUrl: string, toolName: string, params: any): Promise<any> {
+async function callMcpTool(serverUrl: string, toolName: string, params: Record<string, unknown>): Promise<unknown> {
   try {
     return await callMcpServer(serverUrl, 'tools/call', {
       name: toolName,
@@ -123,8 +86,30 @@ serve(async (req) => {
   }
 
   try {
+    // Get user from JWT token
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      throw new Error('No authorization header');
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Missing Supabase configuration');
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify the JWT token and get user
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      throw new Error('Invalid authentication token');
+    }
+
     const body = await req.json()
-    const { messages, connectedServers } = body as ChatRequest
+    const { messages, connectedServers, sessionId } = body as ChatRequest
 
     // Validate input
     if (!messages || !Array.isArray(messages)) {
@@ -134,16 +119,6 @@ serve(async (req) => {
     if (!connectedServers || !Array.isArray(connectedServers)) {
       throw new Error('Invalid connectedServers array')
     }
-
-    // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
-    
-    if (!supabaseUrl || !supabaseServiceKey) {
-      throw new Error('Missing Supabase configuration')
-    }
-    
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Fetch connected MCP servers from database
     let mcpServers: McpServer[] = []
@@ -166,7 +141,12 @@ serve(async (req) => {
     const lastUserMessage = messages.filter(m => m.role === 'user').pop()?.content || '';
     
     // Try to use MCP servers for specific requests
-    let mcpResults: any[] = [];
+    const mcpResults: Array<{
+      server: string;
+      result?: unknown;
+      error?: string;
+      success: boolean;
+    }> = [];
     let mcpContext = '';
 
     for (const server of mcpServers) {
@@ -201,36 +181,6 @@ serve(async (req) => {
             mcpContext += `\n\n**DeepWiki Error:** ${error.message}`;
           }
         }
-        
-        else if (serverName.includes('fetch') && (message.includes('fetch') || message.includes('web') || message.includes('url'))) {
-          // Try to use Fetch MCP for web content
-          try {
-            const url = message.match(/https?:\/\/[^\s]+/)?.[0];
-            if (url) {
-              const result = await callMcpTool(server.connection_url, 'fetch_url', {
-                url: url
-              });
-              
-              mcpResults.push({
-                server: server.name,
-                result: result,
-                success: true
-              });
-              
-              mcpContext += `\n\n**Fetch Result:** Retrieved content from ${url}`;
-            }
-          } catch (error) {
-            mcpResults.push({
-              server: server.name,
-              error: error.message,
-              success: false
-            });
-            mcpContext += `\n\n**Fetch Error:** ${error.message}`;
-          }
-        }
-
-        // Add more server-specific logic here for other MCP servers
-        
       } catch (error) {
         console.error(`Error with server ${server.name}:`, error);
         mcpResults.push({
@@ -241,41 +191,36 @@ serve(async (req) => {
       }
     }
 
-    // Build system prompt with available MCP servers and results
-    let systemPrompt = `You are an AI assistant with access to the following remote MCP (Model Context Protocol) servers:
+    // Build system prompt with improved instructions for clear deliverables
+    const systemPrompt = `You are an AI assistant specializing in helping users define clear project deliverables and requirements. Your role is to:
 
-${mcpServers.map(server => `
-**${server.name}** (${server.provider})
-- Description: ${server.description}
-- Categories: ${server.categories?.join(', ') || 'N/A'}
-- Skills: ${server.skills?.join(', ') || 'N/A'}
-- Connection: ${server.connection_url || 'N/A'}
-- Auth: ${server.auth_type || 'none'}
-`).join('\n')}
+1. **Ask clarifying questions** to understand the user's needs thoroughly
+2. **Request sample work cases** to better understand their project scope
+3. **Define clear deliverables** with specific outcomes and timelines
+4. **Provide realistic expectations** about project complexity and requirements
 
-${mcpServers.length === 0 ? 'No MCP servers are currently connected. Users can connect remote servers through the MCP dashboard.' : ''}
+**Key Guidelines:**
+- Always ask for specific examples of what they want to achieve
+- Request sample work cases or similar projects they've seen
+- Help break down complex projects into clear, actionable deliverables
+- Set realistic timelines and expectations
+- Ask about their budget and timeline constraints
+- Inquire about their technical requirements and constraints
+
+**Response Format:**
+- Ask 2-3 specific questions to clarify their needs
+- Request sample work cases or examples
+- Suggest a clear deliverable structure
+- Mention that you'll provide a detailed proposal within 2 business days
+- Ask them to check their email for follow-up
+
+**Available MCP Servers:**
+${mcpServers.length > 0 ? mcpServers.map(server => `- ${server.name}: ${server.description} (${server.connection_url})`).join('\n') : '- No remote MCP servers connected'}
 
 **MCP Server Results:**
 ${mcpContext || 'No MCP servers were called for this request.'}
 
-**Instructions:**
-1. Use the available remote MCP servers to help users with their requests
-2. When a user asks for information that can be retrieved through an MCP server, reference the appropriate server
-3. Provide clear explanations of what you're doing and which server you're using
-4. If MCP server results are available, incorporate them into your response
-5. If no relevant MCP server is available, inform the user and suggest alternatives
-6. Always be helpful and informative in your responses
-
-**Available Remote MCP Servers:**
-${mcpServers.length > 0 ? mcpServers.map(server => `- ${server.name}: ${server.description} (${server.connection_url})`).join('\n') : '- No remote MCP servers connected'}
-
-**Important Notes:**
-- These are remote MCP servers accessible via HTTP endpoints
-- Some servers may require OAuth authentication
-- You can reference these servers when users ask for specific capabilities
-- For actual MCP protocol communication, users would need to use a proper MCP client
-
-Remember to use the MCP servers when appropriate to provide real, up-to-date information and perform actions on behalf of the user.`
+Remember: Your goal is to gather enough information to create a comprehensive project proposal that will be delivered within 2 business days.`
 
     // Get OpenAI API key
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY')
@@ -310,9 +255,32 @@ Remember to use the MCP servers when appropriate to provide real, up-to-date inf
     const data = await response.json()
     const assistantMessage = data.choices[0]?.message?.content || 'No response generated'
 
+    // Log the chat conversation to database
+    const chatLogData = {
+      user_id: user.id,
+      session_id: sessionId || `session_${Date.now()}`,
+      messages: messages.concat([{ role: 'assistant', content: assistantMessage }]),
+      connected_servers: connectedServers,
+      metadata: {
+        mcp_results: mcpResults,
+        model_used: 'gpt-4o-mini',
+        tokens_used: data.usage?.total_tokens || 0
+      }
+    };
+
+    const { error: logError } = await supabase
+      .from('chat_logs')
+      .insert(chatLogData);
+
+    if (logError) {
+      console.error('Error logging chat:', logError);
+      // Don't throw error here as the main functionality should still work
+    }
+
     return new Response(
       JSON.stringify({
         message: assistantMessage,
+        sessionId: chatLogData.session_id,
         mcpServers: mcpServers.map(server => ({
           id: server.id,
           name: server.name,
