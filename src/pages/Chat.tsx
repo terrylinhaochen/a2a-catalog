@@ -8,7 +8,7 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, Upload, FileText, X, User, Bot } from 'lucide-react';
+import { Send, Upload, FileText, X, User, Bot, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface WorkRequest {
@@ -202,7 +202,7 @@ const Chat = () => {
   }
 
   return (
-    <div className="h-screen bg-gray-900 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col">
       <SEO 
         title="Chat - A2A Catalog"
         description="Chat with our agent team about your request"
@@ -214,163 +214,184 @@ const Chat = () => {
       {/* Two Panel Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Chat */}
-        <div className="w-1/2 bg-gray-800 flex flex-col">
-          {/* Chat Header */}
-          <div className="border-b border-gray-700 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
-                <Bot className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-white">Agent Team</h1>
-                <p className="text-xs text-gray-400">Ready to help with your request</p>
+        <div className="w-1/2 flex flex-col p-6">
+          {/* Chat Container with Glassmorphism */}
+          <div className="flex-1 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 shadow-xl flex flex-col">
+            {/* Chat Header */}
+            <div className="border-b border-white/20 p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-semibold text-white">Agent Team</h1>
+                    <p className="text-sm text-white/70">Ready to help with your request</p>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
+                  onClick={() => {
+                    setMessages([]);
+                    setWorkRequest(null);
+                    setNewMessage('');
+                    setFiles([]);
+                  }}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Chat
+                </Button>
               </div>
             </div>
-          </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`flex space-x-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.sender === 'user' 
-                      ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-600 text-gray-200'
-                  }`}>
-                    {message.sender === 'user' ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
-                  </div>
-                  <div className={`rounded-lg px-3 py-2 ${
-                    message.sender === 'user'
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-700 text-gray-100'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{message.content}</p>
-                    {message.files && message.files.length > 0 && (
-                      <div className="mt-2 space-y-1">
-                        {message.files.map((file, index) => (
-                          <div key={index} className="flex items-center space-x-2 text-xs opacity-75">
-                            <FileText className="w-3 h-3" />
-                            <span>{file.split('/').pop()}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-            
-            {/* Thinking indicator */}
-            {showThinking && (
-              <div className="flex justify-start">
-                <div className="flex space-x-2 max-w-[80%]">
-                  <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-3 h-3 text-gray-200" />
-                  </div>
-                  <div className="bg-gray-700 rounded-lg px-3 py-2">
-                    <div className="flex space-x-1">
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`flex space-x-3 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      message.sender === 'user' 
+                        ? 'bg-white/20 text-white' 
+                        : 'bg-white/10 text-white/90'
+                    }`}>
+                      {message.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                    </div>
+                    <div className={`rounded-xl px-4 py-3 ${
+                      message.sender === 'user'
+                        ? 'bg-white text-gray-900'
+                        : 'bg-white/10 backdrop-blur-sm text-white border border-white/20'
+                    }`}>
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      {message.files && message.files.length > 0 && (
+                        <div className="mt-3 space-y-1">
+                          {message.files.map((file, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-xs opacity-75">
+                              <FileText className="w-3 h-3" />
+                              <span>{file.split('/').pop()}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Message Input */}
-          <div className="border-t border-gray-700 p-4">
-            <form onSubmit={handleSendMessage} className="space-y-3">
-              <div className="relative">
-                <Textarea
-                  placeholder="Respond, give feedback, or ask questions"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  className="w-full min-h-[60px] bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 pr-20 resize-none"
-                  disabled={isSending}
-                />
-                
-                <div className="absolute bottom-2 right-2 flex space-x-1">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="h-7 w-7 p-0 hover:bg-gray-600 text-gray-400"
-                    disabled={isSending}
-                  >
-                    <Upload className="h-3 w-3" />
-                  </Button>
-                  
-                  <Button
-                    type="submit"
-                    size="sm"
-                    className="h-7 px-3 bg-white text-gray-900 hover:bg-gray-100 text-xs"
-                    disabled={isSending || (!newMessage.trim() && files.length === 0)}
-                  >
-                    Send
-                  </Button>
-                </div>
-                
-                <Input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  onChange={handleFileSelect}
-                  className="hidden"
-                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
-                />
-              </div>
-
-              {/* File List */}
-              {files.length > 0 && (
-                <div className="space-y-1">
-                  {files.map((file, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-700 rounded text-sm">
-                      <div className="flex items-center space-x-2">
-                        <FileText className="h-3 w-3 text-gray-400" />
-                        <span className="text-gray-200">{file.name}</span>
-                        <span className="text-xs text-gray-500">
-                          ({(file.size / 1024 / 1024).toFixed(1)} MB)
-                        </span>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeFile(index)}
-                        className="h-5 w-5 p-0 hover:bg-gray-600 text-gray-400"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+              ))}
+              
+              {/* Thinking indicator */}
+              {showThinking && (
+                <div className="flex justify-start">
+                  <div className="flex space-x-3 max-w-[80%]">
+                    <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Bot className="w-4 h-4 text-white/90" />
                     </div>
-                  ))}
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/20">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
-            </form>
+              
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Message Input */}
+            <div className="border-t border-white/20 p-6">
+              <form onSubmit={handleSendMessage} className="space-y-4">
+                <div className="relative">
+                  <Textarea
+                    placeholder="Type your message here..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    className="w-full min-h-[80px] bg-white/10 backdrop-blur-sm border border-white/30 text-white placeholder:text-white/50 pr-24 resize-none rounded-xl"
+                    disabled={isSending}
+                  />
+                  
+                  <div className="absolute bottom-3 right-3 flex space-x-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="h-8 w-8 p-0 hover:bg-white/20 text-white/70 hover:text-white"
+                      disabled={isSending}
+                    >
+                      <Upload className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button
+                      type="submit"
+                      size="sm"
+                      className="h-8 px-4 bg-white text-gray-900 hover:bg-white/90 text-sm font-medium"
+                      disabled={isSending || (!newMessage.trim() && files.length === 0)}
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <Input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    onChange={handleFileSelect}
+                    className="hidden"
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                  />
+                </div>
+
+                {/* File List */}
+                {files.length > 0 && (
+                  <div className="space-y-2">
+                    {files.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                        <div className="flex items-center space-x-3">
+                          <FileText className="h-4 w-4 text-white/70" />
+                          <span className="text-sm text-white">{file.name}</span>
+                          <span className="text-xs text-white/50">
+                            ({(file.size / 1024 / 1024).toFixed(1)} MB)
+                          </span>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeFile(index)}
+                          className="h-6 w-6 p-0 hover:bg-white/20 text-white/70 hover:text-white"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </form>
+            </div>
           </div>
         </div>
 
         {/* Right Panel - Artifacts */}
-        <div className="w-1/2 bg-white border-l border-gray-300 flex flex-col">
-          <div className="border-b border-gray-200 p-4">
-            <h2 className="text-lg font-semibold text-gray-900">Artifacts</h2>
-            <p className="text-sm text-gray-500">Generated content will appear here</p>
-          </div>
-          
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center text-gray-400">
-              <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-lg flex items-center justify-center">
-                <Bot className="w-8 h-8 text-gray-400" />
+        <div className="w-1/2 flex flex-col p-6 pl-3">
+          <div className="flex-1 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-xl flex flex-col">
+            <div className="border-b border-white/10 p-6">
+              <h2 className="text-xl font-semibold text-white">Artifacts</h2>
+              <p className="text-sm text-white/70">Generated content will appear here</p>
+            </div>
+            
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-center text-white/50">
+                <div className="w-24 h-24 mx-auto mb-6 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <Bot className="w-10 h-10 text-white/50" />
+                </div>
+                <p className="text-sm">Artifacts and generated content<br />will appear here as you chat</p>
               </div>
-              <p className="text-sm">Steps will appear here. Teach Autotab<br />your task to get started!</p>
             </div>
           </div>
         </div>
