@@ -304,7 +304,7 @@ const Chat = () => {
             </div>
 
             {/* Messages - Fixed height with scroll */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 max-h-[calc(100vh-500px)]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 max-h-[calc(100vh-400px)]">
               {messages.map((message) => (
                 <div
                   key={message.id}
