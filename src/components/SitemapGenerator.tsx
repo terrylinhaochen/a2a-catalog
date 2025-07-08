@@ -15,8 +15,8 @@ const SitemapGenerator = () => {
     downloadSitemap(sitemapXML);
   };
 
-  const totalPages = 10 + agents.length + mcpServers.length + 
-    [...new Set([...agents.flatMap(a => a.categories), ...mcpServers.flatMap(m => m.categories)])].length * 2;
+  const totalPages = 30 + agents.length + mcpServers.length + 
+    [...new Set([...agents.flatMap(a => a.categories), ...mcpServers.flatMap(m => m.categories)])].length;
 
   return (
     <Card>
@@ -29,7 +29,7 @@ const SitemapGenerator = () => {
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="font-medium">Static Pages:</span> 10
+            <span className="font-medium">Static Pages:</span> 30
           </div>
           <div>
             <span className="font-medium">Agent Pages:</span> {agents.length}
