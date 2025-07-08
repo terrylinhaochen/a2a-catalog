@@ -50,6 +50,7 @@ import WritingTranslation from './pages/services/WritingTranslation';
 import LiteratureResearch from './pages/services/LiteratureResearch';
 import SubmitRequest from './pages/SubmitRequest';
 import Chat from './pages/Chat';
+import CaseStudyCrowdlistening from './pages/CaseStudyCrowdlistening';
 
 // Profession pages
 import DevelopmentAI from './pages/professions/DevelopmentAI';
@@ -103,6 +104,7 @@ function App() {
               <Route path="/services/literature-research" element={<LiteratureResearch />} />
               <Route path="/submit-request" element={<ProtectedRoute><SubmitRequest /></ProtectedRoute>} />
               <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+              <Route path="/case-study/crowdlistening" element={<CaseStudyCrowdlistening />} />
               
               {/* Profession pages */}
               <Route path="/professions/development-ai" element={<DevelopmentAI />} />

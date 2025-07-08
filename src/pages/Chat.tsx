@@ -8,7 +8,7 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, FileText, X, User, Bot, Plus, PenTool } from 'lucide-react';
+import { Send, FileText, X, User, Bot, Plus, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { sendMcpChatMessage, ChatMessage as ApiChatMessage } from '@/lib/api';
 
@@ -289,7 +289,7 @@ const Chat = () => {
             </div>
 
             {/* Messages - Fixed height with scroll */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0 max-h-[400px]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 max-h-[500px]">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -346,7 +346,7 @@ const Chat = () => {
             </div>
 
             {/* Message Input - Fixed at bottom */}
-            <div className="border-t border-white/20 p-6 flex-shrink-0">
+            <div className="border-t border-white/20 p-4 flex-shrink-0">
               <form onSubmit={handleSendMessage} className="space-y-4">
                 <div className="relative">
                   <Textarea
@@ -366,7 +366,7 @@ const Chat = () => {
                       className="h-8 w-8 p-0 hover:bg-white/20 text-white/70 hover:text-white"
                       disabled={isSending}
                     >
-                      <PenTool className="h-4 w-4" />
+                      <Upload className="h-4 w-4" />
                     </Button>
                   </div>
                   

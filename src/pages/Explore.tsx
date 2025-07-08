@@ -91,7 +91,7 @@ const Explore = () => {
           {/* Main Purple Card */}
           <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-0 shadow-2xl overflow-hidden">
             <CardContent className="p-10 lg:p-14">
-              <div className="max-w-4xl text-center">
+              <div className="max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                   Explore Expert Insights
                 </h1>
