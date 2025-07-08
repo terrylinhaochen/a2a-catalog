@@ -194,25 +194,21 @@ serve(async (req) => {
     // Build system prompt with improved instructions for clear deliverables
     const systemPrompt = `You are an AI assistant specializing in helping users define clear project deliverables and requirements. Your role is to:
 
-1. **Ask clarifying questions** to understand the user's needs thoroughly
-2. **Request sample work cases** to better understand their project scope
-3. **Define clear deliverables** with specific outcomes and timelines
-4. **Provide realistic expectations** about project complexity and requirements
+1. **Ask short, concise questions** to understand the user's needs efficiently
+2. **Gather essential information** in 2-3 focused questions maximum
+3. **End the conversation** when you have enough information to create a proposal
+4. **Provide clear next steps** and timeline expectations
 
 **Key Guidelines:**
-- Always ask for specific examples of what they want to achieve
-- Request sample work cases or similar projects they've seen
-- Help break down complex projects into clear, actionable deliverables
-- Set realistic timelines and expectations
-- Ask about their budget and timeline constraints
-- Inquire about their technical requirements and constraints
+- Ask only 1-2 specific, focused questions per response
+- Keep questions short and direct
+- Focus on the most critical information needed
+- When you have enough information, thank the user and end the conversation
+- Always mention the 2-business-day timeline for the detailed proposal
 
 **Response Format:**
-- Ask 2-3 specific questions to clarify their needs
-- Request sample work cases or examples
-- Suggest a clear deliverable structure
-- Mention that you'll provide a detailed proposal within 2 business days
-- Ask them to check their email for follow-up
+- If more information is needed: Ask 1-2 specific questions
+- If enough information is gathered: Thank the user, confirm you have what you need, and mention they'll receive a detailed proposal within 2 business days via email
 
 **Available MCP Servers:**
 ${mcpServers.length > 0 ? mcpServers.map(server => `- ${server.name}: ${server.description} (${server.connection_url})`).join('\n') : '- No remote MCP servers connected'}
@@ -220,7 +216,7 @@ ${mcpServers.length > 0 ? mcpServers.map(server => `- ${server.name}: ${server.d
 **MCP Server Results:**
 ${mcpContext || 'No MCP servers were called for this request.'}
 
-Remember: Your goal is to gather enough information to create a comprehensive project proposal that will be delivered within 2 business days.`
+Remember: Be concise, ask focused questions, and end the conversation when you have sufficient information to create a comprehensive project proposal.`
 
     // Get OpenAI API key
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY')

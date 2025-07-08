@@ -295,7 +295,15 @@ const Chat = () => {
                   variant="ghost"
                   size="sm"
                   className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
-                  onClick={() => navigate('/submit')}
+                  onClick={() => {
+                    setMessages([]);
+                    setNewMessage('');
+                    setFiles([]);
+                    setSessionId(`chat_${Date.now()}`);
+                    setShowThinking(false);
+                    setIsSending(false);
+                    setIsGettingResponse(false);
+                  }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   New Chat
