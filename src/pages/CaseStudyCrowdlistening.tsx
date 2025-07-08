@@ -132,7 +132,7 @@ const CaseStudyCrowdlistening = () => {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/20 hover:text-white px-8 py-3 rounded-full font-medium"
+                className="border-white text-white hover:bg-white hover:text-purple-900 px-8 py-3 rounded-full font-medium bg-transparent"
               >
                 Explore Examples
               </Button>
@@ -230,17 +230,6 @@ const CaseStudyCrowdlistening = () => {
           </div>
 
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">
-              Get started with your first analysis
-            </h3>
-            <Button 
-              size="lg"
-              className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full font-medium"
-              onClick={() => window.open('https://crowdlistening.com', '_blank')}
-            >
-              Try Crowdlistening
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
           </div>
         </div>
       </section>
@@ -365,14 +354,6 @@ const CaseStudyCrowdlistening = () => {
           </Card>
 
           <div className="text-center mt-12">
-            <Button 
-              size="lg"
-              className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full font-medium"
-              onClick={() => window.open('https://crowdlistening.com', '_blank')}
-            >
-              Try Content Prediction
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </Button>
           </div>
         </div>
       </section>
