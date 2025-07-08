@@ -10,6 +10,7 @@ import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import Categories from './pages/Categories';
 import About from './pages/About';
+import Explore from './pages/Explore';
 import Submit from './pages/Submit';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
@@ -69,6 +70,7 @@ function App() {
               <Route path="/hire" element={<Hire />} />
               <Route path="/experts" element={<Experts />} />
               <Route path="/experts/:id" element={<ExpertDetails />} />
+              <Route path="/explore" element={<Explore />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
