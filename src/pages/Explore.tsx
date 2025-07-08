@@ -89,9 +89,7 @@ const Explore = () => {
       <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Explore Knowledge &
-            <br />
-            Expert Insights
+            Explore Expert Insights
           </h1>
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
             Discover AI-powered answers and comprehensive business guides to help you make informed decisions and grow your business.
@@ -119,6 +117,7 @@ const Explore = () => {
               <Card 
                 key={index} 
                 className="hover:shadow-xl transition-all duration-300 cursor-pointer bg-white border-gray-200"
+                onClick={() => window.location.href = `/answers/${item.question.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
               >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -172,6 +171,7 @@ const Explore = () => {
               <Card 
                 key={index} 
                 className="hover:shadow-xl transition-all duration-300 cursor-pointer bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200"
+                onClick={() => window.location.href = `/guides/${guide.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
               >
                 <CardContent className="p-8">
                   <div className="flex items-start space-x-4">
@@ -223,8 +223,8 @@ const Explore = () => {
 
       {/* CTA Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-3xl p-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-3xl p-12 text-center">
             <Lightbulb className="w-16 h-16 text-white mx-auto mb-6" />
             <h3 className="text-3xl lg:text-4xl font-bold text-white mb-6">
               Need Expert Help?
@@ -235,6 +235,7 @@ const Explore = () => {
             <Button 
               size="lg"
               className="bg-white text-purple-900 hover:bg-gray-100 px-8 py-3 rounded-full font-medium"
+              onClick={() => window.location.href = '/hire'}
             >
               Get Expert Help
             </Button>
