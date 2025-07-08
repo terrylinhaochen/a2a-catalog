@@ -111,11 +111,9 @@ const ServiceCategories = () => {
                   <Button 
                     size="lg"
                     className="bg-white text-purple-900 hover:bg-gray-100 px-8 py-3 rounded-full font-medium"
-                    asChild
+                    onClick={() => window.location.href = '/case-study/crowdlistening'}
                   >
-                    <a href="https://crowdlistening.com" target="_blank" rel="noopener noreferrer">
-                      Visit Crowdlistening.com
-                    </a>
+                    Learn More
                   </Button>
                 </div>
               </div>
