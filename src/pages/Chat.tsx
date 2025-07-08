@@ -59,6 +59,7 @@ const Chat = () => {
   const [isSending, setIsSending] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
   const [sessionId, setSessionId] = useState<string>(`chat_${Date.now()}`);
+  const [isGettingResponse, setIsGettingResponse] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -123,7 +124,16 @@ const Chat = () => {
   };
 
   const getAIResponse = async (currentMessages: ChatMessage[], serviceSource?: string) => {
+    if (isGettingResponse) {
+      console.log('Already getting response, skipping...');
+      return;
+    }
+    
+    setIsGettingResponse(true);
+    
     try {
+      console.log('Getting AI response for', currentMessages.length, 'messages');
+      
       // Convert messages to API format
       const apiMessages: ApiChatMessage[] = currentMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' : 'assistant' as const,
@@ -136,6 +146,8 @@ const Chat = () => {
         connectedServers: [],
         sessionId: sessionId
       });
+
+      console.log('Received AI response:', response.message.substring(0, 100) + '...');
 
       const agentResponse: ChatMessage = {
         id: `agent-${Date.now()}`,
@@ -163,6 +175,7 @@ const Chat = () => {
       setMessages(prev => [...prev, fallbackResponse]);
     } finally {
       setShowThinking(false);
+      setIsGettingResponse(false);
     }
   };
 
@@ -197,7 +210,9 @@ const Chat = () => {
     e.preventDefault();
     
     if (!newMessage.trim() && files.length === 0) return;
+    if (isSending || isGettingResponse) return; // Prevent multiple submissions
 
+    console.log('Sending message:', newMessage.substring(0, 50) + '...');
     setIsSending(true);
     
     try {
@@ -289,7 +304,7 @@ const Chat = () => {
             </div>
 
             {/* Messages - Fixed height with scroll */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 max-h-[500px]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 max-h-[calc(100vh-400px)]">
               {messages.map((message) => (
                 <div
                   key={message.id}
