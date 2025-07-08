@@ -8,8 +8,9 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Send, FileText, X, User, Bot, Plus, Upload } from 'lucide-react';
+import { Send, FileText, X, User, Bot, Plus, PenTool } from 'lucide-react';
 import { toast } from 'sonner';
+import { sendMcpChatMessage, ChatMessage as ApiChatMessage } from '@/lib/api';
 
 interface WorkRequest {
   id: string;
@@ -124,58 +125,31 @@ const Chat = () => {
   const getAIResponse = async (currentMessages: ChatMessage[], serviceSource?: string) => {
     try {
       // Convert messages to API format
-      const apiMessages = currentMessages.map(msg => ({
+      const apiMessages: ApiChatMessage[] = currentMessages.map(msg => ({
         role: msg.sender === 'user' ? 'user' : 'assistant' as const,
         content: msg.content
       }));
 
-      // Add system prompt
-      const systemPrompt = `You are an AI assistant specializing in helping users define clear project deliverables and requirements. Your role is to:
+      // Call the MCP chat API
+      const response = await sendMcpChatMessage({
+        messages: apiMessages,
+        connectedServers: [],
+        sessionId: sessionId
+      });
 
-1. **Ask clarifying questions** to understand the user's needs thoroughly
-2. **Request sample work cases** to better understand their project scope
-3. **Define clear deliverables** with specific outcomes and timelines
-4. **Provide realistic expectations** about project complexity and requirements
-
-**Key Guidelines:**
-- Always ask for specific examples of what they want to achieve
-- Request sample work cases or similar projects they've seen
-- Help break down complex projects into clear, actionable deliverables
-- Set realistic timelines and expectations
-- Ask about their budget and timeline constraints
-- Inquire about their technical requirements and constraints
-
-**Response Format:**
-- Ask 2-3 specific questions to clarify their needs
-- Request sample work cases or examples
-- Suggest a clear deliverable structure
-- Mention that you'll provide a detailed proposal within 2 business days
-- Ask them to check their email for follow-up
-
-**Service Context:** ${serviceSource ? `This request is related to: ${serviceSource}` : 'General project request'}
-
-Remember: Your goal is to gather enough information to create a comprehensive project proposal that will be delivered within 2 business days.`;
-
-      // For now, use a simple response based on the prompt
-      // In a real implementation, this would call an actual LLM API
       const agentResponse: ChatMessage = {
         id: `agent-${Date.now()}`,
-        content: `Thank you for sharing your project requirements! I'd like to understand your needs better to provide you with a comprehensive proposal.
-
-To help me create the best solution for you, could you please share:
-
-1. **Specific examples** of what you're looking to achieve - do you have any similar projects or case studies in mind?
-2. **Timeline and budget** - what's your preferred timeline and budget range for this project?
-3. **Technical requirements** - are there any specific technologies, platforms, or constraints I should know about?
-
-Once I have this information, I'll be able to provide you with a detailed project proposal within 2 business days. Please keep an eye on your email for our follow-up communication.
-
-What specific aspects of your project would you like to discuss first?`,
+        content: response.message,
         sender: 'agent',
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, agentResponse]);
+
+      // Update session ID if provided
+      if (response.sessionId) {
+        setSessionId(response.sessionId);
+      }
       
     } catch (error) {
       console.error('Error getting AI response:', error);
@@ -315,7 +289,7 @@ What specific aspects of your project would you like to discuss first?`,
             </div>
 
             {/* Messages - Fixed height with scroll */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0 max-h-[400px]">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -392,7 +366,7 @@ What specific aspects of your project would you like to discuss first?`,
                       className="h-8 w-8 p-0 hover:bg-white/20 text-white/70 hover:text-white"
                       disabled={isSending}
                     >
-                      <Upload className="h-4 w-4" />
+                      <PenTool className="h-4 w-4" />
                     </Button>
                   </div>
                   
