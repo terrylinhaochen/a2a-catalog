@@ -31,6 +31,18 @@ import Hire from './pages/Hire';
 import Experts from './pages/Experts';
 import ExpertDetails from './pages/ExpertDetails';
 
+// Answer pages
+import CompetitiveAnalysis from './pages/answers/CompetitiveAnalysis';
+import CustomerSegmentation from './pages/answers/CustomerSegmentation';
+import ConversionOptimization from './pages/answers/ConversionOptimization';
+import SocialAutomation from './pages/answers/SocialAutomation';
+
+// Guide pages
+import BusinessIntelligence from './pages/guides/BusinessIntelligence';
+import CustomerSupport from './pages/guides/CustomerSupport';
+import MarketResearch from './pages/guides/MarketResearch';
+import ContentStrategy from './pages/guides/ContentStrategy';
+
 // Service pages
 import CompetitorAnalysis from './pages/services/CompetitorAnalysis';
 import SalesMarketing from './pages/services/SalesMarketing';
@@ -97,6 +109,18 @@ function App() {
               <Route path="/professions/design-creative" element={<DesignCreative />} />
               <Route path="/professions/admin-support" element={<AdminSupport />} />
               <Route path="/professions/finance-accounting" element={<FinanceAccounting />} />
+              
+              {/* Answer pages */}
+              <Route path="/answers/how-to-conduct-effective-competitive-analysis" element={<CompetitiveAnalysis />} />
+              <Route path="/answers/best-practices-for-ai-powered-customer-segmentation" element={<CustomerSegmentation />} />
+              <Route path="/answers/how-to-optimize-conversion-rates-with-ai-insights" element={<ConversionOptimization />} />
+              <Route path="/answers/social-media-automation-strategies-that-work" element={<SocialAutomation />} />
+              
+              {/* Guide pages */}
+              <Route path="/guides/complete-guide-to-ai-powered-business-intelligence" element={<BusinessIntelligence />} />
+              <Route path="/guides/building-scalable-customer-support-with-ai-agents" element={<CustomerSupport />} />
+              <Route path="/guides/advanced-market-research-using-ai-tools" element={<MarketResearch />} />
+              <Route path="/guides/content-strategy-automation-for-modern-businesses" element={<ContentStrategy />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>

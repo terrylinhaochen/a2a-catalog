@@ -86,14 +86,21 @@ const Explore = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Explore Expert Insights
-          </h1>
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Discover AI-powered answers and comprehensive business guides to help you make informed decisions and grow your business.
-          </p>
+      <div className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main Purple Card */}
+          <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 border-0 shadow-2xl overflow-hidden">
+            <CardContent className="p-10 lg:p-14">
+              <div className="max-w-4xl text-center">
+                <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                  Explore Expert Insights
+                </h1>
+                <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+                  Discover AI-powered answers and comprehensive business guides to help you make informed decisions and grow your business.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
