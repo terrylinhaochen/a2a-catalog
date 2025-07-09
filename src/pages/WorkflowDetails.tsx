@@ -131,22 +131,25 @@ const WorkflowDetails = () => {
   };
 
   const generateMermaidDiagram = () => {
-    if (!workflow || !workflow.workflow_json.nodes) return '';
+    if (!workflow || !workflow.workflow_json || !workflow.workflow_json.nodes) return '';
     
-    const nodes = workflow.workflow_json.nodes;
+    const nodes = workflow.workflow_json.nodes || [];
     const connections = workflow.workflow_json.connections || {};
     
     let mermaidCode = 'flowchart TD\n';
     
     // Add nodes
-    nodes.forEach(node => {
-      if (!node.id || !node.type) return; // Skip invalid nodes
-      const nodeId = node.id.replace(/-/g, '_');
-      const nodeName = node.name || node.type;
+    nodes.forEach((node, index) => {
+      if (!node || typeof node !== 'object') return;
       
-      if (node.type.includes('trigger')) {
+      // Generate safe node ID
+      const nodeId = node.id ? node.id.toString().replace(/[^a-zA-Z0-9]/g, '_') : `node_${index}`;
+      const nodeName = node.name || node.type || `Node ${index + 1}`;
+      const nodeType = node.type || '';
+      
+      if (nodeType.toLowerCase().includes('trigger')) {
         mermaidCode += `    ${nodeId}[/"${nodeName}"/]\n`;
-      } else if (node.type.includes('webhook')) {
+      } else if (nodeType.toLowerCase().includes('webhook')) {
         mermaidCode += `    ${nodeId}(("${nodeName}"))\n`;
       } else {
         mermaidCode += `    ${nodeId}["${nodeName}"]\n`;
@@ -154,13 +157,17 @@ const WorkflowDetails = () => {
     });
     
     // Add connections
-    Object.entries(connections).forEach(([sourceId, outputs]) => {
-      const sourceNodeId = sourceId.replace(/-/g, '_');
-      Object.entries(outputs).forEach(([outputName, targets]) => {
+    Object.entries(connections || {}).forEach(([sourceId, outputs]) => {
+      if (!sourceId || !outputs) return;
+      
+      const sourceNodeId = sourceId.toString().replace(/[^a-zA-Z0-9]/g, '_');
+      Object.entries(outputs || {}).forEach(([outputName, targets]) => {
         if (Array.isArray(targets)) {
           targets.forEach(target => {
-            const targetNodeId = target.node.replace(/-/g, '_');
-            mermaidCode += `    ${sourceNodeId} --> ${targetNodeId}\n`;
+            if (target && target.node) {
+              const targetNodeId = target.node.toString().replace(/[^a-zA-Z0-9]/g, '_');
+              mermaidCode += `    ${sourceNodeId} --> ${targetNodeId}\n`;
+            }
           });
         }
       });
@@ -376,18 +383,18 @@ const WorkflowDetails = () => {
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Total Integrations:</span>
-                            <span className="font-semibold">{workflow.integrations.length}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Categories:</span>
-                            <span className="font-semibold">{workflow.categories.length}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Skills:</span>
-                            <span className="font-semibold">{workflow.skills.length}</span>
-                          </div>
+                         <div className="flex justify-between">
+                           <span className="text-gray-600">Total Integrations:</span>
+                           <span className="font-semibold">{workflow.integrations?.length || 0}</span>
+                         </div>
+                         <div className="flex justify-between">
+                           <span className="text-gray-600">Categories:</span>
+                           <span className="font-semibold">{workflow.categories?.length || 0}</span>
+                         </div>
+                         <div className="flex justify-between">
+                           <span className="text-gray-600">Skills:</span>
+                           <span className="font-semibold">{workflow.skills?.length || 0}</span>
+                         </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Votes:</span>
                             <span className="font-semibold">{workflow.votes}</span>
