@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Index from './pages/Index';
 import Agents from './pages/Agents';
 import AgentDetails from './pages/AgentDetails';
+import Tools from './pages/Tools';
 import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import Categories from './pages/Categories';
@@ -75,14 +76,15 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/tools" element={<Tools />} />
               <Route path="/agents" element={<Agents />} />
               <Route path="/agents/:id" element={<AgentDetails />} />
+              <Route path="/workflows" element={<Workflows />} />
+              <Route path="/workflows/:id" element={<WorkflowDetails />} />
               <Route path="/mcps" element={<McpServers />} />
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/hire" element={<Hire />} />
-              <Route path="/workflows" element={<Workflows />} />
-              <Route path="/workflows/:id" element={<WorkflowDetails />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />

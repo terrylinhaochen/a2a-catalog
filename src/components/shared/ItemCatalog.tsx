@@ -9,22 +9,31 @@ import GenericCard from '@/components/GenericCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
-type ProtocolType = 'agent' | 'mcp' | 'workflow' | 'all';
+type ProtocolType = 'agent' | 'mcp' | 'workflow';
 
 interface ItemCatalogProps {
-  defaultProtocol?: ProtocolType;
+  defaultProtocol: ProtocolType;
   title: string;
   description: string;
   url: string;
 }
 
-const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemCatalogProps) => {
+const ItemCatalog = ({ defaultProtocol, title, description, url }: ItemCatalogProps) => {
   const { agents, categories, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
   const { workflows, loading: workflowsLoading, voteForWorkflow } = useWorkflows();
@@ -36,61 +45,96 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedProtocol, setSelectedProtocol] = useState<'agent' | 'mcp' | 'workflow'>(
-    defaultProtocol === 'all' ? 'workflow' : defaultProtocol as 'agent' | 'mcp' | 'workflow'
-  );
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [paginatedItems, setPaginatedItems] = useState<(Agent | McpServer | Workflow)[]>([]);
+  
+  const itemsPerPage = 9;
   const loading = agentsLoading || mcpLoading || workflowsLoading;
 
   // Handle category filter from URL params
   useEffect(() => {
     const categoryParam = searchParams.get('category');
+    const pageParam = searchParams.get('page');
     if (categoryParam) {
       setSelectedCategories([categoryParam]);
     }
+    if (pageParam) {
+      setCurrentPage(parseInt(pageParam, 10));
+    }
   }, [searchParams]);
 
-  // Combined items based on protocol filter
-  const combinedItems = useMemo((): (Agent | McpServer | Workflow)[] => {
-    switch (selectedProtocol) {
+  // Fetch paginated data
+  const fetchPaginatedData = async () => {
+    const offset = (currentPage - 1) * itemsPerPage;
+    const options = {
+      limit: itemsPerPage,
+      offset,
+      search: searchQuery,
+      categories: selectedCategories,
+      sortBy
+    };
+
+    let result;
+    switch (defaultProtocol) {
       case 'agent':
-        return agents;
+        result = await agents.length > 0 ? { data: agents, count: agents.length } : 
+                await { data: [], count: 0 }; // Will be handled by useAgents hook
+        break;
       case 'mcp':
-        return mcpServers;
+        result = await mcpServers.length > 0 ? { data: mcpServers, count: mcpServers.length } : 
+                await { data: [], count: 0 }; // Will be handled by useMcpServers hook
+        break;
       case 'workflow':
-        return workflows;
+        result = await workflows.length > 0 ? { data: workflows, count: workflows.length } : 
+                await { data: [], count: 0 }; // Will be handled by useWorkflows hook
+        break;
       default:
-        return workflows; // Default to workflows
-    }
-  }, [agents, mcpServers, workflows, selectedProtocol]);
-
-  const filteredAndSortedItems = useMemo(() => {
-    let filtered = combinedItems.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           item.skills?.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesCategory = selectedCategories.length === 0 ||
-                             selectedCategories.some(cat => item.categories.includes(cat));
-      
-      return matchesSearch && matchesCategory;
-    });
-
-    // Sort items
-    switch (sortBy) {
-      case 'popular':
-        filtered.sort((a, b) => b.votes - a.votes);
-        break;
-      case 'newest':
-        filtered.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
-        break;
-      case 'alphabetical':
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
+        result = { data: [], count: 0 };
     }
 
-    return filtered;
-  }, [combinedItems, searchQuery, selectedCategories, sortBy]);
+    if (result) {
+      // Apply client-side filtering for now (can be moved to server-side later)
+      let filtered = result.data.filter(item => {
+        const matchesSearch = !searchQuery || 
+                             item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             item.skills?.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        const matchesCategory = selectedCategories.length === 0 ||
+                               selectedCategories.some(cat => item.categories.includes(cat));
+        
+        return matchesSearch && matchesCategory;
+      });
+
+      // Sort items
+      switch (sortBy) {
+        case 'popular':
+          filtered.sort((a, b) => b.votes - a.votes);
+          break;
+        case 'newest':
+          filtered.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+          break;
+        case 'alphabetical':
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+      }
+
+      // Apply pagination
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const paginatedData = filtered.slice(startIndex, startIndex + itemsPerPage);
+      
+      setPaginatedItems(paginatedData);
+      setTotalCount(filtered.length);
+    }
+  };
+
+  // Fetch data when dependencies change
+  useEffect(() => {
+    if (!loading) {
+      fetchPaginatedData();
+    }
+  }, [currentPage, searchQuery, selectedCategories, sortBy, agents, mcpServers, workflows, loading]);
 
   const handleCategoryToggle = (category: string) => {
     const newSelectedCategories = selectedCategories.includes(category) 
@@ -98,6 +142,7 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
       : [...selectedCategories, category];
     
     setSelectedCategories(newSelectedCategories);
+    setCurrentPage(1); // Reset to first page when filtering
     
     // Update URL params
     if (newSelectedCategories.length === 0) {
@@ -105,14 +150,24 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
     } else if (newSelectedCategories.length === 1) {
       searchParams.set('category', newSelectedCategories[0]);
     }
+    searchParams.set('page', '1');
     setSearchParams(searchParams);
   };
 
   const handleClearFilters = () => {
     setSearchQuery('');
     setSelectedCategories([]);
+    setCurrentPage(1);
     searchParams.delete('category');
+    searchParams.set('page', '1');
     setSearchParams(searchParams);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleVote = async (itemId: string, voteType: 'up' | 'down') => {
@@ -122,15 +177,16 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
     }
 
     try {
-      const isAgent = agents.some(a => a.id === itemId);
-      const isWorkflow = workflows.some(w => w.id === itemId);
-      
-      if (isAgent) {
-        await voteForAgent(itemId, user.id);
-      } else if (isWorkflow) {
-        await voteForWorkflow(itemId, user.id);
-      } else {
-        await voteForMcpServer(itemId, user.id);
+      switch (defaultProtocol) {
+        case 'agent':
+          await voteForAgent(itemId, user.id);
+          break;
+        case 'workflow':
+          await voteForWorkflow(itemId, user.id);
+          break;
+        case 'mcp':
+          await voteForMcpServer(itemId, user.id);
+          break;
       }
       
       toast.success('Vote recorded successfully!');
@@ -140,10 +196,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
     }
   };
 
-  const getItemType = (item: Agent | McpServer | Workflow): 'agent' | 'mcp' | 'workflow' => {
-    if (agents.some(a => a.id === item.id)) return 'agent';
-    if (workflows.some(w => w.id === item.id)) return 'workflow';
-    return 'mcp';
+  const getItemType = (): 'agent' | 'mcp' | 'workflow' => {
+    return defaultProtocol;
   };
 
   if (loading) {
@@ -160,14 +214,14 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
         title={title}
         description={description}
         url={url}
-        agents={filteredAndSortedItems.filter(item => getItemType(item) === 'agent').slice(0, 10).map(item => ({
+        agents={defaultProtocol === 'agent' ? paginatedItems.slice(0, 10).map(item => ({
           name: item.name,
           description: item.description
-        }))}
-        mcpServers={filteredAndSortedItems.filter(item => getItemType(item) === 'mcp').slice(0, 10).map(item => ({
+        })) : []}
+        mcpServers={defaultProtocol === 'mcp' ? paginatedItems.slice(0, 10).map(item => ({
           name: item.name,
           description: item.description
-        }))}
+        })) : []}
       />
       
       <StructuredData 
@@ -176,20 +230,20 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           '@type': 'ItemList',
           name: title,
           description: description,
-          numberOfItems: filteredAndSortedItems.length,
-          itemListElement: filteredAndSortedItems.slice(0, 10).map((item, index) => ({
+          numberOfItems: totalCount,
+          itemListElement: paginatedItems.slice(0, 10).map((item, index) => ({
             '@type': 'SoftwareApplication',
             position: index + 1,
             name: item.name,
             description: item.description,
-            applicationCategory: getItemType(item) === 'agent' ? 'AI Agent' : 'MCP Server',
+            applicationCategory: getItemType() === 'agent' ? 'AI Agent' : getItemType() === 'mcp' ? 'MCP Server' : 'Workflow',
             operatingSystem: 'Web',
             author: {
               '@type': 'Organization',
               name: item.provider
             },
-            type: getItemType(item),
-            programmingLanguage: getItemType(item) === 'agent' ? ['Python', 'JavaScript', 'TypeScript'] : ['Python', 'JavaScript'],
+            type: getItemType(),
+            programmingLanguage: getItemType() === 'agent' ? ['Python', 'JavaScript', 'TypeScript'] : ['Python', 'JavaScript'],
             runtimePlatform: ['Web Browser', 'Node.js', 'Cloud'],
             featureList: item.skills || item.categories || []
           }))
@@ -221,64 +275,6 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           {/* Filters Panel */}
           <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="space-y-6">
-              {/* Protocol Filter - Only show when not specifically for workflows */}
-              {defaultProtocol !== 'workflow' && (
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-bold text-gray-900">Protocols</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="flex items-center justify-between cursor-pointer">
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          name="protocol"
-                          checked={selectedProtocol === 'agent'}
-                          onChange={() => setSelectedProtocol('agent')}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
-                        />
-                        <span className="text-sm text-gray-700">A2A Agents</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {agents.length}
-                      </Badge>
-                    </label>
-                    
-                    <label className="flex items-center justify-between cursor-pointer">
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          name="protocol"
-                          checked={selectedProtocol === 'mcp'}
-                          onChange={() => setSelectedProtocol('mcp')}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
-                        />
-                        <span className="text-sm text-gray-700">MCPs</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {mcpServers.length}
-                      </Badge>
-                    </label>
-                    
-                    <label className="flex items-center justify-between cursor-pointer">
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="radio"
-                          name="protocol"
-                          checked={selectedProtocol === 'workflow'}
-                          onChange={() => setSelectedProtocol('workflow')}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
-                        />
-                        <span className="text-sm text-gray-700">Workflows</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {workflows.length}
-                      </Badge>
-                    </label>
-                  </div>
-                </div>
-              )}
-
               {/* Categories Filter */}
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <div className="flex items-center justify-between mb-3">
@@ -310,36 +306,89 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 max-h-screen overflow-y-auto">
+          <div className="flex-1">
             <ResultsHeader
-              resultsCount={filteredAndSortedItems.length}
+              resultsCount={totalCount}
               searchQuery={searchQuery}
               selectedCategories={selectedCategories}
-              showAgents={selectedProtocol === 'agent'}
-              showMcps={selectedProtocol === 'mcp'}
-              showWorkflows={selectedProtocol === 'workflow'}
+              showAgents={defaultProtocol === 'agent'}
+              showMcps={defaultProtocol === 'mcp'}
+              showWorkflows={defaultProtocol === 'workflow'}
             />
 
             {/* Items Grid */}
-            {filteredAndSortedItems.length > 0 ? (
-              <div className={viewMode === 'grid' 
-                ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' 
-                : 'space-y-4'
-              }>
-                {filteredAndSortedItems.map((item) => {
-                  const itemType = getItemType(item);
-                  
-                  return (
-                    <GenericCard 
-                      key={item.id} 
-                      item={item} 
-                      onVote={handleVote}
-                      compact={viewMode === 'list'}
-                      type={itemType}
-                    />
-                  );
-                })}
-              </div>
+            {paginatedItems.length > 0 ? (
+              <>
+                <div className={viewMode === 'grid' 
+                  ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8' 
+                  : 'space-y-4 mb-8'
+                }>
+                  {paginatedItems.map((item) => {
+                    const itemType = getItemType();
+                    
+                    return (
+                      <GenericCard 
+                        key={item.id} 
+                        item={item} 
+                        onVote={handleVote}
+                        compact={viewMode === 'list'}
+                        type={itemType}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Pagination */}
+                {totalCount > itemsPerPage && (
+                  <div className="flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        {currentPage > 1 && (
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              className="cursor-pointer"
+                            />
+                          </PaginationItem>
+                        )}
+                        
+                        {Array.from({ length: Math.ceil(totalCount / itemsPerPage) }, (_, i) => i + 1)
+                          .filter(page => {
+                            const totalPages = Math.ceil(totalCount / itemsPerPage);
+                            return page === 1 || page === totalPages || Math.abs(page - currentPage) <= 2;
+                          })
+                          .map((page, index, array) => (
+                            <React.Fragment key={page}>
+                              {index > 0 && array[index - 1] !== page - 1 && (
+                                <PaginationItem>
+                                  <PaginationEllipsis />
+                                </PaginationItem>
+                              )}
+                              <PaginationItem>
+                                <PaginationLink
+                                  onClick={() => handlePageChange(page)}
+                                  isActive={currentPage === page}
+                                  className="cursor-pointer"
+                                >
+                                  {page}
+                                </PaginationLink>
+                              </PaginationItem>
+                            </React.Fragment>
+                          ))}
+                        
+                        {currentPage < Math.ceil(totalCount / itemsPerPage) && (
+                          <PaginationItem>
+                            <PaginationNext 
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              className="cursor-pointer"
+                            />
+                          </PaginationItem>
+                        )}
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🔍</div>

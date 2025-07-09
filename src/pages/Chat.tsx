@@ -123,6 +123,11 @@ const Chat = () => {
     }
   };
 
+  const saveChatLog = async (messages: ChatMessage[]) => {
+    // TODO: Implement chat log storage when chat_logs table is created
+    console.log('Chat log would be saved:', messages.length, 'messages');
+  };
+
   const getAIResponse = async (currentMessages: ChatMessage[], serviceSource?: string) => {
     if (isGettingResponse) {
       console.log('Already getting response, skipping...');
@@ -156,7 +161,11 @@ const Chat = () => {
         timestamp: new Date()
       };
 
-      setMessages(prev => [...prev, agentResponse]);
+      const updatedMessages = [...currentMessages, agentResponse];
+      setMessages(updatedMessages);
+
+      // Save conversation to database
+      await saveChatLog(updatedMessages);
 
       // Update session ID if provided
       if (response.sessionId) {
@@ -172,7 +181,11 @@ const Chat = () => {
         sender: 'agent',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, fallbackResponse]);
+      const updatedMessages = [...currentMessages, fallbackResponse];
+      setMessages(updatedMessages);
+      
+      // Save conversation to database
+      await saveChatLog(updatedMessages);
     } finally {
       setShowThinking(false);
       setIsGettingResponse(false);
@@ -233,6 +246,9 @@ const Chat = () => {
       setMessages(updatedMessages);
       setNewMessage('');
       setFiles([]);
+      
+      // Save user message to database
+      await saveChatLog(updatedMessages);
       
       // Show thinking state
       setShowThinking(true);

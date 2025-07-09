@@ -10,8 +10,8 @@ const Workflows = () => {
       
       <ItemCatalog
         defaultProtocol="workflow"
-        title="Workflow Automation Catalog"
-        description="Discover and implement powerful n8n workflow automations. Browse over 2,000 production-ready workflows with integrations, statistics, and visual diagrams."
+        title="Workflow Catalog"
+        description="Discover and download ready-to-use AI workflows for automation and productivity. Browse thousands of workflows from n8n, Zapier, and other automation platforms."
         url="https://a2acatalog.com/workflows"
       />
 
