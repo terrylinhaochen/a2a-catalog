@@ -137,8 +137,32 @@ serve(async (req) => {
       mcpServers = data || []
     }
 
+    // Load existing conversation history if sessionId is provided
+    let conversationHistory: ChatMessage[] = []
+    if (sessionId) {
+      try {
+        const { data: existingChat, error: chatError } = await supabase
+          .from('chat_logs')
+          .select('messages')
+          .eq('user_id', user.id)
+          .eq('session_id', sessionId)
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .single()
+
+        if (!chatError && existingChat && existingChat.messages) {
+          conversationHistory = existingChat.messages
+        }
+      } catch (error) {
+        console.log('No existing conversation found for session:', sessionId)
+      }
+    }
+
+    // Combine existing history with new messages, avoiding duplicates
+    const allMessages = [...conversationHistory, ...messages]
+    
     // Get the last user message
-    const lastUserMessage = messages.filter(m => m.role === 'user').pop()?.content || '';
+    const lastUserMessage = allMessages.filter(m => m.role === 'user').pop()?.content || '';
     
     // Try to use MCP servers for specific requests
     const mcpResults: Array<{
@@ -235,7 +259,7 @@ Remember: Be concise, ask focused questions, and end the conversation when you h
         model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
-          ...messages
+          ...allMessages
         ],
         max_tokens: 1000,
         temperature: 0.7,
@@ -255,7 +279,7 @@ Remember: Be concise, ask focused questions, and end the conversation when you h
     const chatLogData = {
       user_id: user.id,
       session_id: sessionId || `session_${Date.now()}`,
-      messages: messages.concat([{ role: 'assistant', content: assistantMessage }]),
+      messages: allMessages.concat([{ role: 'assistant', content: assistantMessage }]),
       connected_servers: connectedServers,
       metadata: {
         mcp_results: mcpResults,
@@ -264,9 +288,30 @@ Remember: Be concise, ask focused questions, and end the conversation when you h
       }
     };
 
-    const { error: logError } = await supabase
+    // Check if record exists and update or insert accordingly
+    const { data: existingRecord, error: checkError } = await supabase
       .from('chat_logs')
-      .insert(chatLogData);
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('session_id', chatLogData.session_id)
+      .limit(1)
+      .single()
+
+    let logError = null
+    if (existingRecord && !checkError) {
+      // Update existing record
+      const { error } = await supabase
+        .from('chat_logs')
+        .update(chatLogData)
+        .eq('id', existingRecord.id)
+      logError = error
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from('chat_logs')
+        .insert(chatLogData)
+      logError = error
+    }
 
     if (logError) {
       console.error('Error logging chat:', logError);
