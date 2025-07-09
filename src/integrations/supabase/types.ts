@@ -142,6 +142,36 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_logs: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          metadata: Json
+          session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          metadata?: Json
+          session_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          metadata?: Json
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mcp_server_votes: {
         Row: {
           created_at: string | null
