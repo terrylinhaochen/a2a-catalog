@@ -35,16 +35,22 @@ const Navbar = () => {
                 Work
               </Link>
               <Link
-                to="/explore"
+                to="/tools"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
-                Explore
+                Tools
               </Link>
               <Link
                 to="/agents"
                 className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
               >
                 Agents
+              </Link>
+              <Link
+                to="/workflows"
+                className="text-gray-500 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Workflows
               </Link>
               <Link
                 to="/about"
@@ -144,11 +150,11 @@ const Navbar = () => {
               Work
             </Link>
             <Link
-              to="/explore"
+              to="/tools"
               className="text-gray-500 block px-3 py-2 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Explore
+              Tools
             </Link>
             <Link
               to="/agents"
@@ -156,6 +162,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Agents
+            </Link>
+            <Link
+              to="/workflows"
+              className="text-gray-500 block px-3 py-2 text-base font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Workflows
             </Link>
             <Link
               to="/about"

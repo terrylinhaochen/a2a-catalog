@@ -42,18 +42,60 @@ export const useAgents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAgents = async () => {
+  const fetchAgents = async (options?: { 
+    limit?: number; 
+    offset?: number; 
+    search?: string; 
+    categories?: string[]; 
+    sortBy?: string; 
+  }) => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('agents')
-        .select('*')
-        .order('votes', { ascending: false });
+        .select('*', { count: 'exact' });
+
+      // Apply search filter
+      if (options?.search) {
+        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
+      }
+
+      // Apply category filter
+      if (options?.categories && options.categories.length > 0) {
+        query = query.overlaps('categories', options.categories);
+      }
+
+      // Apply sorting
+      switch (options?.sortBy) {
+        case 'popular':
+          query = query.order('votes', { ascending: false });
+          break;
+        case 'newest':
+          query = query.order('created_at', { ascending: false });
+          break;
+        case 'alphabetical':
+          query = query.order('name', { ascending: true });
+          break;
+        default:
+          query = query.order('votes', { ascending: false });
+      }
+
+      // Apply pagination
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+      if (options?.offset) {
+        query = query.range(options.offset, options.offset + (options.limit || 9) - 1);
+      }
+
+      const { data, error, count } = await query;
 
       if (error) throw error;
       setAgents(data || []);
+      return { data: data || [], count: count || 0 };
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch agents');
       console.error('Error fetching agents:', err);
+      return { data: [], count: 0 };
     }
   };
 

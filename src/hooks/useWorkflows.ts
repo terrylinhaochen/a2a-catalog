@@ -42,26 +42,66 @@ export const useWorkflows = () => {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchWorkflows = async (limit?: number) => {
+  const fetchWorkflows = async (options?: { 
+    limit?: number; 
+    offset?: number; 
+    search?: string; 
+    categories?: string[]; 
+    sortBy?: string; 
+  }) => {
     try {
-      // Fetch all workflows - use a high limit to get all 2055 workflows
-      const { data, error } = await supabase
+      let query = supabase
         .from('workflows')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(limit || 5000); // Use 5000 as default limit to ensure we get all workflows
+        .select('*', { count: 'exact' });
+
+      // Apply search filter
+      if (options?.search) {
+        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
+      }
+
+      // Apply category filter
+      if (options?.categories && options.categories.length > 0) {
+        query = query.overlaps('categories', options.categories);
+      }
+
+      // Apply sorting
+      switch (options?.sortBy) {
+        case 'popular':
+          query = query.order('votes', { ascending: false });
+          break;
+        case 'newest':
+          query = query.order('created_at', { ascending: false });
+          break;
+        case 'alphabetical':
+          query = query.order('name', { ascending: true });
+          break;
+        default:
+          query = query.order('votes', { ascending: false });
+      }
+
+      // Apply pagination
+      if (options?.limit) {
+        query = query.limit(options.limit);
+      }
+      if (options?.offset) {
+        query = query.range(options.offset, options.offset + (options.limit || 9) - 1);
+      }
+
+      const { data, error, count } = await query;
 
       if (error) {
         console.error('Error fetching workflows:', error);
         toast.error('Failed to load workflows');
-        return;
+        return { data: [], count: 0 };
       }
 
-      console.log(`✅ Loaded ${data?.length || 0} workflows`);
+      console.log(`✅ Loaded ${data?.length || 0} workflows (total: ${count})`);
       setWorkflows(data || []);
+      return { data: data || [], count: count || 0 };
     } catch (error) {
       console.error('Error fetching workflows:', error);
       toast.error('Failed to load workflows');
+      return { data: [], count: 0 };
     } finally {
       setLoading(false);
     }
