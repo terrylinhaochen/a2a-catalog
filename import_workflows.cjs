@@ -195,20 +195,33 @@ function extractIntegrations(nodes) {
   const integrations = new Set();
   
   nodes.forEach(node => {
-    if (node.type && node.type.includes('.')) {
-      const nodeType = node.type.split('.').pop();
+    if (node.type) {
+      // Extract the node type (remove namespace prefix)
+      const nodeType = node.type.includes('.') ? node.type.split('.').pop() : node.type;
       
-      // Map common n8n node types to integration names
+      // Skip generic n8n nodes
+      const skipNodes = ['stickyNote', 'if', 'switch', 'merge', 'code', 'set', 'function', 'split', 'itemLists', 'wait', 'loop', 'executeWorkflow', 'noOp', 'filter', 'aggregate', 'sort', 'limit', 'rename', 'removeDuplicates', 'dateTime', 'xml', 'json', 'moveBinaryData', 'compression', 'crypto', 'spreadsheetFile', 'pdf', 'html', 'readPdf', 'editImage', 'executionData', 'readBinaryFile', 'readBinaryFiles', 'writeBinaryFile', 'summarizationChain', 'basicLLMChain', 'vectorStorePGVector', 'pineconeVectorStore', 'inMemoryVectorStore', 'qdrantVectorStore', 'langchainSearch', 'langchainAgent'];
+      
+      if (skipNodes.includes(nodeType)) {
+        return;
+      }
+      
+      // Map n8n node types to proper integration names
       const nodeTypeMapping = {
         'telegram': 'Telegram',
         'gmail': 'Gmail',
-        'googleSheets': 'GoogleSheets',
-        'googleDrive': 'GoogleDrive',
-        'googleCalendar': 'GoogleCalendar',
+        'googleSheets': 'Google Sheets',
+        'googleDrive': 'Google Drive',
+        'googleCalendar': 'Google Calendar',
+        'googleContacts': 'Google Contacts',
+        'googleSlides': 'Google Slides',
+        'googleTask': 'Google Tasks',
+        'googleBooks': 'Google Books',
+        'googleCloudFirestore': 'Google Cloud Firestore',
         'slack': 'Slack',
         'discord': 'Discord',
         'airtable': 'Airtable',
-        'hubspot': 'Hubspot',
+        'hubspot': 'HubSpot',
         'trello': 'Trello',
         'notion': 'Notion',
         'asana': 'Asana',
@@ -218,34 +231,92 @@ function extractIntegrations(nodes) {
         'stripe': 'Stripe',
         'shopify': 'Shopify',
         'twitter': 'Twitter',
-        'linkedin': 'Linkedin',
+        'linkedin': 'LinkedIn',
         'facebook': 'Facebook',
         'instagram': 'Instagram',
-        'youtube': 'Youtube',
+        'youtube': 'YouTube',
         'spotify': 'Spotify',
         'twilio': 'Twilio',
         'mailchimp': 'Mailchimp',
         'sendgrid': 'SendGrid',
-        'http': 'HTTP',
+        'mailjet': 'Mailjet',
+        'mandrill': 'Mandrill',
+        'mailerlite': 'MailerLite',
+        'mailCheck': 'MailCheck',
+        'getresponse': 'GetResponse',
+        'convertkit': 'ConvertKit',
+        'activecampaign': 'ActiveCampaign',
+        'customerio': 'Customer.io',
+        'http': 'HTTP Request',
         'webhook': 'Webhook',
         'mysql': 'MySQL',
-        'postgres': 'Postgres',
+        'postgres': 'PostgreSQL',
         'mongodb': 'MongoDB',
         'redis': 'Redis',
+        'microsoftSQL': 'Microsoft SQL',
+        'microsoftExcel': 'Microsoft Excel',
+        'microsoftOutlook': 'Microsoft Outlook',
+        'microsoftOneDrive': 'Microsoft OneDrive',
         'aws': 'AWS',
-        'dropbox': 'DropBox',
-        'onedrive': 'Microsoft OneDrive',
-        'github': 'Github',
+        'awsS3': 'AWS S3',
+        'awsLambda': 'AWS Lambda',
+        'awsSES': 'AWS SES',
+        'awsSNS': 'AWS SNS',
+        'awsSQS': 'AWS SQS',
+        'awsRekognition': 'AWS Rekognition',
+        'awsTranscribe': 'AWS Transcribe',
+        'awsComprehend': 'AWS Comprehend',
+        'dropbox': 'Dropbox',
+        'onedrive': 'OneDrive',
+        'github': 'GitHub',
         'gitlab': 'GitLab',
+        'git': 'Git',
         'zendesk': 'Zendesk',
         'intercom': 'Intercom',
         'freshdesk': 'FreshDesk',
+        'helpscout': 'HelpScout',
         'mattermost': 'Mattermost',
+        'matrix': 'Matrix',
+        'rocketchat': 'Rocket.Chat',
+        'zulip': 'Zulip',
         'openai': 'OpenAI',
-        'anthropic': 'Anthropic'
+        'anthropic': 'Anthropic',
+        'deepl': 'DeepL',
+        'lingvanex': 'LingvaNex',
+        'openthesaurus': 'OpenThesaurus',
+        'mindee': 'Mindee',
+        'ftp': 'FTP',
+        'ssh': 'SSH',
+        'docker': 'Docker',
+        'kubernetes': 'Kubernetes',
+        'jenkins': 'Jenkins',
+        'travisci': 'Travis CI',
+        'circleci': 'CircleCI',
+        'jira': 'Jira',
+        'confluence': 'Confluence',
+        'monday': 'Monday.com',
+        'basecamp': 'Basecamp',
+        'todoist': 'Todoist',
+        'microsoft365': 'Microsoft 365',
+        'zoom': 'Zoom',
+        'webex': 'Webex',
+        'teams': 'Microsoft Teams',
+        'calendly': 'Calendly',
+        'adobe': 'Adobe',
+        'figma': 'Figma',
+        'canva': 'Canva',
+        'bannerbear': 'Bannerbear',
+        'webflow': 'Webflow',
+        'wordpress': 'WordPress',
+        'drupal': 'Drupal',
+        'ghost': 'Ghost',
+        'medium': 'Medium',
+        'storyblok': 'Storyblok',
+        'strapi': 'Strapi'
       };
       
-      const integrationName = nodeTypeMapping[nodeType.toLowerCase()] || nodeType;
+      const integrationName = nodeTypeMapping[nodeType.toLowerCase()] || 
+                            nodeType.charAt(0).toUpperCase() + nodeType.slice(1);
       integrations.add(integrationName);
     }
   });
@@ -346,8 +417,8 @@ async function importWorkflows() {
         const name = createWorkflowName(filename);
         const description = generateDescription(workflowData, integrations, triggerType);
         
-        // Create skills array from integrations and categories
-        const skills = [...integrations, ...categories.map(cat => cat.toLowerCase())];
+        // Create skills array from node types and workflow characteristics
+        const skills = [...integrations, triggerType, complexity, 'automation', 'workflow'];
         
         const workflow = {
           name,

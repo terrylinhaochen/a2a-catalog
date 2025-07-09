@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import mermaid from 'mermaid';
 import { 
   Heart, 
   ExternalLink, 
@@ -30,9 +30,10 @@ import type { Workflow as WorkflowType } from '@/hooks/useWorkflows';
 const WorkflowDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
   const [workflow, setWorkflow] = useState<WorkflowType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mermaidDiagram, setMermaidDiagram] = useState<string>('');
+  const [diagramSvg, setDiagramSvg] = useState<string>('');
   
   useEffect(() => {
     const fetchWorkflow = async () => {
@@ -61,6 +62,27 @@ const WorkflowDetails = () => {
     
     fetchWorkflow();
   }, [id]);
+
+  useEffect(() => {
+    if (workflow) {
+      const diagram = generateMermaidDiagram();
+      setMermaidDiagram(diagram);
+      
+      // Initialize mermaid and render diagram
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
+      
+      if (diagram) {
+        mermaid.render('workflow-diagram', diagram)
+          .then(({ svg }) => {
+            setDiagramSvg(svg);
+          })
+          .catch(error => {
+            console.error('Mermaid render error:', error);
+            setDiagramSvg('');
+          });
+      }
+    }
+  }, [workflow]);
 
   const handleVote = async () => {
     if (!user) {
@@ -272,15 +294,9 @@ const WorkflowDetails = () => {
               </CardHeader>
               
               <CardContent>
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="grid w-full grid-cols-4">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="diagram">Diagram</TabsTrigger>
-                    <TabsTrigger value="statistics">Statistics</TabsTrigger>
-                    <TabsTrigger value="json">JSON</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="overview" className="space-y-6 mt-6">
+                <div className="space-y-8">
+                  {/* Overview Section */}
+                  <div className="space-y-6">
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Description</h3>
                       <p className="text-gray-700">{workflow.description}</p>
@@ -324,23 +340,32 @@ const WorkflowDetails = () => {
                         </div>
                       </div>
                     )}
-                  </TabsContent>
+                  </div>
                   
-                  <TabsContent value="diagram" className="mt-6">
+                  {/* Workflow Diagram Section */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Workflow Diagram</h3>
                     <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="text-lg font-semibold mb-4">Workflow Diagram</h3>
-                      <div className="bg-white border rounded-lg p-4 min-h-96">
-                        <pre className="text-sm text-gray-600 whitespace-pre-wrap">
-                          {generateMermaidDiagram()}
-                        </pre>
-                        <p className="text-sm text-gray-500 mt-4">
-                          Copy this Mermaid code to visualize the workflow structure in any Mermaid-compatible viewer.
-                        </p>
-                      </div>
+                      {diagramSvg ? (
+                        <div 
+                          className="bg-white border rounded-lg p-4 overflow-auto"
+                          dangerouslySetInnerHTML={{ __html: diagramSvg }}
+                        />
+                      ) : (
+                        <div className="bg-white border rounded-lg p-4 min-h-96">
+                          <pre className="text-sm text-gray-600 whitespace-pre-wrap">
+                            {mermaidDiagram}
+                          </pre>
+                          <p className="text-sm text-gray-500 mt-4">
+                            Copy this Mermaid code to visualize the workflow structure in any Mermaid-compatible viewer.
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  </TabsContent>
+                  </div>
                   
-                  <TabsContent value="statistics" className="mt-6">
+                  {/* Statistics Section */}
+                  <div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <Card>
                         <CardHeader>
@@ -402,19 +427,42 @@ const WorkflowDetails = () => {
                         </CardContent>
                       </Card>
                     </div>
-                  </TabsContent>
+                  </div>
                   
-                  <TabsContent value="json" className="mt-6">
+                  {/* JSON Section */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Workflow JSON</h3>
                     <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="text-lg font-semibold mb-4">Workflow JSON</h3>
-                      <div className="bg-black text-green-400 p-4 rounded-lg overflow-auto max-h-96">
-                        <pre className="text-sm">
+                      <div className="bg-white border rounded-lg p-4 max-h-96 overflow-auto">
+                        <pre className="text-sm text-gray-800 whitespace-pre-wrap break-words">
                           {JSON.stringify(workflow.workflow_json, null, 2)}
                         </pre>
                       </div>
+                      <div className="mt-4 flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(workflow.workflow_json, null, 2));
+                            toast.success('JSON copied to clipboard!');
+                          }}
+                        >
+                          Copy JSON
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(mermaidDiagram);
+                            toast.success('Mermaid diagram copied to clipboard!');
+                          }}
+                        >
+                          Copy Mermaid
+                        </Button>
+                      </div>
                     </div>
-                  </TabsContent>
-                </Tabs>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
