@@ -124,8 +124,31 @@ const Chat = () => {
   };
 
   const saveChatLog = async (messages: ChatMessage[]) => {
-    // TODO: Implement chat log storage when chat_logs table is created
-    console.log('Chat log would be saved:', messages.length, 'messages');
+    if (!user || messages.length === 0) return;
+
+    try {
+      // Convert messages to the expected format
+      const formattedMessages = messages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'assistant' as const,
+        content: msg.content
+      }));
+
+      await supabase
+        .from('chat_logs')
+        .upsert({
+          user_id: user.id,
+          session_id: sessionId,
+          messages: formattedMessages,
+          metadata: {
+            work_request_id: workRequest?.id,
+            service_source: workRequest?.service_source || 'general',
+            model_used: 'gpt-4',
+            tokens_used: messages.reduce((sum, msg) => sum + msg.content.length, 0)
+          }
+        });
+    } catch (error) {
+      console.error('Error saving chat log:', error);
+    }
   };
 
   const getAIResponse = async (currentMessages: ChatMessage[], serviceSource?: string) => {
