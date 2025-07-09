@@ -6,15 +6,17 @@ import ItemCatalog from '@/components/shared/ItemCatalogRefactored';
 
 const Agents = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
       
-      <ItemCatalog
-        defaultProtocol="agent"
-        title="A2A Agent Catalog"
-        description="Discover and integrate A2A-compliant AI agents for seamless interoperability. Browse the most comprehensive collection of AI agents supporting the Agent-to-Agent protocol from AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more frameworks."
-        url="https://a2acatalog.com/agents"
-      />
+      <div className="flex-1">
+        <ItemCatalog
+          defaultProtocol="agent"
+          title="A2A Agent Catalog"
+          description="Discover and integrate A2A-compliant AI agents for seamless interoperability. Browse the most comprehensive collection of AI agents supporting the Agent-to-Agent protocol from AutoGen, LangGraph, CrewAI, LlamaIndex, Semantic Kernel, and more frameworks."
+          url="https://a2acatalog.com/agents"
+        />
+      </div>
 
       <Footer />
     </div>

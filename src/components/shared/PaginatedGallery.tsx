@@ -44,8 +44,8 @@ const PaginatedGallery = ({
 }: PaginatedGalleryProps) => {
   return (
     <div className="flex-1">
-      {/* Scrollable Gallery Content with fixed height */}
-      <div className="h-[calc(100vh-200px)] overflow-y-auto">
+      {/* Scrollable Gallery Content with proper height */}
+      <div className="max-h-[60vh] overflow-y-auto">
         <ResultsHeader
           resultsCount={totalCount}
           searchQuery={searchQuery}
