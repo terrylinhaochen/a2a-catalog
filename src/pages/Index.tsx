@@ -12,9 +12,9 @@ import SearchSection from '@/components/home/SearchSection';
 import GallerySection from '@/components/home/GallerySection';
 import ServiceCategories from '@/components/home/ServiceCategories';
 import GettingStartedSection from '@/components/home/GettingStartedSection';
-import { useAgents } from '@/hooks/useAgents';
-import { useMcpServers } from '@/hooks/useMcpServers';
-import { useWorkflows } from '@/hooks/useWorkflows';
+import { useAgents, Agent } from '@/hooks/useAgents';
+import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
+import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -81,7 +81,7 @@ const Index = () => {
     }
   };
 
-  const getItemType = (item: any): 'agent' | 'mcp' | 'workflow' => {
+  const getItemType = (item: Agent | McpServer | Workflow): 'agent' | 'mcp' | 'workflow' => {
     if (agents.some(a => a.id === item.id)) return 'agent';
     if (workflows.some(w => w.id === item.id)) return 'workflow';
     return 'mcp';

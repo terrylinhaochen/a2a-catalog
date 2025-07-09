@@ -414,6 +414,116 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_votes: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          workflow_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          workflow_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          workflow_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_votes_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflows: {
+        Row: {
+          active_nodes: number
+          categories: string[] | null
+          complexity: string
+          created_at: string
+          description: string
+          diagram_url: string | null
+          documentation: string | null
+          featured: boolean | null
+          filename: string
+          github_url: string | null
+          id: string
+          inactive_nodes: number
+          integrations: string[] | null
+          is_verified: boolean | null
+          name: string
+          node_count: number
+          provider: string
+          skills: string[] | null
+          total_nodes: number
+          trigger_type: string
+          updated_at: string
+          user_id: string | null
+          votes: number | null
+          workflow_json: Json
+        }
+        Insert: {
+          active_nodes: number
+          categories?: string[] | null
+          complexity: string
+          created_at?: string
+          description: string
+          diagram_url?: string | null
+          documentation?: string | null
+          featured?: boolean | null
+          filename: string
+          github_url?: string | null
+          id?: string
+          inactive_nodes: number
+          integrations?: string[] | null
+          is_verified?: boolean | null
+          name: string
+          node_count: number
+          provider: string
+          skills?: string[] | null
+          total_nodes: number
+          trigger_type: string
+          updated_at?: string
+          user_id?: string | null
+          votes?: number | null
+          workflow_json: Json
+        }
+        Update: {
+          active_nodes?: number
+          categories?: string[] | null
+          complexity?: string
+          created_at?: string
+          description?: string
+          diagram_url?: string | null
+          documentation?: string | null
+          featured?: boolean | null
+          filename?: string
+          github_url?: string | null
+          id?: string
+          inactive_nodes?: number
+          integrations?: string[] | null
+          is_verified?: boolean | null
+          name?: string
+          node_count?: number
+          provider?: string
+          skills?: string[] | null
+          total_nodes?: number
+          trigger_type?: string
+          updated_at?: string
+          user_id?: string | null
+          votes?: number | null
+          workflow_json?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
