@@ -5,14 +5,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import GenericCard from '@/components/GenericCard';
 import { Agent } from '@/hooks/useAgents';
 import { McpServer } from '@/hooks/useMcpServers';
+import { Workflow } from '@/hooks/useWorkflows';
 
 interface GallerySectionProps {
-  filteredItems: (Agent | McpServer)[];
+  filteredItems: (Agent | McpServer | Workflow)[];
   loading: boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   handleVote: (itemId: string, voteType: 'up' | 'down') => Promise<void>;
-  getItemType: (item: Agent | McpServer) => 'agent' | 'mcp';
+  getItemType: (item: Agent | McpServer | Workflow) => 'agent' | 'mcp' | 'workflow';
   agents: Agent[];
 }
 

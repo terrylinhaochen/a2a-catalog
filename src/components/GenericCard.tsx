@@ -38,7 +38,7 @@ const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) 
           <div className="flex items-center space-x-2">
             {logo && (
               <img
-                src={logo}
+                src={logo as string}
                 alt={`${item.name} logo`}
                 className="w-8 h-8 rounded-full object-cover"
               />

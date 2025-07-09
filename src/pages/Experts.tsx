@@ -9,7 +9,7 @@ const Experts = () => {
       <Navbar />
       
       <ItemCatalog
-        defaultProtocol="expert"
+        defaultProtocol="workflow"
         title="Expert Skills Catalog"
         description="Discover and hire skilled experts for your projects. Browse freelancers, consultants, and specialists with verified skills and experience ratings."
         url="https://a2acatalog.com/experts"
