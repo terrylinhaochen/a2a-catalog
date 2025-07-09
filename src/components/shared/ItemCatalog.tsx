@@ -36,9 +36,9 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [showAgents, setShowAgents] = useState(defaultProtocol === 'all' || defaultProtocol === 'agent');
-  const [showMcps, setShowMcps] = useState(defaultProtocol === 'all' || defaultProtocol === 'mcp');
-  const [showWorkflows, setShowWorkflows] = useState(defaultProtocol === 'all' || defaultProtocol === 'workflow');
+  const [selectedProtocol, setSelectedProtocol] = useState<'agent' | 'mcp' | 'workflow'>(
+    defaultProtocol === 'all' ? 'workflow' : defaultProtocol as 'agent' | 'mcp' | 'workflow'
+  );
 
   const loading = agentsLoading || mcpLoading || workflowsLoading;
 
@@ -52,22 +52,17 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
 
   // Combined items based on protocol filter
   const combinedItems = useMemo((): (Agent | McpServer | Workflow)[] => {
-    let items: (Agent | McpServer | Workflow)[] = [];
-    
-    if (showAgents) {
-      items = [...items, ...agents];
+    switch (selectedProtocol) {
+      case 'agent':
+        return agents;
+      case 'mcp':
+        return mcpServers;
+      case 'workflow':
+        return workflows;
+      default:
+        return workflows; // Default to workflows
     }
-    
-    if (showMcps) {
-      items = [...items, ...mcpServers];
-    }
-    
-    if (showWorkflows) {
-      items = [...items, ...workflows];
-    }
-    
-    return items;
-  }, [agents, mcpServers, workflows, showAgents, showMcps, showWorkflows]);
+  }, [agents, mcpServers, workflows, selectedProtocol]);
 
   const filteredAndSortedItems = useMemo(() => {
     let filtered = combinedItems.filter(item => {
@@ -236,10 +231,11 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                     <label className="flex items-center justify-between cursor-pointer">
                       <div className="flex items-center space-x-2">
                         <input
-                          type="checkbox"
-                          checked={showAgents}
-                          onChange={(e) => setShowAgents(e.target.checked)}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                          type="radio"
+                          name="protocol"
+                          checked={selectedProtocol === 'agent'}
+                          onChange={() => setSelectedProtocol('agent')}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                         />
                         <span className="text-sm text-gray-700">A2A Agents</span>
                       </div>
@@ -251,10 +247,11 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                     <label className="flex items-center justify-between cursor-pointer">
                       <div className="flex items-center space-x-2">
                         <input
-                          type="checkbox"
-                          checked={showMcps}
-                          onChange={(e) => setShowMcps(e.target.checked)}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                          type="radio"
+                          name="protocol"
+                          checked={selectedProtocol === 'mcp'}
+                          onChange={() => setSelectedProtocol('mcp')}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                         />
                         <span className="text-sm text-gray-700">MCPs</span>
                       </div>
@@ -266,10 +263,11 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                     <label className="flex items-center justify-between cursor-pointer">
                       <div className="flex items-center space-x-2">
                         <input
-                          type="checkbox"
-                          checked={showWorkflows}
-                          onChange={(e) => setShowWorkflows(e.target.checked)}
-                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                          type="radio"
+                          name="protocol"
+                          checked={selectedProtocol === 'workflow'}
+                          onChange={() => setSelectedProtocol('workflow')}
+                          className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500"
                         />
                         <span className="text-sm text-gray-700">Workflows</span>
                       </div>
@@ -317,9 +315,9 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
               resultsCount={filteredAndSortedItems.length}
               searchQuery={searchQuery}
               selectedCategories={selectedCategories}
-              showAgents={showAgents}
-              showMcps={showMcps}
-              showWorkflows={showWorkflows}
+              showAgents={selectedProtocol === 'agent'}
+              showMcps={selectedProtocol === 'mcp'}
+              showWorkflows={selectedProtocol === 'workflow'}
             />
 
             {/* Items Grid */}
