@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ItemCatalog from '@/components/shared/ItemCatalog';
+import ItemCatalog from '@/components/shared/ItemCatalogRefactored';
 
 const Tools = () => {
   return (
