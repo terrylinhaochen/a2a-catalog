@@ -27,6 +27,7 @@ import CrewAI from './pages/frameworks/CrewAI';
 import McpFaq from './pages/McpFaq';
 import FrameworkComparison from './pages/FrameworkComparison';
 import Hire from './pages/Hire';
+import Explore from './pages/Explore';
 import Workflows from './pages/Workflows';
 import WorkflowDetails from './pages/WorkflowDetails';
 
@@ -82,7 +83,7 @@ function App() {
               <Route path="/hire" element={<Hire />} />
               <Route path="/workflows" element={<Workflows />} />
               <Route path="/workflows/:id" element={<WorkflowDetails />} />
-              <Route path="/explore" element={<Workflows />} />
+              <Route path="/explore" element={<Explore />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
