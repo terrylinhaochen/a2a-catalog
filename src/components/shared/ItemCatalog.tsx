@@ -11,11 +11,11 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
-import { useExperts, Expert } from '@/hooks/useExperts';
+import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
-type ProtocolType = 'agent' | 'mcp' | 'expert' | 'all';
+type ProtocolType = 'agent' | 'mcp' | 'workflow' | 'all';
 
 interface ItemCatalogProps {
   defaultProtocol?: ProtocolType;
@@ -27,7 +27,7 @@ interface ItemCatalogProps {
 const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemCatalogProps) => {
   const { agents, categories, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
-  const { experts, loading: expertsLoading, voteForExpert } = useExperts();
+  const { workflows, loading: workflowsLoading, voteForWorkflow } = useWorkflows();
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   
@@ -38,9 +38,9 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   const [showFilters, setShowFilters] = useState(false);
   const [showAgents, setShowAgents] = useState(defaultProtocol === 'all' || defaultProtocol === 'agent');
   const [showMcps, setShowMcps] = useState(defaultProtocol === 'all' || defaultProtocol === 'mcp');
-  const [showExperts, setShowExperts] = useState(defaultProtocol === 'all' || defaultProtocol === 'expert');
+  const [showWorkflows, setShowWorkflows] = useState(defaultProtocol === 'all' || defaultProtocol === 'workflow');
 
-  const loading = agentsLoading || mcpLoading || expertsLoading;
+  const loading = agentsLoading || mcpLoading || workflowsLoading;
 
   // Handle category filter from URL params
   useEffect(() => {
@@ -51,8 +51,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
   }, [searchParams]);
 
   // Combined items based on protocol filter
-  const combinedItems = useMemo((): (Agent | McpServer | Expert)[] => {
-    let items: (Agent | McpServer | Expert)[] = [];
+  const combinedItems = useMemo((): (Agent | McpServer | Workflow)[] => {
+    let items: (Agent | McpServer | Workflow)[] = [];
     
     if (showAgents) {
       items = [...items, ...agents];
@@ -62,12 +62,12 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
       items = [...items, ...mcpServers];
     }
     
-    if (showExperts) {
-      items = [...items, ...experts];
+    if (showWorkflows) {
+      items = [...items, ...workflows];
     }
     
     return items;
-  }, [agents, mcpServers, experts, showAgents, showMcps, showExperts]);
+  }, [agents, mcpServers, workflows, showAgents, showMcps, showWorkflows]);
 
   const filteredAndSortedItems = useMemo(() => {
     let filtered = combinedItems.filter(item => {
@@ -128,12 +128,12 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
 
     try {
       const isAgent = agents.some(a => a.id === itemId);
-      const isExpert = experts.some(e => e.id === itemId);
+      const isWorkflow = workflows.some(w => w.id === itemId);
       
       if (isAgent) {
         await voteForAgent(itemId, user.id);
-      } else if (isExpert) {
-        await voteForExpert(itemId, user.id);
+      } else if (isWorkflow) {
+        await voteForWorkflow(itemId, user.id);
       } else {
         await voteForMcpServer(itemId, user.id);
       }
@@ -145,9 +145,9 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
     }
   };
 
-  const getItemType = (item: Agent | McpServer | Expert): 'agent' | 'mcp' | 'expert' => {
+  const getItemType = (item: Agent | McpServer | Workflow): 'agent' | 'mcp' | 'workflow' => {
     if (agents.some(a => a.id === item.id)) return 'agent';
-    if (experts.some(e => e.id === item.id)) return 'expert';
+    if (workflows.some(w => w.id === item.id)) return 'workflow';
     return 'mcp';
   };
 
@@ -226,8 +226,8 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
           {/* Filters Panel */}
           <div className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="space-y-6">
-              {/* Protocol Filter - Only show when not specifically for experts */}
-              {defaultProtocol !== 'expert' && (
+              {/* Protocol Filter - Only show when not specifically for workflows */}
+              {defaultProtocol !== 'workflow' && (
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-bold text-gray-900">Protocols</h3>
@@ -267,14 +267,14 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          checked={showExperts}
-                          onChange={(e) => setShowExperts(e.target.checked)}
+                          checked={showWorkflows}
+                          onChange={(e) => setShowWorkflows(e.target.checked)}
                           className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
                         />
-                        <span className="text-sm text-gray-700">Experts</span>
+                        <span className="text-sm text-gray-700">Workflows</span>
                       </div>
                       <Badge variant="outline" className="text-xs">
-                        {experts.length}
+                        {workflows.length}
                       </Badge>
                     </label>
                   </div>
@@ -319,7 +319,7 @@ const ItemCatalog = ({ defaultProtocol = 'all', title, description, url }: ItemC
               selectedCategories={selectedCategories}
               showAgents={showAgents}
               showMcps={showMcps}
-              showExperts={showExperts}
+              showWorkflows={showWorkflows}
             />
 
             {/* Items Grid */}

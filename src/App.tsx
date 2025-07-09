@@ -10,7 +10,6 @@ import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import Categories from './pages/Categories';
 import About from './pages/About';
-import Explore from './pages/Explore';
 import Submit from './pages/Submit';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
@@ -28,8 +27,8 @@ import CrewAI from './pages/frameworks/CrewAI';
 import McpFaq from './pages/McpFaq';
 import FrameworkComparison from './pages/FrameworkComparison';
 import Hire from './pages/Hire';
-import Experts from './pages/Experts';
-import ExpertDetails from './pages/ExpertDetails';
+import Workflows from './pages/Workflows';
+import WorkflowDetails from './pages/WorkflowDetails';
 
 // Answer pages
 import CompetitiveAnalysis from './pages/answers/CompetitiveAnalysis';
@@ -81,9 +80,9 @@ function App() {
               <Route path="/mcps/:id" element={<McpDetails />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/hire" element={<Hire />} />
-              <Route path="/experts" element={<Experts />} />
-              <Route path="/experts/:id" element={<ExpertDetails />} />
-              <Route path="/explore" element={<Explore />} />
+              <Route path="/workflows" element={<Workflows />} />
+              <Route path="/workflows/:id" element={<WorkflowDetails />} />
+              <Route path="/explore" element={<Workflows />} />
               <Route path="/about" element={<About />} />
               <Route path="/submit" element={<ProtectedRoute><Submit /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
