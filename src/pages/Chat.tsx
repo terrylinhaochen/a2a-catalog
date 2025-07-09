@@ -58,7 +58,9 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
-  const [sessionId, setSessionId] = useState<string>(`chat_${Date.now()}`);
+  const [sessionId, setSessionId] = useState<string>(`chat_${Date.now()}`);  
+  const [chatHistory, setChatHistory] = useState<ChatLog[]>([]);  
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
   const [isGettingResponse, setIsGettingResponse] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -74,13 +76,78 @@ const Chat = () => {
     if (requestId) {
       loadWorkRequest();
     } else {
-      setIsLoading(false);
+      loadChatHistory();
     }
   }, [user, requestId, navigate]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const loadChatHistory = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('chat_logs')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+
+      setChatHistory(data || []);
+      
+      // If there's recent chat history, load the most recent session
+      if (data && data.length > 0) {
+        const mostRecentSession = data[0];
+        loadChatSession(mostRecentSession.session_id);
+      } else {
+        setIsLoading(false);
+      }
+      
+    } catch (error) {
+      console.error('Error loading chat history:', error);
+      setIsLoading(false);
+    }
+  };
+
+  const loadChatSession = async (sessionId: string) => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('chat_logs')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('session_id', sessionId)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) throw error;
+
+      if (data && data.messages) {
+        // Convert database messages to chat messages
+        const convertedMessages: ChatMessage[] = data.messages.map((msg: any, index: number) => ({
+          id: `${msg.role}-${index}`,
+          content: msg.content,
+          sender: msg.role === 'user' ? 'user' : 'agent',
+          timestamp: new Date(data.updated_at)
+        }));
+
+        setMessages(convertedMessages);
+        setSessionId(sessionId);
+        setSelectedSessionId(sessionId);
+      }
+      
+    } catch (error) {
+      console.error('Error loading chat session:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const loadWorkRequest = async () => {
     if (!requestId) return;
@@ -330,23 +397,41 @@ const Chat = () => {
                     <p className="text-sm text-white/70">Ready to help define your project requirements</p>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
-                  onClick={() => {
-                    setMessages([]);
-                    setNewMessage('');
-                    setFiles([]);
-                    setSessionId(`chat_${Date.now()}`);
-                    setShowThinking(false);
-                    setIsSending(false);
-                    setIsGettingResponse(false);
-                  }}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  New Chat
-                </Button>
+                <div className="flex items-center space-x-2">
+                  {/* Chat History Dropdown */}
+                  {chatHistory.length > 0 && (
+                    <select 
+                      value={selectedSessionId || ''} 
+                      onChange={(e) => e.target.value ? loadChatSession(e.target.value) : null}
+                      className="bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white/30"
+                    >
+                      <option value="">Select a conversation...</option>
+                      {chatHistory.map((chat) => (
+                        <option key={chat.session_id} value={chat.session_id} className="bg-gray-800 text-white">
+                          {new Date(chat.updated_at).toLocaleDateString()} - {chat.messages[0]?.content.substring(0, 50)}...
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
+                    onClick={() => {
+                      setMessages([]);
+                      setNewMessage('');
+                      setFiles([]);
+                      setSessionId(`chat_${Date.now()}`);
+                      setSelectedSessionId(null);
+                      setShowThinking(false);
+                      setIsSending(false);
+                      setIsGettingResponse(false);
+                    }}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Chat
+                  </Button>
+                </div>
               </div>
             </div>
 
