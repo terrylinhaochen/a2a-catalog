@@ -93,7 +93,7 @@ const Explore = () => {
             <CardContent className="p-10 lg:p-14">
               <div className="max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  Explore Expert Insights
+                  🔍 EXPLORE PAGE - Expert Insights
                 </h1>
                 <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
                   Discover AI-powered answers and comprehensive business guides to help you make informed decisions and grow your business.
