@@ -11,7 +11,7 @@ import HeroSection from '@/components/home/HeroSection';
 import SearchSection from '@/components/home/SearchSection';
 import GallerySection from '@/components/home/GallerySection';
 import ServiceCategories from '@/components/home/ServiceCategories';
-import GettingStartedSection from '@/components/home/GettingStartedSection';
+import ViewAllToolsSection from '@/components/home/ViewAllToolsSection';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
@@ -128,7 +128,7 @@ const Index = () => {
         />
       </div>
 
-      <GettingStartedSection />
+      <ViewAllToolsSection />
 
       <Footer />
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -22,17 +22,45 @@ import {
   Code,
   Settings
 } from 'lucide-react';
-import { useWorkflows } from '@/hooks/useWorkflows';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import type { Workflow as WorkflowType } from '@/hooks/useWorkflows';
 
 const WorkflowDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const { workflows, voteForWorkflow } = useWorkflows();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  const [workflow, setWorkflow] = useState<WorkflowType | null>(null);
+  const [loading, setLoading] = useState(true);
   
-  const workflow = workflows.find(w => w.id === id);
+  useEffect(() => {
+    const fetchWorkflow = async () => {
+      if (!id) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('workflows')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error) {
+          console.error('Error fetching workflow:', error);
+          setWorkflow(null);
+        } else {
+          setWorkflow(data);
+        }
+      } catch (error) {
+        console.error('Error fetching workflow:', error);
+        setWorkflow(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchWorkflow();
+  }, [id]);
 
   const handleVote = async () => {
     if (!user) {
@@ -42,7 +70,44 @@ const WorkflowDetails = () => {
 
     if (workflow) {
       try {
-        await voteForWorkflow(workflow.id, user.id);
+        // Direct vote implementation since we're not using the hook
+        const { data: existingVote } = await supabase
+          .from('workflow_votes')
+          .select('id')
+          .eq('workflow_id', workflow.id)
+          .eq('user_id', user.id)
+          .single();
+
+        if (existingVote) {
+          // Remove vote
+          await supabase
+            .from('workflow_votes')
+            .delete()
+            .eq('workflow_id', workflow.id)
+            .eq('user_id', user.id);
+
+          // Decrease vote count
+          await supabase
+            .from('workflows')
+            .update({ votes: workflow.votes - 1 })
+            .eq('id', workflow.id);
+            
+          setWorkflow({ ...workflow, votes: workflow.votes - 1 });
+        } else {
+          // Add vote
+          await supabase
+            .from('workflow_votes')
+            .insert({ workflow_id: workflow.id, user_id: user.id });
+
+          // Increase vote count
+          await supabase
+            .from('workflows')
+            .update({ votes: workflow.votes + 1 })
+            .eq('id', workflow.id);
+            
+          setWorkflow({ ...workflow, votes: workflow.votes + 1 });
+        }
+        
         toast.success('Vote recorded successfully!');
       } catch (error) {
         console.error('Voting error:', error);
@@ -75,6 +140,7 @@ const WorkflowDetails = () => {
     
     // Add nodes
     nodes.forEach(node => {
+      if (!node.id || !node.type) return; // Skip invalid nodes
       const nodeId = node.id.replace(/-/g, '_');
       const nodeName = node.name || node.type;
       
@@ -121,6 +187,21 @@ const WorkflowDetails = () => {
       default: return <Activity className="w-4 h-4" />;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading workflow...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!workflow) {
     return (
