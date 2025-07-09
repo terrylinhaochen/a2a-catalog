@@ -68,15 +68,6 @@ const GallerySection = ({
         </Card>
       )}
 
-      {/* View All Links */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="outline" asChild className="bg-purple-800 text-white hover:bg-purple-700 border-purple-800">
-          <Link to="/agents">View All Agents</Link>
-        </Button>
-        <Button variant="outline" asChild className="bg-purple-800 text-white hover:bg-purple-700 border-purple-800">
-          <Link to="/mcps">View All MCP Servers</Link>
-        </Button>
-      </div>
     </div>
   );
 };
