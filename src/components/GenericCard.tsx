@@ -7,20 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Heart, ExternalLink, CheckCircle, Star, GitFork } from 'lucide-react';
 import { Agent } from '@/hooks/useAgents';
 import { McpServer } from '@/hooks/useMcpServers';
-import { Expert } from '@/hooks/useExperts';
+import { Workflow } from '@/hooks/useWorkflows';
 
 interface GenericCardProps {
-  item: Agent | McpServer | Expert;
+  item: Agent | McpServer | Workflow;
   onVote: (id: string, voteType: 'up' | 'down') => void;
   compact?: boolean;
-  type: 'agent' | 'mcp' | 'expert';
+  type: 'agent' | 'mcp' | 'workflow';
 }
 
 const GenericCard = ({ item, onVote, compact = false, type }: GenericCardProps) => {
   const getDetailsPath = () => {
     switch (type) {
       case 'agent': return `/agents/${item.id}`;
-      case 'expert': return `/experts/${item.id}`;
+      case 'workflow': return `/workflows/${item.id}`;
       default: return `/mcps/${item.id}`;
     }
   };

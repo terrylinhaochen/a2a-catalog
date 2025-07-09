@@ -14,19 +14,21 @@ import ServiceCategories from '@/components/home/ServiceCategories';
 import GettingStartedSection from '@/components/home/GettingStartedSection';
 import { useAgents } from '@/hooks/useAgents';
 import { useMcpServers } from '@/hooks/useMcpServers';
+import { useWorkflows } from '@/hooks/useWorkflows';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 const Index = () => {
   const { agents, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
+  const { workflows, loading: workflowsLoading, voteForWorkflow } = useWorkflows();
   const { user } = useAuth();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'featured' | 'popular' | 'recent'>('featured');
 
-  const loading = agentsLoading || mcpLoading;
-  const allItems = [...agents, ...mcpServers];
+  const loading = agentsLoading || mcpLoading || workflowsLoading;
+  const allItems = [...agents, ...mcpServers, ...workflows];
 
   // Filter items based on selected filter
   const getFilteredItems = () => {
@@ -62,9 +64,12 @@ const Index = () => {
 
     try {
       const isAgent = agents.some(a => a.id === itemId);
+      const isWorkflow = workflows.some(w => w.id === itemId);
       
       if (isAgent) {
         await voteForAgent(itemId, user.id);
+      } else if (isWorkflow) {
+        await voteForWorkflow(itemId, user.id);
       } else {
         await voteForMcpServer(itemId, user.id);
       }
@@ -76,8 +81,10 @@ const Index = () => {
     }
   };
 
-  const getItemType = (item: any): 'agent' | 'mcp' => {
-    return agents.some(a => a.id === item.id) ? 'agent' : 'mcp';
+  const getItemType = (item: any): 'agent' | 'mcp' | 'workflow' => {
+    if (agents.some(a => a.id === item.id)) return 'agent';
+    if (workflows.some(w => w.id === item.id)) return 'workflow';
+    return 'mcp';
   };
 
   return (
