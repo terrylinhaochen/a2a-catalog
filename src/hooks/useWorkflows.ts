@@ -42,12 +42,14 @@ export const useWorkflows = () => {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchWorkflows = async () => {
+  const fetchWorkflows = async (limit?: number) => {
     try {
+      // Fetch all workflows - use a high limit to get all 2055 workflows
       const { data, error } = await supabase
         .from('workflows')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(limit || 5000); // Use 5000 as default limit to ensure we get all workflows
 
       if (error) {
         console.error('Error fetching workflows:', error);
@@ -55,6 +57,7 @@ export const useWorkflows = () => {
         return;
       }
 
+      console.log(`✅ Loaded ${data?.length || 0} workflows`);
       setWorkflows(data || []);
     } catch (error) {
       console.error('Error fetching workflows:', error);
