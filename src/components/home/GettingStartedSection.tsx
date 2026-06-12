@@ -25,7 +25,7 @@ const GettingStartedSection = () => {
                 Explore the official A2A protocol documentation and specification
               </p>
               <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
-                <a href="https://google-a2a.github.io/A2A/latest/" target="_blank" rel="noopener noreferrer">
+                <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener noreferrer">
                   Read Docs
                 </a>
               </Button>
@@ -42,7 +42,7 @@ const GettingStartedSection = () => {
                 Browse working examples and sample implementations
               </p>
               <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
-                <a href="https://github.com/google-a2a/A2A" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/a2aproject/A2A" target="_blank" rel="noopener noreferrer">
                   View Examples
                 </a>
               </Button>
@@ -59,7 +59,7 @@ const GettingStartedSection = () => {
                 Follow step-by-step guides to implement A2A in your projects
               </p>
               <Button asChild className="w-full bg-purple-900 hover:bg-purple-800">
-                <a href="https://google-a2a.github.io/A2A/latest/tutorials/python/" target="_blank" rel="noopener noreferrer">
+                <a href="https://a2a-protocol.org/latest/tutorials/python/" target="_blank" rel="noopener noreferrer">
                   Start Learning
                 </a>
               </Button>
