@@ -46,8 +46,8 @@ const Documentation = () => {
   const frameworks = [
     {
       icon: <Code className="w-8 h-8 text-green-600" />,
-      title: "AutoGen",
-      description: "Multi-agent conversation framework that enables multiple agents to converse with each other to solve complex tasks collaboratively.",
+      title: "AutoGen / AG2",
+      description: "Multi-agent conversation framework that enables multiple agents to converse with each other to solve complex tasks. Continued by the community as AG2, while Microsoft's AutoGen has evolved into the Microsoft Agent Framework.",
       link: "/frameworks/autogen"
     },
     {
@@ -77,15 +77,15 @@ const Documentation = () => {
               A2A Agent Catalog
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-              The comprehensive discovery platform for AI agents supporting the Agent-to-Agent (A2A) protocol. 
-              Built with support from 50+ technology partners to create a new era of Agent Interoperability.
+              The comprehensive discovery platform for AI agents supporting the Agent2Agent (A2A) protocol —
+              now a Linux Foundation project backed by a broad industry coalition, powering a new era of Agent Interoperability.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
                 <a href="/agents">Browse Agents</a>
               </Button>
               <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600" asChild>
-                <a href="https://google-a2a.github.io/A2A/latest/" target="_blank" rel="noopener noreferrer">
+                <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="w-5 h-5 mr-2" />
                   Official Documentation
                 </a>
@@ -179,7 +179,7 @@ const Documentation = () => {
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
                 <p className="text-blue-800 font-medium">
-                  <strong>Google has launched a new, open protocol called Agent2Agent (A2A)</strong>, with support and contributions from more than 50 technology partners and leading service providers. The A2A protocol allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
+                  <strong>Agent2Agent (A2A) is an open protocol, originally created by Google and donated to the Linux Foundation in June 2025</strong>, where it is now developed as a vendor-neutral standard with contributions from major technology companies including Google, AWS, Microsoft, Cisco, Salesforce, SAP, and ServiceNow. The protocol reached its v1.0 stable release in March 2026. A2A allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
                 </p>
               </div>
             </div>
@@ -202,10 +202,12 @@ const Documentation = () => {
                 </p>
                 
                 <p>
-                  A2A is an open protocol that complements Anthropic's Model Context Protocol (MCP), which provides 
-                  helpful tools and context to agents. Drawing on Google's internal expertise in scaling agentic 
-                  systems, the A2A protocol addresses the challenges identified in deploying large-scale, 
-                  multi-agent systems for enterprise customers.
+                  A2A is an open protocol that complements the Model Context Protocol (MCP), which connects
+                  agents to tools and context. Where MCP standardizes how a single agent uses tools and data,
+                  A2A standardizes how independent agents talk to each other. Originally drawing on Google's
+                  internal expertise in scaling agentic systems, the protocol is now stewarded by the Linux
+                  Foundation and addresses the challenges of deploying large-scale, multi-agent systems for
+                  enterprise customers.
                 </p>
               </div>
             </div>

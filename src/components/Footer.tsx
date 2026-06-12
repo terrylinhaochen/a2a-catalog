@@ -57,7 +57,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm">
-            © 2024 A2A Agent Catalog. Made with <Heart className="w-4 h-4 inline text-red-500" /> for the AI agent community.
+            © {new Date().getFullYear()} A2A Agent Catalog. Made with <Heart className="w-4 h-4 inline text-red-500" /> for the AI agent community.
           </p>
           <div className="flex items-center space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-500 hover:text-gray-700 text-sm transition-colors">Privacy Policy</a>
