@@ -56,7 +56,7 @@ const StructuredData = ({ type, data = {} }: StructuredDataProps) => {
               '@type': 'Thing',
               name: 'Agent-to-Agent Protocol',
               description: 'A protocol for AI agent interoperability and communication',
-              sameAs: ['https://google-a2a.github.io/A2A/latest/']
+              sameAs: ['https://a2a-protocol.org/latest/']
             },
             {
               '@type': 'Thing',
@@ -78,8 +78,8 @@ const StructuredData = ({ type, data = {} }: StructuredDataProps) => {
           logo: 'https://a2acatalog.com/logo.png',
           description: 'The comprehensive discovery platform for AI agents supporting the Agent-to-Agent (A2A) protocol and Model Context Protocol (MCP) servers',
           sameAs: [
-            'https://github.com/google-a2a/A2A',
-            'https://google-a2a.github.io/A2A/latest/',
+            'https://github.com/a2aproject/A2A',
+            'https://a2a-protocol.org/latest/',
             'https://modelcontextprotocol.io/'
           ],
           foundingDate: '2024',
