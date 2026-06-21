@@ -9,7 +9,6 @@ import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
 import { usePagination } from '@/hooks/usePagination';
-import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 type ProtocolType = 'agent' | 'mcp' | 'workflow';
@@ -25,7 +24,6 @@ const ItemCatalog = ({ defaultProtocol, title, description, url }: ItemCatalogPr
   const { agents, categories, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
   const { workflows, loading: workflowsLoading, voteForWorkflow } = useWorkflows();
-  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -96,25 +94,20 @@ const ItemCatalog = ({ defaultProtocol, title, description, url }: ItemCatalogPr
   };
 
   const handleVote = async (itemId: string, voteType: 'up' | 'down') => {
-    if (!user) {
-      toast.error('Please sign in to vote');
-      return;
-    }
-
     try {
       switch (defaultProtocol) {
         case 'agent':
-          await voteForAgent(itemId, user.id);
+          await voteForAgent(itemId);
           break;
         case 'workflow':
-          await voteForWorkflow(itemId, user.id);
+          await voteForWorkflow(itemId);
           break;
         case 'mcp':
-          await voteForMcpServer(itemId, user.id);
+          await voteForMcpServer(itemId);
           break;
       }
       
-      toast.success('Vote recorded successfully!');
+      toast.success('Saved locally for this session');
     } catch (error) {
       console.error('Voting error:', error);
       toast.error('Failed to record vote. Please try again.');
@@ -124,7 +117,7 @@ const ItemCatalog = ({ defaultProtocol, title, description, url }: ItemCatalogPr
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     );
   }

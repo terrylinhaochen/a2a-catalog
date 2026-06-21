@@ -10,7 +10,7 @@ const corsHeaders = {
 
 interface ToolExecutionRequest {
   toolName: string;
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   serverUrl?: string;
 }
 
@@ -25,7 +25,7 @@ serve(async (req) => {
     console.log('Executing MCP tool:', { toolName, parameters, serverUrl });
 
     // Development environment tool execution
-    let result: any;
+    let result: unknown;
     
     switch (toolName) {
       case 'list_files':

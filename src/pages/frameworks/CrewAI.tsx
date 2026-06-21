@@ -14,7 +14,7 @@ const CrewAI = () => {
     <div className="min-h-screen bg-gray-50">
       <SEO 
         title="CrewAI A2A Agents - Role-Based Multi-Agent Teams & Agent-to-Agent Protocol"
-        description="Build role-based multi-agent teams with CrewAI implementing A2A protocol. Create specialized agent crews with defined roles and collaborative workflows."
+        description="Explore CrewAI A2A sample patterns for role-based agent teams, delegation, and task artifacts."
         keywords="CrewAI, CrewAI agents, A2A protocol, role-based agents, multi-agent teams, agent crews, Agent-to-Agent, collaborative AI, team automation"
         url="https://a2acatalog.com/frameworks/crewai"
       />
@@ -23,7 +23,7 @@ const CrewAI = () => {
         type="article"
         data={{
           title: "CrewAI A2A Agents - Role-Based Multi-Agent Teams",
-          description: "Comprehensive guide to CrewAI agents implementing the Agent-to-Agent protocol for role-based multi-agent teams and collaborative workflows.",
+          description: "Guide to CrewAI sample patterns for exposing role-based teams through A2A.",
           keywords: "CrewAI, A2A protocol, role-based agents, multi-agent teams, agent crews",
           category: "AI Framework",
           url: "https://a2acatalog.com/frameworks/crewai"
@@ -33,21 +33,21 @@ const CrewAI = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-900 to-red-900 text-white py-16">
+      <div className="bg-white border-b border-gray-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-950">
               CrewAI A2A Agents
-              <span className="block text-orange-300">Role-Based Multi-Agent Teams</span>
+              <span className="block text-gray-600">Role-Based Multi-Agent Teams</span>
             </h1>
-            <p className="text-xl text-orange-100 mb-8 max-w-3xl mx-auto">
-              Build specialized multi-agent teams with CrewAI implementing the Agent-to-Agent protocol for role-based collaboration and task delegation.
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Explore sample-adapter patterns for exposing role-based CrewAI teams through Agent2Agent.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-orange-900 hover:bg-gray-100">
+              <Button asChild size="lg" className="bg-gray-950 hover:bg-gray-800">
                 <Link to="/agents?search=CrewAI">Browse CrewAI Agents</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-900 bg-transparent">
+              <Button asChild size="lg" variant="outline">
                 <a href="https://crewai.com/" target="_blank" rel="noopener noreferrer">
                   Official Documentation
                 </a>
@@ -64,31 +64,31 @@ const CrewAI = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card>
               <CardHeader>
-                <Users className="w-12 h-12 text-orange-600 mb-4" />
+                <Users className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Role-Based Teams</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Create specialized agent teams with defined roles and responsibilities, all connected via A2A protocol for seamless collaboration.</p>
+                <p className="text-gray-600">Create specialized agent teams with defined roles and responsibilities, then expose the team as a remote A2A agent.</p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <Bot className="w-12 h-12 text-orange-600 mb-4" />
+                <Bot className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Task Delegation</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Efficient task delegation and management between agents using A2A protocol for optimal workflow distribution.</p>
+                <p className="text-gray-600">Model task delegation internally while returning clear A2A task status, messages, and artifacts externally.</p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <Briefcase className="w-12 h-12 text-orange-600 mb-4" />
+                <Briefcase className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Business Workflows</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Purpose-built for business automation with agents that understand real-world processes and A2A interoperability.</p>
+                <p className="text-gray-600">Useful when the remote agent represents a coordinated team rather than a single tool call.</p>
               </CardContent>
             </Card>
           </div>
@@ -108,10 +108,10 @@ const CrewAI = () => {
               "Sales pipeline automation",
               "Customer support crews"
             ].map((useCase, index) => (
-              <Card key={index} className="border-l-4 border-l-orange-500">
+              <Card key={index} className="border-l-4 border-l-gray-300">
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-4 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full mr-4 flex-shrink-0"></div>
                     <span className="font-medium text-gray-800">{useCase}</span>
                   </div>
                 </CardContent>
@@ -122,18 +122,18 @@ const CrewAI = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-red-600">
+      <section className="py-16 bg-gray-950">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Build with CrewAI?</h2>
-          <p className="text-xl text-orange-100 mb-8">
-            Explore our catalog of CrewAI agents or contribute your own A2A-compliant agent crews.
+          <p className="text-xl text-gray-300 mb-8">
+            Explore CrewAI catalog entries and task patterns for delegated agent teams.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-orange-600 hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-white text-gray-950 hover:bg-gray-100">
               <Link to="/agents?search=CrewAI">View CrewAI Agents</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600 bg-transparent">
-              <Link to="/submit">Submit Your Agent</Link>
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-950 bg-transparent">
+              <Link to="/workflows">View Task Patterns</Link>
             </Button>
           </div>
         </div>

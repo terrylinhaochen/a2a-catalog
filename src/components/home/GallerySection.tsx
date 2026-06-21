@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import GenericCard from '@/components/GenericCard';
@@ -31,10 +30,10 @@ const GallerySection = ({
       {/* Gallery Header */}
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Agent Skill Gallery
+          Featured Protocol Building Blocks
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Discover AI agents and MCP servers with specialized skills to supercharge your workflows
+          Browse current A2A, MCP, Skills, and task-lifecycle entries with implementation links and operational notes.
         </p>
       </div>
 
@@ -48,7 +47,7 @@ const GallerySection = ({
       ) : filteredItems.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {filteredItems.map((item) => (
-            <div key={item.id} className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-purple-100">
+            <div key={item.id} className="rounded-lg overflow-hidden bg-white border border-gray-200 shadow-sm">
               <GenericCard 
                 item={item} 
                 type={getItemType(item)}

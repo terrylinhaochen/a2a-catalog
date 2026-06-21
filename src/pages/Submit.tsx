@@ -72,7 +72,7 @@ const Submit = () => {
         endpoint: formData.endpoint,
         categories: formData.categories,
         skills: formData.skills,
-        auth_type: formData.auth_type as any,
+        auth_type: formData.auth_type as 'API Key' | 'OAuth' | 'Bearer Token' | 'Basic Auth',
         documentation: formData.documentation,
         user_id: user.id,
         featured: false

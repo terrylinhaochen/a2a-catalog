@@ -35,7 +35,7 @@ export const usePagination = ({
   // Apply filtering, sorting, and pagination
   useEffect(() => {
     // Apply client-side filtering
-    let filtered = items.filter(item => {
+    const filtered = items.filter(item => {
       const matchesSearch = !searchQuery || 
                            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||

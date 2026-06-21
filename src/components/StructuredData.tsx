@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 interface StructuredDataProps {
   type: 'website' | 'organization' | 'softwareApplication' | 'article';
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }
 
 const StructuredData = ({ type, data = {} }: StructuredDataProps) => {

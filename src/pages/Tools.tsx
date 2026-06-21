@@ -12,7 +12,7 @@ const Tools = () => {
         <ItemCatalog
           defaultProtocol="mcp"
           title="MCP Tools Catalog"
-          description="Discover and integrate MCP (Model Context Protocol) tools for seamless AI interoperability. Browse the most comprehensive collection of MCP servers and tools from the community."
+          description="Browse verified working MCP surfaces: the official registry, GitHub MCP server, official SDKs, OpenAI remote MCP support, CrewAI MCP integration, and reference servers clearly marked as educational."
           url="https://a2acatalog.com/tools"
         />
       </div>

@@ -14,7 +14,7 @@ const LangGraph = () => {
     <div className="min-h-screen bg-gray-50">
       <SEO 
         title="LangGraph A2A Agents - Stateful Multi-Agent Workflows & Agent-to-Agent Protocol"
-        description="Build stateful multi-agent workflows with LangGraph implementing A2A protocol. Create complex agent graphs and workflows with LangChain's LangGraph framework."
+        description="Explore LangGraph A2A sample patterns for stateful workflows, durable task state, human review, and agent-to-agent interoperability."
         keywords="LangGraph, LangGraph agents, A2A protocol, stateful workflows, multi-agent workflows, LangChain, Agent-to-Agent, workflow automation, agent graphs"
         url="https://a2acatalog.com/frameworks/langgraph"
       />
@@ -23,7 +23,7 @@ const LangGraph = () => {
         type="article"
         data={{
           title: "LangGraph A2A Agents - Stateful Multi-Agent Workflows",
-          description: "Comprehensive guide to LangGraph agents implementing the Agent-to-Agent protocol for stateful multi-agent workflows and complex agent graphs.",
+          description: "Guide to LangGraph sample patterns for A2A stateful workflows and task graphs.",
           keywords: "LangGraph, A2A protocol, stateful workflows, multi-agent, LangChain",
           category: "AI Framework",
           url: "https://a2acatalog.com/frameworks/langgraph"
@@ -33,21 +33,21 @@ const LangGraph = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-green-900 to-teal-900 text-white py-16">
+      <div className="bg-white border-b border-gray-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-950">
               LangGraph A2A Agents
-              <span className="block text-green-300">Stateful Multi-Agent Workflows</span>
+              <span className="block text-gray-600">Stateful Multi-Agent Workflows</span>
             </h1>
-            <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
-              Build sophisticated stateful multi-agent workflows with LangGraph implementing the Agent-to-Agent protocol for complex decision-making processes.
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Explore sample-adapter patterns for exposing stateful LangGraph workflows through Agent2Agent.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-green-900 hover:bg-gray-100">
+              <Button asChild size="lg" className="bg-gray-950 hover:bg-gray-800">
                 <Link to="/agents?search=LangGraph">Browse LangGraph Agents</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-900 bg-transparent">
+              <Button asChild size="lg" variant="outline">
                 <a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener noreferrer">
                   Official Documentation
                 </a>
@@ -64,31 +64,31 @@ const LangGraph = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card>
               <CardHeader>
-                <Workflow className="w-12 h-12 text-green-600 mb-4" />
+                <Workflow className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Stateful Workflows</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Create complex stateful workflows where agents maintain context and state across interactions using A2A protocol.</p>
+                <p className="text-gray-600">Create task graphs that keep durable state, checkpoint progress, and make long-running A2A tasks easier to resume.</p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <GitBranch className="w-12 h-12 text-green-600 mb-4" />
+                <GitBranch className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Agent Graphs</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Design sophisticated agent interaction patterns with graph-based architectures supporting A2A interoperability.</p>
+                <p className="text-gray-600">Design graph-based agent interaction patterns that can be wrapped behind Agent Cards and task endpoints.</p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <Bot className="w-12 h-12 text-green-600 mb-4" />
+                <Bot className="w-12 h-12 text-gray-700 mb-4" />
                 <CardTitle>Conditional Logic</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Implement complex conditional logic and decision trees in your multi-agent systems with full A2A compliance.</p>
+                <p className="text-gray-600">Implement conditional logic and human checkpoints while keeping A2A-facing state explicit.</p>
               </CardContent>
             </Card>
           </div>
@@ -108,10 +108,10 @@ const LangGraph = () => {
               "Process orchestration systems",
               "Advanced reasoning pipelines"
             ].map((useCase, index) => (
-              <Card key={index} className="border-l-4 border-l-green-500">
+              <Card key={index} className="border-l-4 border-l-gray-300">
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-4 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-gray-500 rounded-full mr-4 flex-shrink-0"></div>
                     <span className="font-medium text-gray-800">{useCase}</span>
                   </div>
                 </CardContent>
@@ -122,18 +122,18 @@ const LangGraph = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-teal-600">
+      <section className="py-16 bg-gray-950">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Build with LangGraph?</h2>
-          <p className="text-xl text-green-100 mb-8">
-            Explore our catalog of LangGraph agents or contribute your own A2A-compliant workflows.
+          <p className="text-xl text-gray-300 mb-8">
+            Explore LangGraph catalog entries and task patterns for stateful agent systems.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-green-600 hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-white text-gray-950 hover:bg-gray-100">
               <Link to="/agents?search=LangGraph">View LangGraph Agents</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-green-600 bg-transparent">
-              <Link to="/submit">Submit Your Agent</Link>
+            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-950 bg-transparent">
+              <Link to="/workflows">View Task Patterns</Link>
             </Button>
           </div>
         </div>

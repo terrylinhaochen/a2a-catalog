@@ -11,18 +11,16 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import { useAgents } from '@/hooks/useAgents';
-import { useAuth } from '@/contexts/AuthContext';
 
 const AgentDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { agents, voteForAgent } = useAgents();
-  const { user } = useAuth();
   
   const agent = agents.find(a => a.id === id);
 
   const handleVote = async () => {
-    if (!user || !agent) return;
-    await voteForAgent(agent.id, user.id);
+    if (!agent) return;
+    await voteForAgent(agent.id);
   };
 
   if (!agent) {
@@ -50,8 +48,8 @@ const AgentDetails = () => {
   return (
     <>
       <SEO 
-        title={`${agent.name} - AI Agent | AI Agent Marketplace`}
-        description={`${agent.description} Discover ${agent.name} by ${agent.provider} with capabilities in ${agent.skills?.slice(0, 3).join(', ')}. Part of our AI Agent Marketplace supporting A2A protocol.`}
+        title={`${agent.name} - A2A Catalog`}
+        description={`${agent.description} Discover ${agent.name} by ${agent.provider} with capabilities in ${agent.skills?.slice(0, 3).join(', ')}.`}
         url={`https://a2acatalog.com/agents/${agent.id}`}
         image={agent.logo}
         type="article"
@@ -116,11 +114,11 @@ const AgentDetails = () => {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center">
                       {agent.logo ? (
                         <img src={agent.logo} alt={agent.name} className="w-10 h-10 rounded" />
                       ) : (
-                        <span className="text-purple-600 font-bold text-2xl">
+                        <span className="text-gray-900 font-bold text-2xl">
                           {agent.name.charAt(0)}
                         </span>
                       )}
@@ -149,7 +147,7 @@ const AgentDetails = () => {
                       variant="ghost"
                       size="sm"
                       onClick={handleVote}
-                      className="flex flex-col items-center h-auto p-3 hover:bg-green-50 hover:text-green-600"
+                      className="flex flex-col items-center h-auto p-3 hover:bg-gray-50 hover:text-gray-900"
                     >
                       <ChevronUp className="w-5 h-5" />
                       <span className="text-sm font-medium">{agent.votes}</span>
@@ -162,6 +160,18 @@ const AgentDetails = () => {
                 <CardDescription className="text-base mb-6">
                   {agent.description}
                 </CardDescription>
+
+                {agent.status && (
+                  <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <Badge variant="outline" className="capitalize">{agent.status}</Badge>
+                      <span className="text-sm font-medium text-gray-900">Verification status</span>
+                    </div>
+                    {agent.status_note && (
+                      <p className="text-sm text-gray-600">{agent.status_note}</p>
+                    )}
+                  </div>
+                )}
 
                 {/* GitHub Stats */}
                 {(agent.stars !== undefined || agent.forks !== undefined || agent.last_updated) && (
@@ -232,7 +242,7 @@ const AgentDetails = () => {
                     <h3 className="font-semibold text-gray-900 mb-3">Examples</h3>
                     <div className="space-y-2">
                       {agent.examples.map((example, index) => (
-                        <div key={index} className="p-3 bg-gray-50 rounded border-l-4 border-purple-500">
+                        <div key={index} className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
                           <code className="text-sm">{example}</code>
                         </div>
                       ))}

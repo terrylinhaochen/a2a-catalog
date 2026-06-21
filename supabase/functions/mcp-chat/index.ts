@@ -31,7 +31,7 @@ interface McpServer {
 interface McpResponse {
   jsonrpc: "2.0";
   id: string;
-  result?: any;
+  result?: unknown;
   error?: {
     code: number;
     message: string;

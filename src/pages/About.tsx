@@ -1,276 +1,148 @@
-
-import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, BookOpen, ExternalLink, Network, Plug, ShieldCheck, Workflow } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 import { Button } from '@/components/ui/button';
-import { 
-  Globe, 
-  Shield, 
-  Zap, 
-  Users, 
-  MessageSquare, 
-  Workflow, 
-  Eye, 
-  Clock,
-  ExternalLink,
-  Code,
-  Network,
-  Wrench
-} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const Documentation = () => {
-  const keyCapabilities = [
+const About = () => {
+  const layers = [
     {
-      icon: <MessageSquare className="w-5 h-5 text-blue-600" />,
-      title: "Capability Discovery",
-      description: "Agents can advertise their capabilities using an 'Agent Card' in JSON format, allowing client agents to identify the best agent for a task."
+      icon: <Network className="w-6 h-6 text-blue-700" />,
+      title: 'A2A: agent-to-agent communication',
+      body: 'A2A standardizes how opaque agents discover each other, exchange messages, manage tasks, stream updates, return artifacts, and coordinate work across frameworks or vendors.',
+      href: '/agents',
     },
     {
-      icon: <Workflow className="w-5 h-5 text-blue-600" />,
-      title: "Task Management",
-      description: "Communication oriented towards task completion with defined lifecycle, supporting both immediate and long-running tasks with status synchronization."
+      icon: <Plug className="w-6 h-6 text-emerald-700" />,
+      title: 'MCP: tools, resources, and context',
+      body: 'MCP standardizes how LLM applications connect to tools, resources, prompts, and client features such as sampling, roots, and elicitation.',
+      href: '/tools',
     },
     {
-      icon: <Users className="w-5 h-5 text-blue-600" />,
-      title: "Collaboration",
-      description: "Agents can send each other messages to communicate context, replies, artifacts, or user instructions."
+      icon: <BookOpen className="w-6 h-6 text-violet-700" />,
+      title: 'Skills: reusable task packages',
+      body: 'Agent Skills package task-specific instructions, scripts, references, and assets so agents can load the right capability only when needed.',
+      href: '/workflows',
     },
     {
-      icon: <Eye className="w-5 h-5 text-blue-600" />,
-      title: "User Experience Negotiation",
-      description: "Each message includes 'parts' with specified content types, allowing agents to negotiate formats and UI capabilities like iframes, video, web forms."
-    }
-  ];
-
-  const frameworks = [
-    {
-      icon: <Code className="w-8 h-8 text-green-600" />,
-      title: "AutoGen / AG2",
-      description: "Multi-agent conversation framework that enables multiple agents to converse with each other to solve complex tasks. Continued by the community as AG2, while Microsoft's AutoGen has evolved into the Microsoft Agent Framework.",
-      link: "/frameworks/autogen"
+      icon: <Workflow className="w-6 h-6 text-amber-700" />,
+      title: 'Tasks: long-running work',
+      body: 'Task patterns cover status, resumability, retry semantics, expiry, human review, and call-now/fetch-later workflows for production agents.',
+      href: '/workflows',
     },
     {
-      icon: <Network className="w-8 h-8 text-blue-600" />,
-      title: "CrewAI",
-      description: "Framework for orchestrating role-playing, autonomous AI agents to work together and tackle complex tasks as a cohesive team.",
-      link: "/frameworks/crewai"
+      icon: <ShieldCheck className="w-6 h-6 text-rose-700" />,
+      title: 'Operations: safety and audit',
+      body: 'Production systems need explicit consent, least privilege, authenticated discovery, secure tool use, telemetry, and audit trails around agent actions.',
+      href: '/mcp-faq',
     },
-    {
-      icon: <Workflow className="w-8 h-8 text-purple-600" />,
-      title: "LangGraph", 
-      description: "Library for building stateful, multi-actor applications with LLMs, built on top of LangChain for complex workflows.",
-      link: "/frameworks/langgraph"
-    }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="Protocol Map - A2A, MCP, Agent Skills, and Task Patterns"
+        description="A concise map of the agent interoperability stack: A2A for peer agents, MCP for tools and resources, Skills for reusable task packages, and task lifecycle patterns."
+        keywords="A2A protocol, MCP, Agent Skills, agent tasks, multi-agent systems"
+        url="https://a2acatalog.com/about"
+      />
+      <StructuredData
+        type="article"
+        data={{
+          title: 'Protocol Map - A2A, MCP, Agent Skills, and Task Patterns',
+          description: 'A map of A2A, MCP, Agent Skills, and task lifecycle patterns for multi-agent systems.',
+          url: 'https://a2acatalog.com/about',
+        }}
+      />
+
       <Navbar />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Hero Section with Glassmorphism */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 rounded-2xl mb-20">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative p-12 md:p-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              A2A Agent Catalog
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-              The comprehensive discovery platform for AI agents supporting the Agent2Agent (A2A) protocol —
-              now a Linux Foundation project backed by a broad industry coalition, powering a new era of Agent Interoperability.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                <a href="/agents">Browse Agents</a>
-              </Button>
-              <Button size="lg" className="bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-purple-600" asChild>
-                <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="w-5 h-5 mr-2" />
-                  Official Documentation
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
 
-        {/* Document Content */}
-        <div className="prose prose-lg max-w-none">
-          {/* Platform Overview */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Enabling Seamless Agent Discovery
-            </h2>
-            
-            <div className="space-y-6 text-gray-700">
-              <p>
-                We believe that AI agents should work together seamlessly to solve complex problems. 
-                Our platform makes it easy to discover, evaluate, and integrate AI agents that follow 
-                the Agent-to-Agent protocol, enabling developers to build more powerful and collaborative AI systems.
+      <main>
+        <section className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="max-w-4xl">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-950 mb-6">
+                Protocol map for agent interoperability
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                The catalog tracks the current split between peer-agent communication, tool access, reusable Skills, and long-running task behavior. A2A and MCP solve different parts of the stack, while Skills make agent workflows portable and easier to reuse.
               </p>
-              
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
-                <p className="text-blue-800 font-medium">
-                  <strong>A2A Agent Catalog</strong> serves as the central hub for discovering and connecting 
-                  A2A-compatible agents, making it easier for developers and enterprises to build 
-                  interoperable AI ecosystems that maximize productivity and innovation.
-                </p>
-              </div>
-            </div>
-
-            {/* Popular A2A Frameworks */}
-            <div className="mt-16">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">
-                Popular A2A Frameworks
-              </h3>
-              
-              <div className="space-y-6 text-gray-700 mb-8">
-                <p>
-                  Choose from the most popular frameworks that support A2A protocol integration. 
-                  Each framework offers unique approaches to building and orchestrating AI agents.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {frameworks.map((framework, index) => (
-                  <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
-                    <CardHeader className="text-center pb-4">
-                      <div className="flex justify-center mb-4">
-                        {framework.icon}
-                      </div>
-                      <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
-                        {framework.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                      <p className="text-gray-600 mb-4">
-                        {framework.description}
-                      </p>
-                      <Button variant="outline" asChild className="w-full">
-                        <a href={framework.link}>Learn More</a>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="text-center">
-                <Button asChild className="bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700">
-                  <a href="/frameworks">View All Frameworks</a>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild className="bg-gray-950 hover:bg-gray-800">
+                  <Link to="/agents">
+                    Start with A2A
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href="https://a2a-protocol.org/latest/specification/" target="_blank" rel="noopener noreferrer">
+                    A2A Spec
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </a>
                 </Button>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* A New Era of Agent Interoperability */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              A New Era of Agent Interoperability
-            </h2>
-            
-            <div className="space-y-6 text-gray-700">
-              <p>
-                AI agents offer a unique opportunity to help people be more productive by autonomously handling many daily recurring or complex tasks. Today, enterprises are increasingly building and deploying autonomous agents to help scale, automate and enhance processes throughout the workplace–from ordering new laptops, to aiding customer service representatives, to assisting in supply chain planning.
-              </p>
-              
-              <p>
-                To maximize the benefits from agentic AI, it is critical for these agents to be able to collaborate in a dynamic, multi-agent ecosystem across siloed data systems and applications. Enabling agents to interoperate with each other, even if they were built by different vendors or in a different framework, will increase autonomy and multiply productivity gains, while lowering long-term costs.
-              </p>
-
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-r-lg">
-                <p className="text-blue-800 font-medium">
-                  <strong>Agent2Agent (A2A) is an open protocol, originally created by Google and donated to the Linux Foundation in June 2025</strong>, where it is now developed as a vendor-neutral standard with contributions from major technology companies including Google, AWS, Microsoft, Cisco, Salesforce, SAP, and ServiceNow. The protocol reached its v1.0 stable release in March 2026. A2A allows AI agents to communicate with each other, securely exchange information, and coordinate actions on top of various enterprise platforms or applications.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* A2A Protocol Overview Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              A2A Protocol Overview
-            </h2>
-            
-            {/* Protocol Overview */}
-            <div className="mb-12">
-              <div className="space-y-6 text-gray-700">
-                <p>
-                  The <strong>Agent2Agent (A2A) Protocol</strong> is an open standard designed to enable seamless 
-                  communication and collaboration between AI agents. In a world where agents are built using diverse 
-                  frameworks and by different vendors, A2A provides a common language, breaking down silos and 
-                  fostering interoperability.
-                </p>
-                
-                <p>
-                  A2A is an open protocol that complements the Model Context Protocol (MCP), which connects
-                  agents to tools and context. Where MCP standardizes how a single agent uses tools and data,
-                  A2A standardizes how independent agents talk to each other. Originally drawing on Google's
-                  internal expertise in scaling agentic systems, the protocol is now stewarded by the Linux
-                  Foundation and addresses the challenges of deploying large-scale, multi-agent systems for
-                  enterprise customers.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* How A2A Works */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              How A2A Works
-            </h2>
-            
-            <div className="space-y-6 mb-8">
-              <p className="text-gray-700">
-                A2A facilitates communication between a "client" agent and a "remote" agent. A client agent is responsible for formulating and communicating tasks, while the remote agent is responsible for acting on those tasks in an attempt to provide the correct information or take the correct action.
-              </p>
-            </div>
-                        
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {keyCapabilities.map((capability, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-3">
-                      {capability.icon}
-                      <CardTitle className="text-lg">{capability.title}</CardTitle>
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {layers.map((layer) => (
+                <Card key={layer.title} className="rounded-lg border-gray-200">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      {layer.icon}
+                      <CardTitle className="text-xl">{layer.title}</CardTitle>
                     </div>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-gray-600 leading-relaxed">
-                      {capability.description}
-                    </p>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-5 leading-relaxed">{layer.body}</p>
+                    <Link to={layer.href} className="inline-flex items-center text-sm font-medium text-gray-950">
+                      Open related entries
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
 
-        {/* Ready to Build with A2A - Glassmorphism Card */}
-        <Card className="backdrop-blur-md bg-white/70 border border-white/20 shadow-xl mt-20">
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-3xl font-bold text-gray-900 mb-4">
-              Ready to Build with A2A
-            </CardTitle>
-            <CardDescription className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Start building interoperable AI agents today with the A2A protocol. Join the growing ecosystem of developers and enterprises creating the future of AI collaboration.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <a href="/agents">Browse Agents</a>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="/submit">Submit Your Agent</a>
-              </Button>
+        <section className="py-16 bg-white border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-950 mb-8">Reference Sources</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {[
+                ['A2A Specification', 'https://a2a-protocol.org/latest/specification/'],
+                ['A2A and MCP', 'https://a2a-protocol.org/latest/topics/a2a-and-mcp/'],
+                ['MCP Specification', 'https://modelcontextprotocol.io/specification/2025-06-18'],
+                ['Agent Skills', 'https://agentskills.io/specification'],
+              ].map(([label, href]) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg border border-gray-200 p-4 text-gray-700 hover:text-gray-950 hover:border-gray-300 transition-colors"
+                >
+                  <span className="inline-flex items-center font-medium">
+                    {label}
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </span>
+                </a>
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>
   );
 };
 
-export default Documentation;
+export default About;

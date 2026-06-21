@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { catalogWorkflows } from '@/data/catalog';
 
 export interface Workflow {
   id: string;
@@ -13,13 +12,15 @@ export interface Workflow {
   votes: number;
   is_verified: boolean;
   featured: boolean;
+  status?: 'working' | 'reference' | 'roadmap' | 'deprecated';
+  status_note?: string;
   
   // Workflow-specific fields
   filename: string;
   trigger_type: string; // 'manual', 'webhook', 'scheduled', 'complex'
   complexity: string; // 'low', 'medium', 'high'
   node_count: number;
-  workflow_json: any;
+  workflow_json: unknown;
   
   // Statistics and metadata
   total_nodes: number;
@@ -40,7 +41,7 @@ export interface Workflow {
 
 export const useWorkflows = () => {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchWorkflows = async (options?: { 
     limit?: number; 
@@ -49,106 +50,52 @@ export const useWorkflows = () => {
     categories?: string[]; 
     sortBy?: string; 
   }) => {
-    try {
-      let query = supabase
-        .from('workflows')
-        .select('*', { count: 'exact' });
+    let data = [...catalogWorkflows];
 
-      // Apply search filter
-      if (options?.search) {
-        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
-      }
-
-      // Apply category filter
-      if (options?.categories && options.categories.length > 0) {
-        query = query.overlaps('categories', options.categories);
-      }
-
-      // Apply sorting
-      switch (options?.sortBy) {
-        case 'popular':
-          query = query.order('votes', { ascending: false });
-          break;
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-        case 'alphabetical':
-          query = query.order('name', { ascending: true });
-          break;
-        default:
-          query = query.order('votes', { ascending: false });
-      }
-
-      // Apply pagination
-      if (options?.limit) {
-        query = query.limit(options.limit);
-      }
-      if (options?.offset) {
-        query = query.range(options.offset, options.offset + (options.limit || 9) - 1);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) {
-        console.error('Error fetching workflows:', error);
-        toast.error('Failed to load workflows');
-        return { data: [], count: 0 };
-      }
-
-      console.log(`✅ Loaded ${data?.length || 0} workflows (total: ${count})`);
-      setWorkflows(data || []);
-      return { data: data || [], count: count || 0 };
-    } catch (error) {
-      console.error('Error fetching workflows:', error);
-      toast.error('Failed to load workflows');
-      return { data: [], count: 0 };
-    } finally {
-      setLoading(false);
+    if (options?.search) {
+      const query = options.search.toLowerCase();
+      data = data.filter((workflow) =>
+        workflow.name.toLowerCase().includes(query) ||
+        workflow.description.toLowerCase().includes(query) ||
+        workflow.skills.some((skill) => skill.toLowerCase().includes(query))
+      );
     }
+
+    if (options?.categories?.length) {
+      data = data.filter((workflow) =>
+        options.categories!.some((category) => workflow.categories.includes(category))
+      );
+    }
+
+    switch (options?.sortBy) {
+      case 'newest':
+        data.sort((a, b) => new Date(b.created_at || '').getTime() - new Date(a.created_at || '').getTime());
+        break;
+      case 'alphabetical':
+        data.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'popular':
+      default:
+        data.sort((a, b) => b.votes - a.votes);
+        break;
+    }
+
+    const count = data.length;
+    if (options?.offset !== undefined || options?.limit !== undefined) {
+      const start = options.offset || 0;
+      const end = options.limit ? start + options.limit : undefined;
+      data = data.slice(start, end);
+    }
+
+    setWorkflows(data);
+    setLoading(false);
+    return { data, count };
   };
 
-  const voteForWorkflow = async (workflowId: string, userId: string) => {
-    try {
-      // Check if user has already voted
-      const { data: existingVote } = await supabase
-        .from('workflow_votes')
-        .select('id')
-        .eq('workflow_id', workflowId)
-        .eq('user_id', userId)
-        .single();
-
-      if (existingVote) {
-        // Remove vote
-        await supabase
-          .from('workflow_votes')
-          .delete()
-          .eq('workflow_id', workflowId)
-          .eq('user_id', userId);
-
-        // Decrease vote count
-        await supabase
-          .from('workflows')
-          .update({ votes: workflows.find(w => w.id === workflowId)!.votes - 1 })
-          .eq('id', workflowId);
-      } else {
-        // Add vote
-        await supabase
-          .from('workflow_votes')
-          .insert({ workflow_id: workflowId, user_id: userId });
-
-        // Increase vote count
-        await supabase
-          .from('workflows')
-          .update({ votes: workflows.find(w => w.id === workflowId)!.votes + 1 })
-          .eq('id', workflowId);
-      }
-
-      // Refresh workflows data
-      await fetchWorkflows();
-    } catch (error) {
-      console.error('Error voting for workflow:', error);
-      throw error;
-    }
+  const voteForWorkflow = async (workflowId: string, _userId?: string) => {
+    setWorkflows(prev => prev.map(workflow =>
+      workflow.id === workflowId ? { ...workflow, votes: workflow.votes + 1 } : workflow
+    ));
   };
 
   const getWorkflowsByCategory = (category: string) => {

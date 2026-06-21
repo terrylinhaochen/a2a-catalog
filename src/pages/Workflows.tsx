@@ -11,8 +11,8 @@ const Workflows = () => {
       <div className="flex-1">
         <ItemCatalog
           defaultProtocol="workflow"
-          title="Workflow Catalog"
-          description="Discover and download ready-to-use AI workflows for automation and productivity. Browse thousands of workflows from n8n, Zapier, and other automation platforms."
+          title="Task Pattern Catalog"
+          description="Browse working patterns, reusable Skills, reference operations loops, and roadmap watchlist items for A2A, MCP, and multi-agent task lifecycle design."
           url="https://a2acatalog.com/workflows"
         />
       </div>

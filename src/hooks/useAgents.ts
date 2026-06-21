@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { catalogAgents, catalogCategories } from '@/data/catalog';
 
 export interface Agent {
   id: string;
@@ -17,6 +17,8 @@ export interface Agent {
   documentation?: string;
   examples?: string[];
   featured?: boolean;
+  status?: 'working' | 'reference' | 'roadmap' | 'deprecated';
+  status_note?: string;
   user_id?: string;
   created_at?: string;
   updated_at?: string;
@@ -39,8 +41,8 @@ export interface Category {
 export const useAgents = () => {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error] = useState<string | null>(null);
 
   const fetchAgents = async (options?: { 
     limit?: number; 
@@ -49,186 +51,72 @@ export const useAgents = () => {
     categories?: string[]; 
     sortBy?: string; 
   }) => {
-    try {
-      let query = supabase
-        .from('agents')
-        .select('*', { count: 'exact' });
+    let data = [...catalogAgents];
 
-      // Apply search filter
-      if (options?.search) {
-        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
-      }
-
-      // Apply category filter
-      if (options?.categories && options.categories.length > 0) {
-        query = query.overlaps('categories', options.categories);
-      }
-
-      // Apply sorting
-      switch (options?.sortBy) {
-        case 'popular':
-          query = query.order('votes', { ascending: false });
-          break;
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-        case 'alphabetical':
-          query = query.order('name', { ascending: true });
-          break;
-        default:
-          query = query.order('votes', { ascending: false });
-      }
-
-      // Apply pagination
-      if (options?.limit) {
-        query = query.limit(options.limit);
-      }
-      if (options?.offset) {
-        query = query.range(options.offset, options.offset + (options.limit || 9) - 1);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) throw error;
-      setAgents(data || []);
-      return { data: data || [], count: count || 0 };
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch agents');
-      console.error('Error fetching agents:', err);
-      return { data: [], count: 0 };
+    if (options?.search) {
+      const query = options.search.toLowerCase();
+      data = data.filter((agent) =>
+        agent.name.toLowerCase().includes(query) ||
+        agent.description.toLowerCase().includes(query) ||
+        agent.skills.some((skill) => skill.toLowerCase().includes(query))
+      );
     }
+
+    if (options?.categories?.length) {
+      data = data.filter((agent) =>
+        options.categories!.some((category) => agent.categories.includes(category))
+      );
+    }
+
+    switch (options?.sortBy) {
+      case 'newest':
+        data.sort((a, b) => new Date(b.created_at || b.last_updated || '').getTime() - new Date(a.created_at || a.last_updated || '').getTime());
+        break;
+      case 'alphabetical':
+        data.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'popular':
+      default:
+        data.sort((a, b) => b.votes - a.votes);
+        break;
+    }
+
+    const count = data.length;
+    if (options?.offset !== undefined || options?.limit !== undefined) {
+      const start = options.offset || 0;
+      const end = options.limit ? start + options.limit : undefined;
+      data = data.slice(start, end);
+    }
+
+    setAgents(data);
+    return { data, count };
   };
 
   const fetchCategories = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      
-      // Add count of agents for each category
-      const categoriesWithCount = await Promise.all(
-        (data || []).map(async (category) => {
-          const { count } = await supabase
-            .from('agents')
-            .select('*', { count: 'exact', head: true })
-            .contains('categories', [category.name]);
-          
-          return { ...category, count: count || 0 };
-        })
-      );
-      
-      setCategories(categoriesWithCount);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch categories');
-      console.error('Error fetching categories:', err);
-    }
+    setCategories(catalogCategories);
   };
 
   const addAgent = async (agentData: Omit<Agent, 'id' | 'votes' | 'created_at' | 'updated_at'>) => {
-    try {
-      const { data, error } = await supabase
-        .from('agents')
-        .insert(agentData)
-        .select()
-        .single();
-
-      if (error) throw error;
-      
-      setAgents(prev => [...prev, data]);
-      return { data, error: null };
-    } catch (err) {
-      return { data: null, error: err instanceof Error ? err.message : 'Failed to add agent' };
-    }
+    const data: Agent = {
+      ...agentData,
+      id: `local-${Date.now()}`,
+      votes: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    setAgents(prev => [...prev, data]);
+    return { data, error: null };
   };
 
-  const voteForAgent = async (agentId: string, userId: string) => {
-    try {
-      console.log('Voting for agent:', agentId, 'by user:', userId);
-      
-      // Check if user already voted
-      const { data: existingVote, error: voteCheckError } = await supabase
-        .from('agent_votes')
-        .select('id')
-        .eq('agent_id', agentId)
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      if (voteCheckError) {
-        console.error('Error checking existing vote:', voteCheckError);
-        throw voteCheckError;
-      }
-
-      const currentAgent = agents.find(a => a.id === agentId);
-      if (!currentAgent) {
-        throw new Error('Agent not found');
-      }
-
-      if (existingVote) {
-        console.log('Removing existing vote');
-        // Remove vote
-        const { error: deleteError } = await supabase
-          .from('agent_votes')
-          .delete()
-          .eq('agent_id', agentId)
-          .eq('user_id', userId);
-
-        if (deleteError) throw deleteError;
-
-        // Decrease vote count
-        const newVoteCount = Math.max(0, currentAgent.votes - 1);
-        const { error: updateError } = await supabase
-          .from('agents')
-          .update({ votes: newVoteCount })
-          .eq('id', agentId);
-
-        if (updateError) throw updateError;
-
-        // Update local state immediately
-        setAgents(prev => prev.map(agent => 
-          agent.id === agentId 
-            ? { ...agent, votes: newVoteCount }
-            : agent
-        ));
-      } else {
-        console.log('Adding new vote');
-        // Add vote
-        const { error: insertError } = await supabase
-          .from('agent_votes')
-          .insert([{ agent_id: agentId, user_id: userId }]);
-
-        if (insertError) throw insertError;
-
-        // Increase vote count
-        const newVoteCount = currentAgent.votes + 1;
-        const { error: updateError } = await supabase
-          .from('agents')
-          .update({ votes: newVoteCount })
-          .eq('id', agentId);
-
-        if (updateError) throw updateError;
-
-        // Update local state immediately
-        setAgents(prev => prev.map(agent => 
-          agent.id === agentId 
-            ? { ...agent, votes: newVoteCount }
-            : agent
-        ));
-      }
-
-      console.log('Vote operation completed successfully');
-    } catch (err) {
-      console.error('Error in voteForAgent:', err);
-      setError(err instanceof Error ? err.message : 'Failed to vote');
-      throw err; // Re-throw so the UI can handle the error
-    }
+  const voteForAgent = async (agentId: string, _userId?: string) => {
+    setAgents(prev => prev.map(agent =>
+      agent.id === agentId ? { ...agent, votes: agent.votes + 1 } : agent
+    ));
   };
 
   useEffect(() => {
     const loadData = async () => {
-      setLoading(true);
+      setLoading(false);
       await Promise.all([fetchAgents(), fetchCategories()]);
       setLoading(false);
     };

@@ -1,5 +1,3 @@
-
-import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
@@ -11,78 +9,83 @@ import { HelpCircle } from 'lucide-react';
 const McpFaq = () => {
   const faqData = [
     {
-      question: "What is Model Context Protocol (MCP)?",
-      answer: "Model Context Protocol (MCP) is a standardized protocol that enables AI models and applications to share context information seamlessly. It facilitates better communication between different AI systems by providing a common framework for context sharing and memory management."
+      question: 'What is Model Context Protocol (MCP)?',
+      answer:
+        'MCP is an open protocol for connecting LLM applications to external tools, data, resources, and reusable prompts. The current specification uses JSON-RPC messages between hosts, clients, and servers, with explicit lifecycle, authorization, and security requirements.',
     },
     {
-      question: "How do MCP servers work with Claude AI?",
-      answer: "MCP servers integrate with Claude AI by providing contextual information and tools that enhance Claude's capabilities. They act as bridges between Claude and external data sources, allowing for more informed and context-aware responses."
+      question: 'What does an MCP server provide?',
+      answer:
+        'MCP servers expose server-side capabilities such as tools, resources, and prompts. MCP clients can also expose client-side features such as sampling, roots, and elicitation, depending on the host application.',
     },
     {
-      question: "What's the difference between A2A agents and MCP servers?",
-      answer: "A2A (Agent-to-Agent) agents focus on inter-agent communication and collaboration, while MCP servers specialize in context sharing and memory management. A2A enables agents to work together, while MCP helps AI models maintain and access relevant context."
+      question: 'How is MCP different from A2A?',
+      answer:
+        'A2A is for communication between peer agents and opaque agentic applications. MCP is for connecting a model or agent runtime to tools, data, prompts, and resources. They are complementary: agents can coordinate through A2A while using MCP internally for tool and context access.',
     },
     {
-      question: "How to set up an MCP server?",
-      answer: "Setting up an MCP server involves: 1) Installing the MCP SDK, 2) Defining your context sharing endpoints, 3) Implementing the MCP protocol handlers, 4) Configuring security and authentication, and 5) Testing the integration with your AI applications."
+      question: 'What changed in the 2025-06-18 MCP specification?',
+      answer:
+        'The 2025-06-18 specification organizes the protocol around JSON-RPC, lifecycle management, authorization, tools, resources, prompts, sampling, roots, elicitation, progress, cancellation, logging, and security principles.',
     },
     {
-      question: "Can MCP servers work with multiple AI models?",
-      answer: "Yes, MCP servers are designed to be model-agnostic and can work with various AI models and applications that support the Model Context Protocol standard, including Claude, GPT models, and other compatible AI systems."
+      question: 'What are MCP Tasks?',
+      answer:
+        'Tasks are a roadmap direction for long-running or asynchronous agent work where a caller may request work now and fetch results later. Current roadmap work calls out retry semantics, expiry policies, and clearer lifecycle behavior as production gaps to solve.',
     },
     {
-      question: "What are the benefits of using MCP for AI applications?",
-      answer: "MCP provides several benefits: improved context continuity, better memory management, enhanced AI responses through relevant context, standardized integration patterns, and the ability to share context across different AI applications and sessions."
+      question: 'What are MCP Server Cards?',
+      answer:
+        'Server Cards are a roadmap item for structured MCP server metadata, likely exposed through well-known URLs, so registries, browsers, and hosts can discover server capabilities before connecting.',
     },
     {
-      question: "How secure are MCP servers?",
-      answer: "MCP servers implement various security measures including authentication, encryption, access controls, and data validation. The protocol includes built-in security features to protect sensitive context information during transmission and storage."
+      question: 'What security model should MCP implementations follow?',
+      answer:
+        'The specification emphasizes user consent and control, data privacy, tool safety, and sampling controls. In production, that usually means least privilege, explicit authorization, careful handling of sensitive data, and auditable tool execution.',
     },
     {
-      question: "What programming languages support MCP?",
-      answer: "MCP has SDK support for multiple programming languages including Python, JavaScript/TypeScript, Go, and Java. The protocol specification allows for implementation in virtually any programming language."
-    }
+      question: 'Where do Agent Skills fit?',
+      answer:
+        'Skills package reusable task instructions, scripts, references, and assets. They are not a replacement for MCP or A2A; they make agent behavior more reusable while MCP connects to tools and A2A connects agents to one another.',
+    },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="MCP Server FAQ - Model Context Protocol Questions & Answers"
-        description="Get answers to frequently asked questions about Model Context Protocol (MCP) servers, setup, integration with Claude AI, and context sharing best practices."
-        keywords="MCP FAQ, Model Context Protocol questions, MCP server setup, Claude MCP integration, context sharing FAQ, MCP troubleshooting"
+        title="MCP FAQ - Model Context Protocol, Tasks, Server Cards, and Skills"
+        description="Current FAQ for MCP servers, A2A vs MCP, task primitives, server cards, security, and Agent Skills."
+        keywords="MCP FAQ, Model Context Protocol, MCP Tasks, MCP Server Cards, A2A vs MCP, Agent Skills"
         url="https://a2acatalog.com/mcp-faq"
       />
       
       <StructuredData 
         type="article"
         data={{
-          title: "MCP Server FAQ - Model Context Protocol Questions & Answers",
-          description: "Comprehensive FAQ covering Model Context Protocol servers, setup, integration, and best practices for context sharing with AI models.",
-          keywords: "MCP FAQ, Model Context Protocol, MCP servers, context sharing",
-          category: "FAQ",
-          url: "https://a2acatalog.com/mcp-faq"
+          title: 'MCP FAQ - Model Context Protocol, Tasks, Server Cards, and Skills',
+          description: 'FAQ covering MCP servers, A2A vs MCP, task primitives, server cards, security, and Agent Skills.',
+          keywords: 'MCP FAQ, Model Context Protocol, MCP servers, A2A, Agent Skills',
+          category: 'FAQ',
+          url: 'https://a2acatalog.com/mcp-faq',
         }}
       />
       
       <Navbar />
       
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-purple-900 to-blue-900 text-white py-16">
+      <div className="bg-gray-950 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <HelpCircle className="w-16 h-16 text-purple-300 mx-auto mb-6" />
+            <HelpCircle className="w-14 h-14 text-blue-300 mx-auto mb-6" />
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              MCP Server FAQ
-              <span className="block text-purple-300">Frequently Asked Questions</span>
+              MCP FAQ
             </h1>
-            <p className="text-xl text-purple-100 mb-8 max-w-3xl mx-auto">
-              Get answers to the most common questions about Model Context Protocol servers, setup, and integration.
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Practical answers for Model Context Protocol, A2A integration, task primitives, server cards, security, and Skills.
             </p>
           </div>
         </div>
       </div>
 
-      {/* FAQ Section */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card>
@@ -92,7 +95,7 @@ const McpFaq = () => {
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
                 {faqData.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionItem key={faq.question} value={`item-${index}`}>
                     <AccordionTrigger className="text-left">
                       {faq.question}
                     </AccordionTrigger>
@@ -107,38 +110,37 @@ const McpFaq = () => {
         </div>
       </section>
 
-      {/* Additional Resources */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">Additional Resources</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Resources</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>MCP Servers Directory</CardTitle>
+                <CardTitle>MCP Tools Catalog</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">Browse our comprehensive directory of MCP servers for various use cases and integrations.</p>
-                <a href="/mcps" className="text-purple-600 hover:underline">Explore MCP Servers →</a>
+                <p className="text-gray-600 mb-4">Browse MCP specifications, servers, registry work, task primitives, and production-hardening patterns.</p>
+                <a href="/tools" className="text-blue-700 hover:underline">Explore MCP Tools</a>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>Documentation</CardTitle>
+                <CardTitle>Official MCP Spec</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">Read detailed documentation about implementing and using MCP servers.</p>
-                <a href="/docs" className="text-purple-600 hover:underline">Read Docs →</a>
+                <p className="text-gray-600 mb-4">Read the 2025-06-18 Model Context Protocol specification directly from the MCP project.</p>
+                <a href="https://modelcontextprotocol.io/specification/2025-06-18" className="text-blue-700 hover:underline">Open Specification</a>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>Submit Your MCP Server</CardTitle>
+                <CardTitle>MCP Roadmap</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">Share your MCP server with the community and help others discover your solution.</p>
-                <a href="/submit" className="text-purple-600 hover:underline">Submit Server →</a>
+                <p className="text-gray-600 mb-4">Track transport evolution, Tasks, governance, server cards, observability, and enterprise readiness.</p>
+                <a href="https://modelcontextprotocol.io/development/roadmap" className="text-blue-700 hover:underline">Open Roadmap</a>
               </CardContent>
             </Card>
           </div>

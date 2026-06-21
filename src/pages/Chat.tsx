@@ -130,7 +130,7 @@ const Chat = () => {
 
       if (data && data.messages) {
         // Convert database messages to chat messages
-        const convertedMessages: ChatMessage[] = data.messages.map((msg: any, index: number) => ({
+        const convertedMessages: ChatMessage[] = (data.messages as Array<{ role: string; content: string }>).map((msg, index: number) => ({
           id: `${msg.role}-${index}`,
           content: msg.content,
           sender: msg.role === 'user' ? 'user' : 'agent',

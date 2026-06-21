@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { catalogMcpServers } from '@/data/catalog';
 
 export interface McpServer {
   id: string;
@@ -19,6 +19,7 @@ export interface McpServer {
   user_id?: string;
   created_at?: string;
   updated_at?: string;
+  documentation?: string;
   package_name?: string;
   repository_url?: string;
   server_type?: string; // Changed from 'local' | 'remote' to string to match database
@@ -29,12 +30,14 @@ export interface McpServer {
   auth_required?: boolean;
   auth_type?: string; // Changed from 'oauth' | 'api_key' | 'none' to string to match database
   featured?: boolean; // Added featured property
+  status?: 'working' | 'reference' | 'roadmap' | 'deprecated';
+  status_note?: string;
 }
 
 export const useMcpServers = () => {
   const [mcpServers, setMcpServers] = useState<McpServer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error] = useState<string | null>(null);
 
   const fetchMcpServers = async (options?: { 
     limit?: number; 
@@ -43,160 +46,56 @@ export const useMcpServers = () => {
     categories?: string[]; 
     sortBy?: string; 
   }) => {
-    try {
-      let query = supabase
-        .from('mcp_servers')
-        .select('*', { count: 'exact' });
+    let data = [...catalogMcpServers];
 
-      // Apply search filter
-      if (options?.search) {
-        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
-      }
-
-      // Apply category filter
-      if (options?.categories && options.categories.length > 0) {
-        query = query.overlaps('categories', options.categories);
-      }
-
-      // Apply sorting
-      switch (options?.sortBy) {
-        case 'popular':
-          query = query.order('votes', { ascending: false });
-          break;
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-        case 'alphabetical':
-          query = query.order('name', { ascending: true });
-          break;
-        default:
-          query = query.order('votes', { ascending: false });
-      }
-
-      // Apply pagination
-      if (options?.limit) {
-        query = query.limit(options.limit);
-      }
-      if (options?.offset) {
-        query = query.range(options.offset, options.offset + (options.limit || 9) - 1);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) throw error;
-      
-      // Filter out generic API entries (not actual MCP servers)
-      const filteredData = (data || []).filter(server => {
-        // Use any to access the connection_url field that exists in the database
-        const serverAny = server as any;
-        const url = serverAny.connection_url || '';
-        // Exclude generic API endpoints that aren't actual MCP servers
-        const isGenericApi = url.includes('api.github.com/copilot') ||
-                           url.includes('api.sentry.io') ||
-                           url.includes('api.linear.app') ||
-                           url.includes('api.deepwiki.com') ||
-                           url.includes('api.notion.com') ||
-                           url.includes('api.slack.com') ||
-                           url.includes('api.figma.com') ||
-                           url.includes('api.zapier.com');
-        
-        return !isGenericApi;
-      });
-      
-      setMcpServers(filteredData);
-      return { data: filteredData, count: filteredData.length };
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch MCP servers');
-      console.error('Error fetching MCP servers:', err);
-      return { data: [], count: 0 };
+    if (options?.search) {
+      const query = options.search.toLowerCase();
+      data = data.filter((server) =>
+        server.name.toLowerCase().includes(query) ||
+        server.description.toLowerCase().includes(query) ||
+        server.skills.some((skill) => skill.toLowerCase().includes(query))
+      );
     }
+
+    if (options?.categories?.length) {
+      data = data.filter((server) =>
+        options.categories!.some((category) => server.categories.includes(category))
+      );
+    }
+
+    switch (options?.sortBy) {
+      case 'newest':
+        data.sort((a, b) => new Date(b.created_at || b.last_updated || '').getTime() - new Date(a.created_at || a.last_updated || '').getTime());
+        break;
+      case 'alphabetical':
+        data.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'popular':
+      default:
+        data.sort((a, b) => b.votes - a.votes);
+        break;
+    }
+
+    const count = data.length;
+    if (options?.offset !== undefined || options?.limit !== undefined) {
+      const start = options.offset || 0;
+      const end = options.limit ? start + options.limit : undefined;
+      data = data.slice(start, end);
+    }
+
+    setMcpServers(data);
+    return { data, count };
   };
 
-  const voteForMcpServer = async (mcpServerId: string, userId: string) => {
-    try {
-      console.log('Voting for MCP server:', mcpServerId, 'by user:', userId);
-      
-      // Check if user already voted
-      const { data: existingVote, error: voteCheckError } = await supabase
-        .from('mcp_server_votes')
-        .select('id')
-        .eq('mcp_server_id', mcpServerId)
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      if (voteCheckError) {
-        console.error('Error checking existing vote:', voteCheckError);
-        throw voteCheckError;
-      }
-
-      const currentMcpServer = mcpServers.find(s => s.id === mcpServerId);
-      if (!currentMcpServer) {
-        throw new Error('MCP Server not found');
-      }
-
-      if (existingVote) {
-        console.log('Removing existing vote');
-        // Remove vote
-        const { error: deleteError } = await supabase
-          .from('mcp_server_votes')
-          .delete()
-          .eq('mcp_server_id', mcpServerId)
-          .eq('user_id', userId);
-
-        if (deleteError) throw deleteError;
-
-        // Decrease vote count
-        const newVoteCount = Math.max(0, currentMcpServer.votes - 1);
-        const { error: updateError } = await supabase
-          .from('mcp_servers')
-          .update({ votes: newVoteCount })
-          .eq('id', mcpServerId);
-
-        if (updateError) throw updateError;
-
-        // Update local state immediately
-        setMcpServers(prev => prev.map(server => 
-          server.id === mcpServerId 
-            ? { ...server, votes: newVoteCount }
-            : server
-        ));
-      } else {
-        console.log('Adding new vote');
-        // Add vote
-        const { error: insertError } = await supabase
-          .from('mcp_server_votes')
-          .insert([{ mcp_server_id: mcpServerId, user_id: userId }]);
-
-        if (insertError) throw insertError;
-
-        // Increase vote count
-        const newVoteCount = currentMcpServer.votes + 1;
-        const { error: updateError } = await supabase
-          .from('mcp_servers')
-          .update({ votes: newVoteCount })
-          .eq('id', mcpServerId);
-
-        if (updateError) throw updateError;
-
-        // Update local state immediately
-        setMcpServers(prev => prev.map(server => 
-          server.id === mcpServerId 
-            ? { ...server, votes: newVoteCount }
-            : server
-        ));
-      }
-
-      console.log('Vote operation completed successfully');
-    } catch (err) {
-      console.error('Error in voteForMcpServer:', err);
-      setError(err instanceof Error ? err.message : 'Failed to vote');
-      throw err;
-    }
+  const voteForMcpServer = async (mcpServerId: string, _userId?: string) => {
+    setMcpServers(prev => prev.map(server =>
+      server.id === mcpServerId ? { ...server, votes: server.votes + 1 } : server
+    ));
   };
 
   useEffect(() => {
     const loadData = async () => {
-      setLoading(true);
+      setLoading(false);
       await fetchMcpServers();
       setLoading(false);
     };

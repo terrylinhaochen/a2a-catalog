@@ -1,28 +1,21 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { BookOpen, Code, Zap } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
-import WorkRequestForm from '@/components/WorkRequestForm';
 import HeroSection from '@/components/home/HeroSection';
-import SearchSection from '@/components/home/SearchSection';
 import GallerySection from '@/components/home/GallerySection';
 import ServiceCategories from '@/components/home/ServiceCategories';
 import ViewAllToolsSection from '@/components/home/ViewAllToolsSection';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
-import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 const Index = () => {
   const { agents, loading: agentsLoading, voteForAgent } = useAgents();
   const { mcpServers, loading: mcpLoading, voteForMcpServer } = useMcpServers();
   const { workflows, loading: workflowsLoading, voteForWorkflow } = useWorkflows();
-  const { user } = useAuth();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'featured' | 'popular' | 'recent'>('featured');
@@ -57,24 +50,19 @@ const Index = () => {
   const filteredItems = getFilteredItems();
 
   const handleVote = async (itemId: string, voteType: 'up' | 'down') => {
-    if (!user) {
-      toast.error('Please sign in to vote');
-      return;
-    }
-
     try {
       const isAgent = agents.some(a => a.id === itemId);
       const isWorkflow = workflows.some(w => w.id === itemId);
       
       if (isAgent) {
-        await voteForAgent(itemId, user.id);
+        await voteForAgent(itemId);
       } else if (isWorkflow) {
-        await voteForWorkflow(itemId, user.id);
+        await voteForWorkflow(itemId);
       } else {
-        await voteForMcpServer(itemId, user.id);
+        await voteForMcpServer(itemId);
       }
       
-      toast.success('Vote recorded successfully!');
+      toast.success('Saved locally for this session');
     } catch (error) {
       console.error('Voting error:', error);
       toast.error('Failed to record vote. Please try again.');
@@ -90,18 +78,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEO 
-        title="A2A Catalog - Human-Mediated AI Agents & Professional Services"
-        description="Connect with expert AI agents for professional services. From competitor analysis to content creation, get results-based solutions with human oversight."
-        keywords="AI agents, professional services, competitor analysis, content creation, sales marketing, human-mediated AI"
+        title="A2A Catalog - Skills, MCP Tools, and Agent Task Patterns"
+        description="Discovery catalog for Agent2Agent communication, MCP servers, Agent Skills, and task lifecycle patterns."
+        keywords="A2A protocol, Agent2Agent, MCP, Model Context Protocol, Agent Skills, AI agents, multi-agent systems"
         url="https://a2acatalog.com"
       />
       
       <StructuredData 
         type="website"
         data={{
-          title: "A2A Catalog - AI Agents & Professional Services",
-          description: "Professional AI agents and services marketplace with human oversight",
-          keywords: "AI agents, professional services, marketplace",
+          title: "A2A Catalog - Skills, MCP Tools, and Agent Task Patterns",
+          description: "Discovery catalog for Agent2Agent communication, MCP servers, Agent Skills, and task lifecycle patterns.",
+          keywords: "A2A protocol, MCP, Agent Skills, task lifecycle, AI agents",
           url: "https://a2acatalog.com"
         }}
       />

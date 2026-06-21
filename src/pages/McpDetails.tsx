@@ -11,18 +11,16 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
 import { useMcpServers } from '@/hooks/useMcpServers';
-import { useAuth } from '@/contexts/AuthContext';
 
 const McpDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { mcpServers, voteForMcpServer } = useMcpServers();
-  const { user } = useAuth();
   
   const mcpServer = mcpServers.find(m => m.id === id);
 
   const handleVote = async () => {
-    if (!user || !mcpServer) return;
-    await voteForMcpServer(mcpServer.id, user.id);
+    if (!mcpServer) return;
+    await voteForMcpServer(mcpServer.id);
   };
 
   if (!mcpServer) {
@@ -50,8 +48,8 @@ const McpDetails = () => {
   return (
     <>
       <SEO 
-        title={`${mcpServer.name} - MCP Server | AI Agent Marketplace`}
-        description={`${mcpServer.description} Discover ${mcpServer.name} by ${mcpServer.provider} with capabilities in ${mcpServer.skills?.slice(0, 3).join(', ')}. Part of our AI Agent Marketplace supporting Model Context Protocol.`}
+        title={`${mcpServer.name} - MCP Catalog`}
+        description={`${mcpServer.description} Discover ${mcpServer.name} by ${mcpServer.provider} with capabilities in ${mcpServer.skills?.slice(0, 3).join(', ')}.`}
         url={`https://a2acatalog.com/mcps/${mcpServer.id}`}
         image={mcpServer.logo}
         type="article"
@@ -89,6 +87,7 @@ const McpDetails = () => {
           downloadUrl: mcpServer.github_url,
           codeRepository: mcpServer.github_url,
           ...(mcpServer.github_url && { sameAs: [mcpServer.github_url] }),
+          ...(mcpServer.documentation && { documentation: mcpServer.documentation }),
           ...(mcpServer.connection_url && { serviceUrl: mcpServer.connection_url })
         }}
       />
@@ -115,11 +114,11 @@ const McpDetails = () => {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-xl flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center">
                       {mcpServer.logo ? (
                         <img src={mcpServer.logo} alt={mcpServer.name} className="w-10 h-10 rounded" />
                       ) : (
-                        <span className="text-green-600 font-bold text-2xl">
+                        <span className="text-gray-900 font-bold text-2xl">
                           {mcpServer.name.charAt(0)}
                         </span>
                       )}
@@ -143,7 +142,7 @@ const McpDetails = () => {
                       variant="ghost"
                       size="sm"
                       onClick={handleVote}
-                      className="flex flex-col items-center h-auto p-3 hover:bg-green-50 hover:text-green-600"
+                      className="flex flex-col items-center h-auto p-3 hover:bg-gray-50 hover:text-gray-900"
                     >
                       <ChevronUp className="w-5 h-5" />
                       <span className="text-sm font-medium">{mcpServer.votes}</span>
@@ -156,6 +155,18 @@ const McpDetails = () => {
                 <CardDescription className="text-base mb-6">
                   {mcpServer.description}
                 </CardDescription>
+
+                {mcpServer.status && (
+                  <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <Badge variant="outline" className="capitalize">{mcpServer.status}</Badge>
+                      <span className="text-sm font-medium text-gray-900">Verification status</span>
+                    </div>
+                    {mcpServer.status_note && (
+                      <p className="text-sm text-gray-600">{mcpServer.status_note}</p>
+                    )}
+                  </div>
+                )}
 
                 {/* GitHub Stats */}
                 {(mcpServer.stars !== undefined || mcpServer.forks !== undefined || mcpServer.last_updated) && (
@@ -226,6 +237,15 @@ const McpDetails = () => {
                     <a href={mcpServer.github_url} target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4 mr-2" />
                       View on GitHub
+                    </a>
+                  </Button>
+                )}
+
+                {mcpServer.documentation && (
+                  <Button asChild variant="outline" className="w-full">
+                    <a href={mcpServer.documentation} target="_blank" rel="noopener noreferrer">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Documentation
                     </a>
                   </Button>
                 )}

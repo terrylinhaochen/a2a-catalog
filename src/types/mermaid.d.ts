@@ -1,6 +1,6 @@
 declare module 'mermaid' {
   export interface MermaidAPI {
-    initialize(config?: any): void;
+    initialize(config?: Record<string, unknown>): void;
     render(id: string, text: string): Promise<{ svg: string }>;
   }
   
