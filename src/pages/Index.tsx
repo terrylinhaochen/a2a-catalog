@@ -7,6 +7,8 @@ import HeroSection from '@/components/home/HeroSection';
 import GallerySection from '@/components/home/GallerySection';
 import ServiceCategories from '@/components/home/ServiceCategories';
 import ViewAllToolsSection from '@/components/home/ViewAllToolsSection';
+import TaskIntakeSection from '@/components/home/TaskIntakeSection';
+import SocialListeningCaseStudy from '@/components/home/SocialListeningCaseStudy';
 import { useAgents, Agent } from '@/hooks/useAgents';
 import { useMcpServers, McpServer } from '@/hooks/useMcpServers';
 import { useWorkflows, Workflow } from '@/hooks/useWorkflows';
@@ -28,11 +30,25 @@ const Index = () => {
     let filtered = allItems;
     
     if (searchQuery) {
-      filtered = filtered.filter(item => 
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.skills?.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
+      const tokens = searchQuery
+        .toLowerCase()
+        .split(/\s+/)
+        .map(token => token.trim())
+        .filter(token => token.length > 2);
+
+      filtered = filtered.filter(item => {
+        const searchableText = [
+          item.name,
+          item.description,
+          item.provider,
+          ...(item.skills || []),
+          ...(item.categories || []),
+        ].join(' ').toLowerCase();
+
+        return tokens.length > 0
+          ? tokens.some(token => searchableText.includes(token))
+          : searchableText.includes(searchQuery.toLowerCase());
+      });
     }
 
     switch (filterType) {
@@ -99,12 +115,13 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
+      <TaskIntakeSection onFindSkills={setSearchQuery} />
 
       {/* Service Categories Section */}
       <ServiceCategories />
       
       {/* Gallery Section */}
-      <div className="bg-gray-50 py-16">
+      <div id="featured-catalog" className="bg-gray-50 py-16">
         <GallerySection
           filteredItems={filteredItems}
           loading={loading}
@@ -115,6 +132,8 @@ const Index = () => {
           agents={agents}
         />
       </div>
+
+      <SocialListeningCaseStudy />
 
       <ViewAllToolsSection />
 

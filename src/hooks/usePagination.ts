@@ -34,12 +34,26 @@ export const usePagination = ({
 
   // Apply filtering, sorting, and pagination
   useEffect(() => {
+    const searchTokens = searchQuery
+      .toLowerCase()
+      .split(/\s+/)
+      .map(token => token.trim())
+      .filter(token => token.length > 2);
+
     // Apply client-side filtering
     const filtered = items.filter(item => {
-      const matchesSearch = !searchQuery || 
-                           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           item.skills?.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
+      const searchableText = [
+        item.name,
+        item.description,
+        item.provider,
+        ...(item.skills || []),
+        ...(item.categories || []),
+      ].join(' ').toLowerCase();
+
+      const matchesSearch = !searchQuery ||
+                           (searchTokens.length > 0
+                             ? searchTokens.some(token => searchableText.includes(token))
+                             : searchableText.includes(searchQuery.toLowerCase()));
       
       const matchesCategory = selectedCategories.length === 0 ||
                              selectedCategories.some(cat => item.categories.includes(cat));
