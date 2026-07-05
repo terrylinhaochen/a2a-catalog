@@ -11,7 +11,6 @@ import McpServers from './pages/McpServers';
 import McpDetails from './pages/McpDetails';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
-import { AuthProvider } from './contexts/AuthContext';
 import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
@@ -38,29 +37,27 @@ function App() {
       <HelmetProvider>
         <Router>
           <ScrollToTop />
-          <AuthProvider>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/tools" element={<Tools />} />
-              <Route path="/agents" element={<Agents />} />
-              <Route path="/agents/:id" element={<AgentDetails />} />
-              <Route path="/workflows" element={<Workflows />} />
-              <Route path="/workflows/:id" element={<WorkflowDetails />} />
-              <Route path="/mcps" element={<McpServers />} />
-              <Route path="/mcps/:id" element={<McpDetails />} />
-              <Route path="/about" element={<About />} />
-              
-              {/* New framework and FAQ pages */}
-              <Route path="/frameworks/autogen" element={<AutoGen />} />
-              <Route path="/frameworks/langgraph" element={<LangGraph />} />
-              <Route path="/frameworks/crewai" element={<CrewAI />} />
-              <Route path="/mcp-faq" element={<McpFaq />} />
-              <Route path="/framework-comparison" element={<FrameworkComparison />} />
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-          </AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/tools" element={<Tools />} />
+            <Route path="/agents" element={<Agents />} />
+            <Route path="/agents/:id" element={<AgentDetails />} />
+            <Route path="/workflows" element={<Workflows />} />
+            <Route path="/workflows/:id" element={<WorkflowDetails />} />
+            <Route path="/mcps" element={<McpServers />} />
+            <Route path="/mcps/:id" element={<McpDetails />} />
+            <Route path="/about" element={<About />} />
+
+            {/* New framework and FAQ pages */}
+            <Route path="/frameworks/autogen" element={<AutoGen />} />
+            <Route path="/frameworks/langgraph" element={<LangGraph />} />
+            <Route path="/frameworks/crewai" element={<CrewAI />} />
+            <Route path="/mcp-faq" element={<McpFaq />} />
+            <Route path="/framework-comparison" element={<FrameworkComparison />} />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
         </Router>
       </HelmetProvider>
     </QueryClientProvider>
