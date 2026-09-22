@@ -1,3 +1,5 @@
+> **Product consolidation — 2026-09-22:** Active product work has moved to Loops by CrowdListen at https://crowdlisten.com. This repository retains historical implementation and compatibility routes. Tracked source was archived before the front door changed; customer records and balances were not deleted.
+
 # Expert-hiring pilot
 
 The new product surface at **https://a2acatalog.com**. The domain and GitHub Pages deployment container are reused; the old A2A Catalog application, catalog data, UI, dependencies, documentation and positioning are retired.
